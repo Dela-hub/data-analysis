@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 from datetime import date
 from pathlib import Path
@@ -63,6 +64,15 @@ def build_dataset() -> pd.DataFrame:
     return df
 
 
+def safe_number(value: float | int | None) -> float | None:
+    if value is None:
+        return None
+    value = float(value)
+    if not math.isfinite(value):
+        return None
+    return round(value, 2)
+
+
 def build_summary(df: pd.DataFrame) -> dict:
     current_month = pd.Timestamp(date.today().replace(day=1))
     target_months = [current_month + relativedelta(months=i) for i in range(1, 4)]
@@ -84,16 +94,16 @@ def build_summary(df: pd.DataFrame) -> dict:
             "series_description": latest_actual["seriesDescription"],
             "unit": latest_actual["unit"],
             "latest_actual_period": latest_actual["period"].strftime("%Y-%m"),
-            "latest_actual_value": round(float(latest_actual["value"]), 2),
-            "month_over_month_actual": round(float(latest_actual["value"] - prev_actual["value"]), 2),
+            "latest_actual_value": safe_number(latest_actual["value"]),
+            "month_over_month_actual": safe_number(latest_actual["value"] - prev_actual["value"]),
             "forecast_start_period": first_forecast["period"].strftime("%Y-%m"),
-            "forecast_start_value": round(float(first_forecast["value"]), 2),
+            "forecast_start_value": safe_number(first_forecast["value"]),
             "forecast_end_period": last_forecast["period"].strftime("%Y-%m"),
-            "forecast_end_value": round(float(last_forecast["value"]), 2),
-            "forecast_average_3m": round(float(forecast["value"].mean()), 2),
-            "forecast_change_3m": round(float(last_forecast["value"] - latest_actual["value"]), 2),
+            "forecast_end_value": safe_number(last_forecast["value"]),
+            "forecast_average_3m": safe_number(forecast["value"].mean()),
+            "forecast_change_3m": safe_number(last_forecast["value"] - latest_actual["value"]),
             "forecast_months": [
-                {"period": row["period"].strftime("%Y-%m"), "value": round(float(row["value"]), 2)}
+                {"period": row["period"].strftime("%Y-%m"), "value": safe_number(row["value"])}
                 for _, row in forecast.iterrows()
             ],
         }
@@ -247,8 +257,10 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
     </section>
   </div>
   <script>
-    const PRICE = n => `$${Math.abs(n).toFixed(2)}`;
-    const PRICE_SIGNED = n => `${n < 0 ? '-' : '+'}${PRICE(n)}`;
+    const isValidNumber = value => value !== null && value !== '' && Number.isFinite(Number(value));
+    const PRICE = n => `$${Math.abs(Number(n)).toFixed(2)}`;
+    const PRICE_OR_DASH = n => isValidNumber(n) ? PRICE(n) : '—';
+    const PRICE_SIGNED = n => isValidNumber(n) ? `${Number(n) < 0 ? '-' : '+'}${PRICE(n)}` : '—';
 
     async function init() {
       const payload = await fetch('./data.json').then(r => r.json());
@@ -284,8 +296,10 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
         const forecast = summary[primaryName].forecast_months;
         const otherMap = new Map(summary[otherName].forecast_months.map(r => [r.period, r.value]));
         document.getElementById('forecastTable').innerHTML = forecast.map(r => {
-          const diff = +(r.value - otherMap.get(r.period)).toFixed(2);
-          return `<tr><td>${r.period}</td><td>${PRICE(r.value)}</td><td class=\"${diff >= 0 ? 'delta up' : 'delta down'}\">${PRICE_SIGNED(diff)}</td></tr>`;
+          const otherValue = otherMap.get(r.period);
+          const diff = isValidNumber(r.value) && isValidNumber(otherValue) ? +(Number(r.value) - Number(otherValue)).toFixed(2) : null;
+          const diffClass = diff === null ? '' : (diff >= 0 ? 'delta up' : 'delta down');
+          return `<tr><td>${r.period}</td><td>${PRICE_OR_DASH(r.value)}</td><td class=\"${diffClass}\">${PRICE_SIGNED(diff)}</td></tr>`;
         }).join('');
       }
 
@@ -300,17 +314,18 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
         const primaryForecast = primaryMeta.forecast_months;
         const spread = spreadRows(rangeValue);
 
-        document.getElementById('latestActual').textContent = PRICE(primaryMeta.latest_actual_value);
+        document.getElementById('latestActual').textContent = PRICE_OR_DASH(primaryMeta.latest_actual_value);
         document.getElementById('latestActualPeriod').textContent = `${primaryMeta.series_description} · ${primaryMeta.latest_actual_period}`;
         document.getElementById('momActual').textContent = PRICE_SIGNED(primaryMeta.month_over_month_actual);
-        document.getElementById('avgForecast').textContent = PRICE(primaryMeta.forecast_average_3m);
+        document.getElementById('avgForecast').textContent = PRICE_OR_DASH(primaryMeta.forecast_average_3m);
         document.getElementById('forecastChange').textContent = PRICE_SIGNED(primaryMeta.forecast_change_3m);
         document.getElementById('forecastRange').textContent = `${primaryMeta.forecast_start_period} to ${primaryMeta.forecast_end_period}`;
         document.getElementById('heroRange').textContent = `Range: ${rangeValue === 'all' ? 'all data' : `last ${rangeValue} months`}`;
         document.getElementById('heroMode').textContent = `Mode: ${mode === 'compare' ? 'Brent vs WTI compare' : 'single benchmark'}`;
 
         const spreadLatest = spread[spread.length - 1];
-        const story = `${primaryName} is at ${PRICE(primaryMeta.latest_actual_value)} for ${primaryMeta.latest_actual_period}, with the next 3 EIA monthly points averaging ${PRICE(primaryMeta.forecast_average_3m)}. Across the outlook window, ${primaryName} is projected to move ${PRICE_SIGNED(primaryMeta.forecast_change_3m)}. The current Brent-WTI spread is ${PRICE_SIGNED(spreadLatest.spread)}.`;
+        const spreadText = spreadLatest && isValidNumber(spreadLatest.spread) ? PRICE_SIGNED(spreadLatest.spread) : 'unavailable';
+        const story = `${primaryName} is at ${PRICE_OR_DASH(primaryMeta.latest_actual_value)} for ${primaryMeta.latest_actual_period}, with the next 3 EIA monthly points averaging ${PRICE_OR_DASH(primaryMeta.forecast_average_3m)}. Across the outlook window, ${primaryName} is projected to move ${PRICE_SIGNED(primaryMeta.forecast_change_3m)}. The current Brent-WTI spread is ${spreadText}.`;
         document.getElementById('insightText').textContent = story;
 
         const trendTraces = [];
