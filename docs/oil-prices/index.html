@@ -19,10 +19,12 @@
     .panel { background:rgba(15,28,49,.93); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:18px; box-shadow:0 22px 50px rgba(0,0,0,.28); }
     .panel.highlight { background:linear-gradient(180deg, rgba(19,37,64,.96), rgba(10,22,38,.96)); }
     h1,h2,h3 { margin:0; }
+    h3 { line-height:1.25; }
     p { color:var(--muted); line-height:1.5; }
     label { color:var(--muted); font-size:.84rem; display:block; margin-bottom:8px; }
-    select, .button { width:100%; padding:12px 14px; border-radius:14px; background:#081425; color:var(--text); border:1px solid rgba(255,255,255,.14); }
-    .button { cursor:pointer; text-align:center; text-decoration:none; display:inline-block; font-weight:600; transition:.2s ease; }
+    select, .button { width:100%; min-height:48px; padding:12px 14px; border-radius:14px; background:#081425; color:var(--text); border:1px solid rgba(255,255,255,.14); }
+    .button-row { display:flex; gap:10px; }
+    .button { cursor:pointer; text-align:center; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; font-weight:600; transition:.2s ease; }
     .button:hover { transform:translateY(-1px); border-color:rgba(255,255,255,.24); }
     .button.primary { background:linear-gradient(180deg,#1b4f87,#143e69); }
     .button.secondary { background:#0a1627; }
@@ -33,6 +35,7 @@
     .pill { display:inline-block; padding:7px 12px; border-radius:999px; background:rgba(89,165,255,.14); color:#d6e7ff; font-size:.84rem; border:1px solid rgba(89,165,255,.2); }
     .delta.up { color:var(--good); }
     .delta.down { color:var(--bad); }
+    .table-wrap { width:100%; overflow-x:auto; }
     table { width:100%; border-collapse:collapse; }
     th, td { padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
     th { color:var(--muted); font-size:.84rem; }
@@ -40,7 +43,34 @@
     .headline { font-size:1.08rem; color:var(--text); margin:8px 0 4px; }
     .story { color:var(--muted); min-height:60px; }
     .foot { color:var(--muted); font-size:.82rem; margin-top:10px; }
-    @media (max-width: 1024px) { .controls, .hero, .grid, .story-grid { grid-template-columns:1fr; } }
+    @media (max-width: 1024px) {
+      .controls, .hero, .grid, .story-grid { grid-template-columns:1fr; }
+      .controls { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding:14px; }
+      .hero, .controls, .cards, .grid, .story-grid { gap:12px; }
+      .controls { grid-template-columns:1fr; margin:14px 0; }
+      .cards { grid-template-columns:1fr; margin-bottom:14px; }
+      .panel { border-radius:18px; padding:14px; }
+      h1 { font-size:1.85rem; line-height:1.12; }
+      h3 { font-size:1rem; }
+      p { font-size:.95rem; margin:10px 0 0; }
+      .headline { font-size:1rem; }
+      .value { font-size:1.7rem; }
+      .sub, .foot, .story { font-size:.88rem; }
+      .pill-row { gap:8px; }
+      .pill { width:100%; text-align:center; padding:8px 10px; }
+      .button-row { flex-direction:column; }
+      #trendChart, #forecastChart, #spreadChart { min-height:280px; }
+      .table-wrap { overflow:visible; }
+      table, thead, tbody, tr, th, td { display:block; width:100%; }
+      thead { display:none; }
+      tbody { display:grid; gap:10px; }
+      tr { padding:12px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background:rgba(255,255,255,.02); }
+      td { border:0; padding:4px 0; display:flex; justify-content:space-between; gap:12px; font-size:.92rem; }
+      td::before { content:attr(data-label); color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; }
+    }
   </style>
 </head>
 <body>
@@ -85,7 +115,7 @@
       </div>
       <div class="panel">
         <label>Data access</label>
-        <div style="display:flex; gap:10px;">
+        <div class="button-row">
           <a class="button primary" href="./data.json" download>Model JSON</a>
           <a class="button secondary" href="../../data/derived/oil_prices_steo.csv" download>Source CSV</a>
         </div>
@@ -117,15 +147,18 @@
       </div>
       <div class="panel">
         <h3>Forward pricing summary</h3>
-        <table>
-          <thead><tr><th>Month</th><th>Projected price</th><th>Spread vs other</th></tr></thead>
-          <tbody id="forecastTable"></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Month</th><th>Projected price</th><th>Spread vs other</th></tr></thead>
+            <tbody id="forecastTable"></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </div>
   <script>
     const isValidNumber = value => value !== null && value !== '' && Number.isFinite(Number(value));
+    const isMobileView = () => window.matchMedia('(max-width: 640px)').matches;
     const PRICE = n => `$${Math.abs(Number(n)).toFixed(2)}`;
     const PRICE_OR_DASH = n => isValidNumber(n) ? PRICE(n) : '—';
     const PRICE_SIGNED = n => isValidNumber(n) ? `${Number(n) < 0 ? '-' : '+'}${PRICE(n)}` : '—';
@@ -167,11 +200,12 @@
           const otherValue = otherMap.get(r.period);
           const diff = isValidNumber(r.value) && isValidNumber(otherValue) ? +(Number(r.value) - Number(otherValue)).toFixed(2) : null;
           const diffClass = diff === null ? '' : (diff >= 0 ? 'delta up' : 'delta down');
-          return `<tr><td>${r.period}</td><td>${PRICE_OR_DASH(r.value)}</td><td class="${diffClass}">${PRICE_SIGNED(diff)}</td></tr>`;
+          return `<tr><td data-label="Month">${r.period}</td><td data-label="Projected price">${PRICE_OR_DASH(r.value)}</td><td data-label="Spread vs other" class="${diffClass}">${PRICE_SIGNED(diff)}</td></tr>`;
         }).join('');
       }
 
       function render(primaryName) {
+        const mobileView = isMobileView();
         const mode = modeSelect.value;
         const rangeValue = rangeSelect.value;
         const primaryMeta = summary[primaryName];
@@ -231,12 +265,12 @@
         Plotly.newPlot('trendChart', trendTraces, {
           paper_bgcolor: 'transparent',
           plot_bgcolor: 'transparent',
-          margin: {l: 48, r: 12, t: 8, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'},
-          legend: {orientation: 'h'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
+          margin: mobileView ? {l: 36, r: 8, t: 8, b: 56} : {l: 48, r: 12, t: 8, b: 42},
+          font: {color: '#f4f7ff', size: mobileView ? 11 : 13},
+          xaxis: {gridcolor: 'rgba(255,255,255,.08)', tickangle: mobileView ? -35 : 0, nticks: mobileView ? 5 : undefined, automargin: true},
+          yaxis: {title: mobileView ? '' : 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)', automargin: true},
+          legend: {orientation: 'h', y: mobileView ? -0.25 : -0.16, x: 0}
+        }, {responsive:true, displayModeBar:!mobileView, modeBarButtonsToRemove:['lasso2d','select2d']});
 
         const forecastCompare = new Map(summary[otherName].forecast_months.map(r => [r.period, r.value]));
         const forecastBars = [{
@@ -263,11 +297,12 @@
           barmode: mode === 'compare' ? 'group' : 'relative',
           paper_bgcolor: 'transparent',
           plot_bgcolor: 'transparent',
-          margin: {l: 44, r: 12, t: 10, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
+          margin: mobileView ? {l: 36, r: 8, t: 10, b: 50} : {l: 44, r: 12, t: 10, b: 42},
+          font: {color: '#f4f7ff', size: mobileView ? 11 : 13},
+          xaxis: {gridcolor: 'rgba(255,255,255,.08)', tickangle: mobileView ? -20 : 0, automargin: true},
+          yaxis: {title: mobileView ? '' : 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)', automargin: true},
+          uniformtext: {minsize: mobileView ? 8 : 10, mode: 'hide'}
+        }, {responsive:true, displayModeBar:!mobileView, modeBarButtonsToRemove:['lasso2d','select2d']});
 
         Plotly.newPlot('spreadChart', [{
           x: spread.map(r => r.period),
@@ -281,18 +316,26 @@
         }], {
           paper_bgcolor: 'transparent',
           plot_bgcolor: 'transparent',
-          margin: {l: 48, r: 12, t: 8, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'Brent - WTI', zeroline: true, zerolinecolor: 'rgba(255,255,255,.25)', gridcolor: 'rgba(255,255,255,.08)'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
+          margin: mobileView ? {l: 36, r: 8, t: 8, b: 50} : {l: 48, r: 12, t: 8, b: 42},
+          font: {color: '#f4f7ff', size: mobileView ? 11 : 13},
+          xaxis: {gridcolor: 'rgba(255,255,255,.08)', tickangle: mobileView ? -35 : 0, nticks: mobileView ? 5 : undefined, automargin: true},
+          yaxis: {title: mobileView ? '' : 'Brent - WTI', zeroline: true, zerolinecolor: 'rgba(255,255,255,.25)', gridcolor: 'rgba(255,255,255,.08)', automargin: true}
+        }, {responsive:true, displayModeBar:!mobileView, modeBarButtonsToRemove:['lasso2d','select2d']});
 
         renderTable(primaryName, otherName);
       }
 
+      let lastMobileView = isMobileView();
       seriesSelect.addEventListener('change', e => render(e.target.value));
       rangeSelect.addEventListener('change', () => render(seriesSelect.value));
       modeSelect.addEventListener('change', () => render(seriesSelect.value));
+      window.addEventListener('resize', () => {
+        const nextMobileView = isMobileView();
+        if (nextMobileView !== lastMobileView) {
+          lastMobileView = nextMobileView;
+          render(seriesSelect.value);
+        }
+      });
       render(names[0]);
     }
     init();
