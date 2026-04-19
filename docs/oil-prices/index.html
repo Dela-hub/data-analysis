@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oil Price Outlook</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root { --bg:#06111f; --panel:#0d1b2f; --line:#214164; --text:#f3f6ff; --muted:#9fb0ca; --accent:#4da3ff; --accent2:#ffb84d; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family: Inter, Arial, sans-serif; background: radial-gradient(circle at top, #10233f, #06111f 60%); color:var(--text); }
+    .wrap { max-width:1240px; margin:0 auto; padding:24px; }
+    .hero, .cards, .grid { display:grid; gap:16px; }
+    .hero { grid-template-columns: 2fr 1fr; align-items:stretch; }
+    .cards { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); margin:18px 0; }
+    .grid { grid-template-columns: 2fr 1fr; }
+    .panel { background:rgba(13,27,47,.92); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:18px; box-shadow:0 18px 50px rgba(0,0,0,.25); }
+    h1,h2,h3 { margin:0; }
+    p { color:var(--muted); }
+    label { color:var(--muted); font-size:.88rem; display:block; margin-bottom:8px; }
+    select { width:100%; padding:12px; border-radius:12px; background:#081425; color:var(--text); border:1px solid rgba(255,255,255,.14); }
+    .metric { color:var(--muted); font-size:.85rem; margin-bottom:8px; }
+    .value { font-weight:700; font-size:1.9rem; }
+    .sub { color:var(--muted); margin-top:6px; font-size:.92rem; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
+    th { color:var(--muted); font-size:.84rem; }
+    #trendChart, #forecastChart { min-height:360px; }
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(77,163,255,.14); color:#cfe3ff; font-size:.84rem; }
+    @media (max-width: 900px) { .hero, .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="panel">
+        <div class="pill">Interactive client demo</div>
+        <h1 style="margin-top:12px;">Oil price outlook dashboard</h1>
+        <p>This dashboard uses official U.S. EIA Short-Term Energy Outlook monthly series and highlights the next 3 months for WTI and Brent. It is designed as a polished HTML client preview with mobile-friendly interaction.</p>
+      </div>
+      <div class="panel">
+        <label for="seriesSelect">Oil benchmark</label>
+        <select id="seriesSelect"></select>
+        <div class="sub" id="seriesDesc" style="margin-top:12px;"></div>
+        <div class="sub" id="generatedAt" style="margin-top:10px;"></div>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="panel"><div class="metric">Latest available actual</div><div class="value" id="latestActual">—</div><div class="sub" id="latestActualPeriod"></div></div>
+      <div class="panel"><div class="metric">3-month average projection</div><div class="value" id="avgForecast">—</div><div class="sub">Average of the next 3 monthly forecasts</div></div>
+      <div class="panel"><div class="metric">Projected change over 3 months</div><div class="value" id="forecastChange">—</div><div class="sub" id="forecastRange"></div></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <h3>History + forecast</h3>
+        <div id="trendChart"></div>
+      </div>
+      <div class="panel">
+        <h3>Next 3 months</h3>
+        <div id="forecastChart"></div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:16px;">
+      <h3 style="margin-bottom:12px;">Projection table</h3>
+      <table>
+        <thead><tr><th>Month</th><th>Projected price</th></tr></thead>
+        <tbody id="forecastTable"></tbody>
+      </table>
+    </section>
+  </div>
+  <script>
+    const PRICE = n => `$${Math.abs(n).toFixed(2)}`;
+    const PRICE_SIGNED = n => `${n < 0 ? '-' : '+'}${PRICE(n)}`;
+    async function init() {
+      const payload = await fetch('./data.json').then(r => r.json());
+      const summary = payload.summary;
+      const rows = payload.chart_rows;
+      const names = Object.keys(summary);
+      const select = document.getElementById('seriesSelect');
+      select.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+      document.getElementById('generatedAt').textContent = `Generated from EIA STEO data on ${payload.generated_at}`;
+
+      function render(name) {
+        const meta = summary[name];
+        const seriesRows = rows.filter(r => r.series_name === name);
+        const history = seriesRows.filter(r => !r.is_forecast);
+        const forecast = meta.forecast_months;
+
+        document.getElementById('seriesDesc').textContent = meta.series_description;
+        document.getElementById('latestActual').textContent = PRICE(meta.latest_actual_value);
+        document.getElementById('latestActualPeriod').textContent = `Period: ${meta.latest_actual_period}`;
+        document.getElementById('avgForecast').textContent = PRICE(meta.forecast_average_3m);
+        document.getElementById('forecastChange').textContent = PRICE_SIGNED(meta.forecast_change_3m);
+        document.getElementById('forecastRange').textContent = `${meta.forecast_start_period} to ${meta.forecast_end_period}`;
+        document.getElementById('forecastTable').innerHTML = forecast.map(r => `<tr><td>${r.period}</td><td>${PRICE(r.value)}</td></tr>`).join('');
+
+        Plotly.newPlot('trendChart', [
+          {
+            x: history.map(r => r.period),
+            y: history.map(r => r.value),
+            mode: 'lines+markers',
+            type: 'scatter',
+            name: 'Actual / published',
+            line: {color: '#4da3ff', width: 3},
+            marker: {size: 6},
+            hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
+          },
+          {
+            x: forecast.map(r => r.period),
+            y: forecast.map(r => r.value),
+            mode: 'lines+markers',
+            type: 'scatter',
+            name: 'Next 3 months',
+            line: {color: '#ffb84d', width: 3, dash: 'dot'},
+            marker: {size: 7},
+            hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
+          }
+        ], {
+          paper_bgcolor: 'transparent',
+          plot_bgcolor: 'transparent',
+          margin: {l: 48, r: 12, t: 8, b: 42},
+          font: {color: '#f3f6ff'},
+          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
+          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'},
+          legend: {orientation: 'h'}
+        }, {responsive:true, displayModeBar:false});
+
+        Plotly.newPlot('forecastChart', [{
+          x: forecast.map(r => r.period),
+          y: forecast.map(r => r.value),
+          type: 'bar',
+          marker: {color: ['#6aa8ff', '#7dcfff', '#ffb84d']},
+          text: forecast.map(r => PRICE(r.value)),
+          textposition: 'outside',
+          hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
+        }], {
+          paper_bgcolor: 'transparent',
+          plot_bgcolor: 'transparent',
+          margin: {l: 44, r: 12, t: 10, b: 42},
+          font: {color: '#f3f6ff'},
+          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
+          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'}
+        }, {responsive:true, displayModeBar:false});
+      }
+
+      select.addEventListener('change', e => render(e.target.value));
+      render(names[0]);
+    }
+    init();
+  </script>
+</body>
+</html>
