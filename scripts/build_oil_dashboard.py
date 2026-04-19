@@ -179,9 +179,9 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
   <div class=\"wrap\">
     <section class=\"hero\">
       <div class=\"panel highlight\">
-        <div class=\"pill\">Interactive client demo</div>
-        <h1 style=\"margin-top:12px;\">Oil price outlook dashboard</h1>
-        <p>This page is designed to sell the value fast: switch benchmarks, shorten the lookback window, compare Brent vs WTI, hover every chart, and export the underlying dataset. The projections shown here come directly from the official EIA Short-Term Energy Outlook.</p>
+        <div class=\"pill\">Oil market intelligence</div>
+        <h1 style=\"margin-top:12px;\">Oil prices are projected to cool over the next 3 months</h1>
+        <p>This dashboard is built for real planning use. Track Brent and WTI, change the time horizon, compare benchmarks, inspect the forward curve, and export the underlying dataset. The outlook shown here comes directly from the official EIA Short-Term Energy Outlook.</p>
         <div class=\"pill-row\">
           <span class=\"pill\" id=\"heroRange\">Range: all data</span>
           <span class=\"pill\" id=\"heroMode\">Mode: single benchmark</span>
@@ -189,9 +189,9 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
         </div>
       </div>
       <div class=\"panel\">
-        <div class=\"headline\">What a paying client immediately sees</div>
+        <div class=\"headline\">What this means for your planning</div>
         <div class=\"story\" id=\"insightText\"></div>
-        <div class=\"foot\">Use this demo flow for outreach: send the link, let the client explore, then swap sample scope for their real data and KPIs.</div>
+        <div class=\"foot\">Use this view to support procurement timing, pricing discussions, budget assumptions, or hedging conversations. A tailored version can be extended with your own cost, inventory, or regional exposure data.</div>
       </div>
     </section>
 
@@ -216,10 +216,10 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
         </select>
       </div>
       <div class=\"panel\">
-        <label>Downloads</label>
+        <label>Data access</label>
         <div style=\"display:flex; gap:10px;\">
-          <a class=\"button primary\" href=\"./data.json\" download>JSON</a>
-          <a class=\"button secondary\" href=\"../../data/derived/oil_prices_steo.csv\" download>CSV</a>
+          <a class=\"button primary\" href=\"./data.json\" download>Model JSON</a>
+          <a class=\"button secondary\" href=\"../../data/derived/oil_prices_steo.csv\" download>Source CSV</a>
         </div>
       </div>
     </section>
@@ -233,22 +233,22 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
 
     <section class=\"grid\">
       <div class=\"panel\">
-        <h3>History and forward curve</h3>
+        <h3>Recent spike gives way to a softer summer outlook</h3>
         <div id=\"trendChart\"></div>
       </div>
       <div class=\"panel\">
-        <h3>Next 3 months</h3>
+        <h3>Forward pricing by month</h3>
         <div id=\"forecastChart\"></div>
       </div>
     </section>
 
     <section class=\"story-grid\">
       <div class=\"panel\">
-        <h3>Brent-WTI spread</h3>
+        <h3>Brent keeps a premium over WTI, but the gap narrows</h3>
         <div id=\"spreadChart\"></div>
       </div>
       <div class=\"panel\">
-        <h3>Projection table</h3>
+        <h3>Forward pricing summary</h3>
         <table>
           <thead><tr><th>Month</th><th>Projected price</th><th>Spread vs other</th></tr></thead>
           <tbody id=\"forecastTable\"></tbody>
