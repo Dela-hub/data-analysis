@@ -313,6 +313,36 @@
       text-align:center;
     }
 
+    .qr-card {
+      display:grid;
+      gap:12px;
+      justify-items:start;
+    }
+
+    .qr-image-wrap {
+      display:inline-grid;
+      place-items:center;
+      padding:12px;
+      background:#fffdf9;
+      border:1px solid rgba(23,19,17,.14);
+      box-shadow:0 10px 30px rgba(56,36,22,.08);
+    }
+
+    .qr-image {
+      display:block;
+      width:156px;
+      height:156px;
+      object-fit:contain;
+      background:#fff;
+    }
+
+    .qr-copy {
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.6;
+      max-width:24ch;
+    }
+
     .button:hover {
       transform:translateY(-1px);
       border-color:rgba(23,19,17,.26);
@@ -727,6 +757,19 @@
             <div class="button-row">
               <a class="button primary" href="./data.json" download>Model JSON</a>
               <a class="button secondary" href="../../data/derived/oil_prices_steo.csv" download>Source CSV</a>
+            </div>
+          </div>
+
+          <div class="rail-section">
+            <span class="rail-label">Open on mobile</span>
+            <div class="qr-card">
+              <div class="qr-image-wrap">
+                <a href="https://dela-hub.github.io/data-analysis/oil-prices/" target="_blank" rel="noopener noreferrer" aria-label="Open the oil dashboard on mobile">
+                  <img class="qr-image" src="./assets/oil-dashboard-qr.png" alt="QR code linking to the live oil dashboard" />
+                </a>
+              </div>
+              <div class="qr-copy">Scan this QR code to open the live dashboard directly on a phone. Use it for client walkthroughs, outreach, or quick access away from the desktop view.</div>
+              <a class="button secondary" href="./assets/oil-dashboard-qr.png" download>Download QR PNG</a>
             </div>
           </div>
 
