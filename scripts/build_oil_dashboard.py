@@ -21,6 +21,7 @@ SERIES = {
 REPO = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO / "data" / "derived"
 DASH_DIR = REPO / "dashboards" / "oil-prices"
+DOCS_DASH_DIR = REPO / "docs" / "oil-prices"
 NOTEBOOK_DIR = REPO / "notebooks"
 
 
@@ -108,6 +109,12 @@ def build_summary(df: pd.DataFrame) -> dict:
             ],
         }
     return summary
+
+
+def sync_dashboard_publish_copy() -> None:
+    DOCS_DASH_DIR.mkdir(parents=True, exist_ok=True)
+    for filename in ("index.html", "data.json"):
+        (DOCS_DASH_DIR / filename).write_text((DASH_DIR / filename).read_text())
 
 
 def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
@@ -433,6 +440,7 @@ def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
 </html>
 """
     (DASH_DIR / "index.html").write_text(html)
+    sync_dashboard_publish_copy()
 
 
 def write_notebook() -> None:
