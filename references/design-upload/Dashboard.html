@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oil Price Outlook — EIA STEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #07090f;
+    --surface:   #0e1420;
+    --surface2:  #141c2e;
+    --border:    #1e2a40;
+    --border2:   #253550;
+    --amber:     #f59e0b;
+    --amber-dim: rgba(245,158,11,0.12);
+    --amber-glow:rgba(245,158,11,0.25);
+    --blue:      #60a5fa;
+    --blue-dim:  rgba(96,165,250,0.12);
+    --green:     #34d399;
+    --red:       #f87171;
+    --text:      #e8edf5;
+    --muted:     #7b8fae;
+    --subtle:    #3d4f6a;
+    --radius:    10px;
+    --radius-lg: 16px;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 20px; }
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  .logo span { color: var(--amber); }
+  .nav-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    padding-left: 20px;
+    border-left: 1px solid var(--border2);
+  }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .badge-amber { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+  .updated { font-size: 12px; color: var(--muted); }
+  .chat-btn {
+    display: flex; align-items: center; gap: 7px;
+    background: var(--amber);
+    color: #07090f;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 15px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .chat-btn:hover { opacity: 0.85; }
+  .chat-btn svg { flex-shrink: 0; }
+
+  /* LAYOUT */
+  .page { max-width: 1400px; margin: 0 auto; padding: 28px 28px 60px; }
+
+  /* FILTER BAR */
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .filter-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-right: 4px; }
+  .filter-group {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .filter-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .filter-btn:not(:last-child) { border-right: 1px solid var(--border); }
+  .filter-btn.active { color: var(--amber); background: var(--amber-dim); }
+  .filter-btn:hover:not(.active) { color: var(--text); }
+  .filter-sep { width: 1px; height: 28px; background: var(--border); margin: 0 6px; align-self: center; }
+
+  /* HEADLINE */
+  .headline-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .headline h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .headline p { font-size: 13px; color: var(--muted); margin-top: 6px; max-width: 560px; }
+
+  /* KPI STRIP */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) { .kpi-strip { grid-template-columns: repeat(2, 1fr); } }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--amber);
+    opacity: 0.5;
+  }
+  .kpi-card.highlight::before { opacity: 1; }
+  .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .kpi-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: var(--text);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi-value span { font-size: 16px; font-weight: 400; color: var(--muted); margin-left: 2px; }
+  .kpi-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .kpi-delta.up { color: var(--green); background: rgba(52,211,153,0.1); }
+  .kpi-delta.down { color: var(--red); background: rgba(248,113,113,0.1); }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+  /* MAIN CHART */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px 24px 20px;
+    margin-bottom: 20px;
+  }
+  .chart-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .chart-header h2 { font-size: 15px; font-weight: 600; color: var(--text); }
+  .chart-header p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dash {
+    width: 20px; height: 2px;
+    border-top: 2px dashed currentColor;
+    flex-shrink: 0;
+  }
+  .chart-wrap { position: relative; }
+
+  /* TWO-COL CHARTS */
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 800px) { .chart-row { grid-template-columns: 1fr; } }
+
+  /* TABLE */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .table-card-header {
+    padding: 18px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .table-card-header h2 { font-size: 15px; font-weight: 600; }
+  .table-card-header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  th:not(:first-child) { text-align: right; }
+  td {
+    padding: 11px 24px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+  }
+  td:not(:first-child) { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-period { color: var(--muted); font-weight: 500; }
+  .td-amber { color: var(--amber); font-weight: 600; }
+  .td-blue { color: var(--blue); font-weight: 600; }
+  .td-spread { font-size: 12px; color: var(--muted); }
+  .td-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    background: rgba(245,158,11,0.1);
+    color: var(--amber);
+    border: 1px solid rgba(245,158,11,0.2);
+  }
+
+  /* PLANNING BRIEF */
+  .brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 800px) { .brief-grid { grid-template-columns: 1fr; } }
+  .brief-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+  }
+  .brief-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--amber-dim);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    color: var(--amber);
+  }
+  .brief-card h3 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .brief-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer p { font-size: 12px; color: var(--subtle); }
+  .footer a { color: var(--muted); text-decoration: none; }
+  .footer a:hover { color: var(--amber); }
+
+  /* FORECAST ZONE annotation */
+  .forecast-zone-label {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--blue);
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  /* QR SECTION */
+  .qr-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 700px) { .qr-section { grid-template-columns: 1fr; } }
+  .qr-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .qr-canvas-wrap {
+    flex-shrink: 0;
+    width: 100px; height: 100px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qr-canvas-wrap canvas { display: block; }
+  .qr-info h3 { font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  .qr-info p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+  .qr-link { font-size: 12px; color: var(--amber); text-decoration: none; }
+  .qr-link:hover { opacity: 0.8; }
+
+  /* TWEAKS PANEL */
+  .tweaks-panel {
+    display: none;
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    width: 240px;
+    z-index: 999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .tweaks-panel.visible { display: block; }
+  .tweaks-title { font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .tweak-row { margin-bottom: 14px; }
+  .tweak-row label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 8px; }
+  .domain-presets { display: flex; flex-direction: column; gap: 6px; }
+  .domain-preset-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; border-radius: 8px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-family: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s; text-align: left;
+  }
+  .domain-preset-btn.active { border-color: currentColor; }
+  .domain-preset-btn:hover { background: var(--surface3); }
+  .domain-swatch { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <div class="logo">dela<span>.</span></div>
+    <div class="nav-title">Oil Price Outlook</div>
+  </div>
+  <div class="nav-right">
+    <span class="badge badge-amber">EIA STEO</span>
+    <span class="updated">Updated Apr 2026</span>
+    <a href="chat.html" class="chat-btn">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 1H2C1.45 1 1 1.45 1 2v9c0 .55.45 1 1 1h2v3l3-3h7c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M4.5 7h7M4.5 4.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Ask the data
+    </a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">Benchmark</span>
+    <div class="filter-group" id="fg-benchmark">
+      <button class="filter-btn active" data-group="benchmark" data-val="brent" onclick="setFilter(this)">Brent</button>
+      <button class="filter-btn" data-group="benchmark" data-val="wti" onclick="setFilter(this)">WTI</button>
+      <button class="filter-btn" data-group="benchmark" data-val="both" onclick="setFilter(this)">Both</button>
+    </div>
+    <div class="filter-sep"></div>
+    <span class="filter-label">History</span>
+    <div class="filter-group" id="fg-range">
+      <button class="filter-btn" data-group="range" data-val="12" onclick="setFilter(this)">12 mo</button>
+      <button class="filter-btn active" data-group="range" data-val="24" onclick="setFilter(this)">24 mo</button>
+      <button class="filter-btn" data-group="range" data-val="all" onclick="setFilter(this)">All</button>
+    </div>
+  </div>
+
+  <!-- HEADLINE -->
+  <div class="headline-row">
+    <div class="headline">
+      <h1>Prices peaked in April — the $20/bbl pullback window opens now.</h1>
+      <p>Brent hit $124/bbl in April, up 79% in 8 weeks. The EIA's next three months forecast a steady decline to $104. That descent is your procurement window — act before the reference price recedes.</p>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip" id="kpi-strip">
+    <!-- rendered by JS -->
+  </div>
+
+  <!-- MAIN CHART -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <div>
+        <h2>Brent surged 79% in 8 weeks — EIA forecasts steady decline through July</h2>
+        <p>Solid = published actuals &nbsp;·&nbsp; Dashed = EIA STEO outlook &nbsp;·&nbsp; Shaded = forecast zone</p>
+      </div>
+      <div class="chart-legend" id="main-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Brent (actual)</div>
+        <div class="legend-item" style="color:#f59e0b"><div class="legend-dash"></div>Brent (forecast)</div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="mainChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <!-- TWO CHARTS -->
+  <div class="chart-row">
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header">
+        <div>
+          <h2>Every coming month is cheaper — act before the lever disappears</h2>
+          <p>Official EIA outlook: May, Jun, Jul 2026</p>
+        </div>
+      </div>
+      <canvas id="forecastChart" height="220"></canvas>
+    </div>
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header">
+        <div>
+          <h2>$15/bbl spread — your benchmark choice carries real cost exposure</h2>
+          <p>Brent premium over WTI, monthly actuals</p>
+        </div>
+      </div>
+      <canvas id="spreadChart" height="220"></canvas>
+    </div>
+  </div>
+  <div style="margin-bottom:20px"></div>
+
+  <!-- FORWARD TABLE -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <div>
+        <h2>Near-term price reference — use this to anchor supplier conversations</h2>
+        <p>EIA STEO official 3-month outlook</p>
+      </div>
+      <span class="badge badge-amber">Forecast</span>
+    </div>
+    <table id="fwd-table">
+      <thead>
+        <tr>
+          <th>Period</th>
+          <th>Brent $/bbl</th>
+          <th>WTI $/bbl</th>
+          <th>Spread</th>
+        </tr>
+      </thead>
+      <tbody id="fwd-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- PLANNING BRIEF -->
+  <div class="brief-grid">
+    <div class="brief-card">
+      <div class="brief-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12.5L6 8.5l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Setup: a historic 8-week spike</h3>
+      <p>Brent rose from $62.54 in Dec 2025 to $124.00 by Apr 2026 — a 98% surge in four months. This is the highest level in the 28-month dataset and well above the 2024 annual average of $81/bbl. The spike was driven by a sharp acceleration beginning in March.</p>
+    </div>
+    <div class="brief-card">
+      <div class="brief-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Conflict: the pullback starts immediately</h3>
+      <p>The EIA's official outlook puts Brent at $104 by July — a $20 decline in just 3 months. Every month you wait, the reference price you negotiate against falls. The asymmetry favours acting in May, not June. The Brent–WTI spread is $15/bbl — if your contracts reference both benchmarks, that differential is material cost exposure.</p>
+    </div>
+    <div class="brief-card">
+      <div class="brief-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Resolution: budget $108, move on contracts in May</h3>
+      <p>Set Q3 budget assumptions at the EIA 3-month average: <strong>$108/bbl Brent, $97/bbl WTI</strong>. Use the current $124 peak as leverage — suppliers know the forecast too. Any budget above $112 is optimistic; below $95 is exposed to upside risk if the descent stalls.</p>
+    </div>
+  </div>
+
+  <!-- QR CODES -->
+  <div class="qr-section">
+    <div class="qr-card">
+      <div class="qr-canvas-wrap"><img id="qr-dashboard" alt="Dashboard QR" width="100" height="100"></div>
+      <div class="qr-info">
+        <h3>Open on mobile</h3>
+        <p>Scan to open the live oil price dashboard on any device. Use for client walkthroughs or quick access.</p>
+        <a class="qr-link" id="qr-dashboard-dl" href="https://dela-hub.github.io/data-analysis/oil-prices/" target="_blank">Open live dashboard →</a>
+      </div>
+    </div>
+    <div class="qr-card">
+      <div class="qr-canvas-wrap"><img id="qr-chat" alt="Chat QR" width="100" height="100"></div>
+      <div class="qr-info">
+        <h3>Scan to ask this dashboard</h3>
+        <p>Opens the AI chat interface tied to this dataset. Designed for presentation Q&amp;A without raw data exposure.</p>
+        <a class="qr-link" href="Chat.html">Open data chat →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Source: <a href="https://www.eia.gov/outlooks/steo/" target="_blank">EIA Short-Term Energy Outlook</a> · Surfaced by dela. · Updated 19 Apr 2026</p>
+    <p><a href="https://dela-hub.github.io/data-analysis/oil-prices/data.json">Model JSON</a> &nbsp;·&nbsp; <a href="https://dela-hub.github.io/data/derived/oil_prices_steo.csv">Source CSV</a></p>
+  </div>
+
+</div><!-- /page -->
+
+<!-- TWEAKS PANEL -->
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-title">Tweaks</div>
+  <div class="tweak-row">
+    <label>Data domain</label>
+    <div class="domain-presets" id="domain-presets">
+      <button class="domain-preset-btn active" data-color="#f59e0b" style="color:#f59e0b" onclick="setDomain(this)"><span class="domain-swatch" style="background:#f59e0b"></span>Oil &amp; Gas</button>
+      <button class="domain-preset-btn" data-color="#60a5fa" style="color:#60a5fa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#60a5fa"></span>Financial Markets</button>
+      <button class="domain-preset-btn" data-color="#34d399" style="color:#34d399" onclick="setDomain(this)"><span class="domain-swatch" style="background:#34d399"></span>Climate &amp; Energy</button>
+      <button class="domain-preset-btn" data-color="#a78bfa" style="color:#a78bfa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#a78bfa"></span>Healthcare</button>
+      <button class="domain-preset-btn" data-color="#fb923c" style="color:#fb923c" onclick="setDomain(this)"><span class="domain-swatch" style="background:#fb923c"></span>Logistics</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TWEAKS ────────────────────────────────────────────────────────────────
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#f59e0b",
+  "domain": "Oil & Gas"
+}/*EDITMODE-END*/;
+let tweakState = Object.assign({}, TWEAK_DEFAULTS);
+
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('visible');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+function setDomain(btn) {
+  const color = btn.dataset.color;
+  document.querySelectorAll('.domain-preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tweakState.accentColor = color;
+  tweakState.domain = btn.textContent.trim();
+  document.documentElement.style.setProperty('--amber', color);
+  document.documentElement.style.setProperty('--amber-dim', color + '1a');
+  renderAll();
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: tweakState }, '*');
+}
+
+// ─── DATA ──────────────────────────────────────────────────────────────────
+const DATA = {
+  summary: {
+    Brent: { latest: 124.0, mom: 20.87, fcast_avg: 108.0, fcast_chg: -20.0,
+      fcast_months: [{p:'2026-05',v:112},{p:'2026-06',v:108},{p:'2026-07',v:104}] },
+    WTI:   { latest: 109.0, mom: 17.62, fcast_avg: 96.67, fcast_chg: -15.0,
+      fcast_months: [{p:'2026-05',v:99},{p:'2026-06',v:97},{p:'2026-07',v:94}] }
+  },
+  rows: [
+    {p:'2024-01',Brent:80.12,WTI:74.15,forecast:false},{p:'2024-02',Brent:83.48,WTI:77.25,forecast:false},
+    {p:'2024-03',Brent:85.41,WTI:81.28,forecast:false},{p:'2024-04',Brent:89.94,WTI:85.35,forecast:false},
+    {p:'2024-05',Brent:81.75,WTI:80.02,forecast:false},{p:'2024-06',Brent:82.25,WTI:79.77,forecast:false},
+    {p:'2024-07',Brent:85.15,WTI:81.80,forecast:false},{p:'2024-08',Brent:80.36,WTI:76.68,forecast:false},
+    {p:'2024-09',Brent:74.02,WTI:70.24,forecast:false},{p:'2024-10',Brent:75.63,WTI:71.99,forecast:false},
+    {p:'2024-11',Brent:74.35,WTI:69.95,forecast:false},{p:'2024-12',Brent:73.86,WTI:70.12,forecast:false},
+    {p:'2025-01',Brent:79.27,WTI:75.74,forecast:false},{p:'2025-02',Brent:75.44,WTI:71.53,forecast:false},
+    {p:'2025-03',Brent:72.73,WTI:68.24,forecast:false},{p:'2025-04',Brent:68.13,WTI:63.54,forecast:false},
+    {p:'2025-05',Brent:64.45,WTI:62.17,forecast:false},{p:'2025-06',Brent:71.44,WTI:68.17,forecast:false},
+    {p:'2025-07',Brent:71.04,WTI:68.39,forecast:false},{p:'2025-08',Brent:67.87,WTI:64.86,forecast:false},
+    {p:'2025-09',Brent:67.99,WTI:63.96,forecast:false},{p:'2025-10',Brent:64.54,WTI:60.89,forecast:false},
+    {p:'2025-11',Brent:63.80,WTI:60.06,forecast:false},{p:'2025-12',Brent:62.54,WTI:57.97,forecast:false},
+    {p:'2026-01',Brent:66.60,WTI:60.04,forecast:false},{p:'2026-02',Brent:70.89,WTI:64.51,forecast:false},
+    {p:'2026-03',Brent:103.13,WTI:91.38,forecast:false},{p:'2026-04',Brent:124.0,WTI:109.0,forecast:false},
+    {p:'2026-05',Brent:112.0,WTI:99.0,forecast:true},{p:'2026-06',Brent:108.0,WTI:97.0,forecast:true},
+    {p:'2026-07',Brent:104.0,WTI:94.0,forecast:true}
+  ]
+};
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let state = { benchmark: 'brent', range: '24' };
+
+function setFilter(btn) {
+  const g = btn.dataset.group, v = btn.dataset.val;
+  document.querySelectorAll(`[data-group="${g}"]`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  state[g] = v;
+  renderAll();
+}
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function fmtPeriod(p) {
+  const [y,m] = p.split('-');
+  return new Date(+y, +m-1).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
+}
+function fmtNum(v) { return v.toFixed(2); }
+
+function getFilteredRows() {
+  let rows = [...DATA.rows];
+  if (state.range === '12') {
+    const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - 12);
+    rows = rows.filter(r => { const [y,m]=r.p.split('-'); return new Date(+y,+m-1) >= cutoff; });
+  } else if (state.range === '24') {
+    const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - 24);
+    rows = rows.filter(r => { const [y,m]=r.p.split('-'); return new Date(+y,+m-1) >= cutoff; });
+  }
+  return rows;
+}
+
+// ─── KPIs ──────────────────────────────────────────────────────────────────
+function renderKPIs() {
+  const b = DATA.summary.Brent, w = DATA.summary.WTI;
+  const primary = state.benchmark === 'wti' ? w : b;
+  const secondary = state.benchmark === 'wti' ? b : w;
+  const pName = state.benchmark === 'wti' ? 'WTI' : 'Brent';
+  const sName = state.benchmark === 'wti' ? 'Brent' : 'WTI';
+
+  const spread = b.latest - w.latest;
+
+  const kpis = [
+    { label: `${pName} latest actual`, value: `$${primary.latest.toFixed(0)}`, unit: '/bbl',
+      delta: `+${primary.mom.toFixed(2)}`, dir: 'up', sub: 'vs. previous month' },
+    { label: '3-month avg forecast', value: `$${primary.fcast_avg.toFixed(0)}`, unit: '/bbl',
+      delta: `${primary.fcast_chg.toFixed(0)}`, dir: 'down', sub: 'projected change over 3 months' },
+    { label: `${sName} latest actual`, value: `$${secondary.latest.toFixed(0)}`, unit: '/bbl',
+      delta: `+${secondary.mom.toFixed(2)}`, dir: 'up', sub: 'vs. previous month' },
+    { label: 'Brent–WTI spread', value: `$${spread.toFixed(2)}`, unit: '',
+      delta: 'tightening', dir: 'down', sub: 'differential per barrel' }
+  ];
+
+  document.getElementById('kpi-strip').innerHTML = kpis.map((k,i) => `
+    <div class="kpi-card ${i===0?'highlight':''}">
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}<span>${k.unit}</span></div>
+      <div class="kpi-delta ${k.dir}">${k.dir==='up'?'↑':'↓'} ${k.delta}</div>
+      <div class="kpi-sub">${k.sub}</div>
+    </div>`).join('');
+}
+
+// ─── CHART INSTANCES ───────────────────────────────────────────────────────
+let mainChartInst, forecastChartInst, spreadChartInst;
+
+function destroyCharts() {
+  [mainChartInst, forecastChartInst, spreadChartInst].forEach(c => c && c.destroy());
+}
+
+const chartDefaults = {
+  color: '#7b8fae',
+  borderColor: '#1e2a40',
+};
+
+function baseChartOptions(yLabel = '$/bbl') {
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0e1420',
+        borderColor: '#253550',
+        borderWidth: 1,
+        titleColor: '#7b8fae',
+        bodyColor: '#e8edf5',
+        padding: 12,
+        titleFont: { family: 'DM Sans', size: 11, weight: '600' },
+        bodyFont: { family: 'DM Sans', size: 13 },
+        callbacks: {
+          label(ctx) { return ` ${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}/bbl`; }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#1e2a40', drawTicks: false },
+        ticks: { color: '#7b8fae', font: { family: 'DM Sans', size: 11 }, maxRotation: 0, maxTicksLimit: 10 },
+        border: { color: '#1e2a40' }
+      },
+      y: {
+        grid: { color: '#1e2a40', drawTicks: false },
+        ticks: { color: '#7b8fae', font: { family: 'DM Sans', size: 11 },
+          callback(v) { return '$'+v; } },
+        border: { color: '#1e2a40' },
+        title: { display: false }
+      }
+    }
+  };
+}
+
+function renderMainChart() {
+  const rows = getFilteredRows();
+  const labels = rows.map(r => fmtPeriod(r.p));
+
+  const brentActual = rows.map(r => r.forecast ? null : r.Brent);
+  const brentFcast  = rows.map((r,i) => {
+    if (!r.forecast && i < rows.length-1 && !rows[i+1]?.forecast) return null;
+    if (!r.forecast && i === rows.length-1) return r.Brent; // connect
+    if (r.forecast) return r.Brent;
+    return r.Brent; // last actual point
+  });
+  // clean forecast line: start from last actual
+  const fcastBrent = rows.map((r,i,arr) => {
+    if (r.forecast) return r.Brent;
+    if (!r.forecast && arr[i+1]?.forecast) return r.Brent; // bridge
+    return null;
+  });
+
+  const wtiActual = rows.map(r => r.forecast ? null : r.WTI);
+  const fcastWTI  = rows.map((r,i,arr) => {
+    if (r.forecast) return r.WTI;
+    if (!r.forecast && arr[i+1]?.forecast) return r.WTI;
+    return null;
+  });
+
+  const showWTI = state.benchmark !== 'brent';
+  const showBrent = state.benchmark !== 'wti';
+
+  const datasets = [];
+  if (showBrent) {
+    datasets.push({
+      label: 'Brent', data: brentActual,
+      borderColor: '#f59e0b', backgroundColor: 'transparent',
+      borderWidth: 2.5, pointRadius: 0, tension: 0.3, spanGaps: false
+    });
+    datasets.push({
+      label: 'Brent forecast', data: fcastBrent,
+      borderColor: '#f59e0b', backgroundColor: 'transparent',
+      borderWidth: 2, borderDash: [5,4], pointRadius: 0, tension: 0.3, spanGaps: false
+    });
+  }
+  if (showWTI) {
+    datasets.push({
+      label: 'WTI', data: wtiActual,
+      borderColor: '#60a5fa', backgroundColor: 'transparent',
+      borderWidth: 2.5, pointRadius: 0, tension: 0.3, spanGaps: false
+    });
+    datasets.push({
+      label: 'WTI forecast', data: fcastWTI,
+      borderColor: '#60a5fa', backgroundColor: 'transparent',
+      borderWidth: 2, borderDash: [5,4], pointRadius: 0, tension: 0.3, spanGaps: false
+    });
+  }
+
+  const fcastStartIdx = rows.findIndex(r => r.forecast);
+
+  // Custom plugin: forecast zone shading + direct line labels + spike annotation
+  const swdPlugin = {
+    id: 'swdAnnotations',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, right, top, bottom }, scales: { x, y } } = chart;
+      if (fcastStartIdx < 0) return;
+
+      // Shade forecast zone
+      const fcastX = x.getPixelForValue(fcastStartIdx);
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.025)';
+      ctx.fillRect(fcastX, top, right - fcastX, bottom - top);
+      // Forecast divider line
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3,3]);
+      ctx.beginPath(); ctx.moveTo(fcastX, top); ctx.lineTo(fcastX, bottom); ctx.stroke();
+      ctx.setLineDash([]);
+      // FORECAST label
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.font = '600 10px DM Sans, sans-serif';
+      ctx.letterSpacing = '1px';
+      ctx.fillText('FORECAST', fcastX + 7, top + 14);
+
+      // Spike annotation at Apr-26 (last actual)
+      const spikeIdx = fcastStartIdx - 1;
+      if (spikeIdx >= 0) {
+        const spikeX = x.getPixelForValue(spikeIdx);
+        if (showBrent) {
+          const spikeY = y.getPixelForValue(rows[spikeIdx].Brent);
+          ctx.fillStyle = 'rgba(245,158,11,0.85)';
+          ctx.font = '600 11px DM Sans, sans-serif';
+          ctx.fillText('$' + rows[spikeIdx].Brent + ' peak', spikeX - 52, spikeY - 10);
+          // dot
+          ctx.beginPath();
+          ctx.arc(spikeX, spikeY, 4, 0, Math.PI * 2);
+          ctx.fillStyle = '#f59e0b';
+          ctx.fill();
+        }
+      }
+
+      // Direct line labels at last forecast point
+      const lastIdx = rows.length - 1;
+      const lastX = x.getPixelForValue(lastIdx) + 6;
+      if (showBrent && rows[lastIdx].Brent != null) {
+        const lastY = y.getPixelForValue(rows[lastIdx].Brent);
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = '600 11px DM Sans, sans-serif';
+        ctx.fillText('Brent', lastX, lastY + 4);
+      }
+      if (showWTI && rows[lastIdx].WTI != null) {
+        const lastY = y.getPixelForValue(rows[lastIdx].WTI);
+        ctx.fillStyle = '#60a5fa';
+        ctx.font = '600 11px DM Sans, sans-serif';
+        ctx.fillText('WTI', lastX, lastY + 4);
+      }
+      ctx.restore();
+    }
+  };
+
+  const opts = baseChartOptions();
+
+  if (mainChartInst) mainChartInst.destroy();
+  mainChartInst = new Chart(document.getElementById('mainChart'), {
+    type: 'line', data: { labels, datasets }, options: opts,
+    plugins: [swdPlugin]
+  });
+
+  // Hide legend — labels are now direct on chart
+  document.getElementById('main-legend').innerHTML = '';
+}
+
+function renderForecastChart() {
+  const useBrent = state.benchmark !== 'wti';
+  const useWTI   = state.benchmark !== 'brent';
+  const months = ['May 2026', 'Jun 2026', 'Jul 2026'];
+
+  const datasets = [];
+  if (useBrent) datasets.push({
+    label: 'Brent', data: [112, 108, 104],
+    backgroundColor: 'rgba(245,158,11,0.75)', borderRadius: 6, borderSkipped: false
+  });
+  if (useWTI) datasets.push({
+    label: 'WTI', data: [99, 97, 94],
+    backgroundColor: 'rgba(96,165,250,0.75)', borderRadius: 6, borderSkipped: false
+  });
+
+  const opts = {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0e1420', borderColor: '#253550', borderWidth: 1,
+        titleColor: '#7b8fae', bodyColor: '#e8edf5', padding: 12,
+        titleFont: {family:'DM Sans',size:11,weight:'600'}, bodyFont:{family:'DM Sans',size:13},
+        callbacks: { label(ctx) { return ` ${ctx.dataset.label}: $${ctx.parsed.y}/bbl`; } }
+      }
+    },
+    scales: {
+      x: { grid:{color:'#1e2a40',drawTicks:false}, ticks:{color:'#7b8fae',font:{family:'DM Sans',size:11}}, border:{color:'#1e2a40'} },
+      y: { grid:{color:'#1e2a40',drawTicks:false}, ticks:{color:'#7b8fae',font:{family:'DM Sans',size:11},callback(v){return '$'+v;}}, border:{color:'#1e2a40'}, min: 85 }
+    }
+  };
+  if (forecastChartInst) forecastChartInst.destroy();
+  forecastChartInst = new Chart(document.getElementById('forecastChart'), {
+    type: 'bar', data: { labels: months, datasets }, options: opts
+  });
+}
+
+function renderSpreadChart() {
+  const rows = getFilteredRows().filter(r => !r.forecast);
+  const labels = rows.map(r => fmtPeriod(r.p));
+  const spreads = rows.map(r => +(r.Brent - r.WTI).toFixed(2));
+
+  const opts = baseChartOptions('$/bbl spread');
+  opts.scales.y.min = 0;
+  opts.plugins.tooltip.callbacks.label = ctx => ` Spread: $${ctx.parsed.y.toFixed(2)}/bbl`;
+  opts.scales.y.ticks.callback = v => '$'+v;
+
+  if (spreadChartInst) spreadChartInst.destroy();
+  spreadChartInst = new Chart(document.getElementById('spreadChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Brent–WTI', data: spreads,
+        borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.07)',
+        borderWidth: 2, fill: true, pointRadius: 0, tension: 0.3
+      }]
+    },
+    options: opts
+  });
+}
+
+function renderTable() {
+  const forecastRows = DATA.rows.filter(r => r.forecast);
+  document.getElementById('fwd-tbody').innerHTML = forecastRows.map(r => {
+    const spread = (r.Brent - r.WTI).toFixed(2);
+    return `<tr>
+      <td class="td-period">${fmtPeriod(r.p)} <span class="td-tag">Forecast</span></td>
+      <td class="td-amber">$${r.Brent.toFixed(2)}</td>
+      <td class="td-blue">$${r.WTI.toFixed(2)}</td>
+      <td class="td-spread">$${spread}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAll() {
+  renderKPIs();
+  renderMainChart();
+  renderForecastChart();
+  renderSpreadChart();
+  renderTable();
+}
+
+// ─── QR CODES ──────────────────────────────────────────────────────────────
+function generateQR(imgId, url) {
+  const encoded = encodeURIComponent(url);
+  const src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encoded}&bgcolor=0e1420&color=f59e0b&margin=6&format=png`;
+  const el = document.getElementById(imgId);
+  if (el) el.src = src;
+}
+
+// ─── LIVE DATA FETCH ───────────────────────────────────────────────────────
+async function loadLiveData() {
+  try {
+    const res = await fetch('https://dela-hub.github.io/data-analysis/oil-prices/data.json');
+    if (!res.ok) throw new Error('fetch failed');
+    const json = await res.json();
+
+    // Re-map chart_rows into our combined structure
+    const periods = [...new Set(json.chart_rows.map(r => r.period))].sort();
+    DATA.rows = periods.map(p => {
+      const bRow = json.chart_rows.find(r => r.period === p && r.series_name === 'Brent');
+      const wRow = json.chart_rows.find(r => r.period === p && r.series_name === 'WTI');
+      return {
+        p, forecast: bRow?.is_forecast || false,
+        Brent: bRow?.value ?? null,
+        WTI:   wRow?.value ?? null
+      };
+    }).filter(r => r.Brent !== null);
+
+    // Update summary
+    const bs = json.summary.Brent, ws = json.summary.WTI;
+    DATA.summary.Brent = { latest: bs.latest_actual_value, mom: bs.month_over_month_actual, fcast_avg: bs.forecast_average_3m, fcast_chg: bs.forecast_change_3m, fcast_months: bs.forecast_months.map(f => ({p: f.period, v: f.value})) };
+    DATA.summary.WTI   = { latest: ws.latest_actual_value, mom: ws.month_over_month_actual, fcast_avg: ws.forecast_average_3m, fcast_chg: ws.forecast_change_3m, fcast_months: ws.forecast_months.map(f => ({p: f.period, v: f.value})) };
+
+    // Update "Updated" label
+    document.querySelector('.updated').textContent = 'Updated ' + json.generated_at;
+    console.log('Live data loaded from EIA endpoint ✓');
+  } catch (e) {
+    console.warn('Using embedded data (live fetch failed):', e.message);
+  }
+  renderAll();
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+Chart.defaults.font.family = 'DM Sans';
+
+generateQR('qr-dashboard', 'https://dela-hub.github.io/data-analysis/oil-prices/');
+generateQR('qr-chat', 'https://dela-hub.github.io/data-analysis/chat/?tenant=acme-sample&dashboard=oil-prices');
+
+loadLiveData();
+</script>
+
+</body>
+</html>

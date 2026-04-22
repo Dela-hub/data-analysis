@@ -901,7 +901,9 @@
       const chatUrl = new URL('../chat/', window.location.href);
       chatUrl.searchParams.set('tenant', 'acme-sample');
       chatUrl.searchParams.set('dashboard', 'oil-prices');
-      chatUrl.searchParams.set('source', './');
+      const sourceUrl = new URL(window.location.href);
+      sourceUrl.searchParams.delete('chat');
+      chatUrl.searchParams.set('source', sourceUrl.toString());
       if (filters.series) chatUrl.searchParams.set('series', filters.series);
       if (filters.range) chatUrl.searchParams.set('range', filters.range);
       if (filters.mode) chatUrl.searchParams.set('mode', filters.mode);

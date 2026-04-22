@@ -3,6 +3,7 @@
 Client-ready analytics workspace built around notebooks, structured datasets, and shareable HTML dashboards.
 
 Core contents:
+- `design.md` — default design system and data-visualisation guide for future dashboard/chat work
 - `scripts/build_oil_dashboard.py` — fetches WTI and Brent STEO data and generates outputs
 - `data/derived/oil_prices_steo.csv` — oil analysis dataset
 - `dashboards/oil-prices/index.html` — interactive HTML dashboard
@@ -11,6 +12,7 @@ Core contents:
 - `backend/dashboard_chat/` — tenant-aware backend API for dashboard chat sessions
 - `clients/` — per-client workspaces for separate company analyses and shareable HTML outputs
 - `notebooks/oil_prices_outlook.ipynb` — supporting notebook
+- `references/design-upload/` — uploaded visual reference HTML files kept as design source material
 
 Dashboard chat backend:
 - Run locally from the repo root with `python3 -m backend.dashboard_chat.server --host 127.0.0.1 --port 8765`

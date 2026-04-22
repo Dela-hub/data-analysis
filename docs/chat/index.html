@@ -305,6 +305,7 @@
     let apiBase = queryApiBase || storedApiBase || configuredApiBase;
     let currentSessionId = null;
     let suggestedQuestions = [];
+    let resolvedDashboardUrl = null;
 
     const elements = {
       openDashboardLink: document.getElementById('openDashboardLink'),
@@ -354,7 +355,10 @@
     }
 
     function buildDashboardUrl() {
-      const fallback = params.get('source') || '../oil-prices/';
+      const source = params.get('source');
+      const fallback = source && source !== '.' && source !== './'
+        ? source
+        : (resolvedDashboardUrl || '../oil-prices/');
       const url = new URL(fallback, window.location.href);
       url.searchParams.set('chat', '1');
       url.searchParams.set('tenant', tenantId);
@@ -407,10 +411,12 @@
       });
       currentSessionId = session.session_id;
       suggestedQuestions = session.suggested_questions || context.suggested_questions || [];
+      resolvedDashboardUrl = session.dashboard_url || context.dashboard_url || resolvedDashboardUrl;
       elements.tenantName.textContent = session.tenant_name || tenantId;
       elements.dashboardTitle.textContent = session.dashboard_title || dashboardId;
       elements.contextState.textContent = describeFilters(session.filters || {});
       elements.refreshState.textContent = `${session.refresh_label || 'Dashboard update'} · ${context.generated_at || 'Latest available date'}`;
+      elements.openDashboardLink.href = buildDashboardUrl();
       renderSuggestedQuestions();
       renderMessage('assistant', 'Ready', `You are viewing ${session.dashboard_title}. Ask for a quick summary, compare the series, or ask what matters most in this view.`);
       setStatus('Ready. Ask a question about this dashboard view.', 'good');
