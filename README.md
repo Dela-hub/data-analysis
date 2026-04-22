@@ -7,8 +7,19 @@ Core contents:
 - `data/derived/oil_prices_steo.csv` — oil analysis dataset
 - `dashboards/oil-prices/index.html` — interactive HTML dashboard
 - `dashboards/oil-prices/data.json` — dashboard payload
-- `notebooks/oil_prices_outlook.ipynb` — supporting notebook
+- `dashboards/chat/index.html` — mobile-first chat frontend for “ask this dashboard” flows
+- `backend/dashboard_chat/` — tenant-aware backend API for dashboard chat sessions
 - `clients/` — per-client workspaces for separate company analyses and shareable HTML outputs
+- `notebooks/oil_prices_outlook.ipynb` — supporting notebook
+
+Dashboard chat backend:
+- Run locally from the repo root with `python3 -m backend.dashboard_chat.server --host 127.0.0.1 --port 8765`
+- Or use `scripts/run_dashboard_chat.sh` to load `/opt/data/.env` first and then start the backend
+- Add `OPENAI_API_KEY` on the server when ready; until then the backend stays in grounded mock mode
+- For GitHub Pages, keep the static pages on GitHub and point them at an HTTPS backend base URL hosted on your VPS
+- This repo is now wired for `https://api.tasknous.com`
+- Caddy deployment scaffold is in `deploy/caddy/api.tasknous.com.Caddyfile`
+- Tenant manifests live under `clients/<client-name>/config/dashboards/*.json`
 
 Client workspace pattern:
 - `clients/<client-name>/raw/`

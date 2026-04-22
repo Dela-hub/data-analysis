@@ -1,0 +1,34 @@
+{
+  "tenant_id": "acme-sample",
+  "tenant_name": "ACME Sample",
+  "dashboard_id": "oil-prices",
+  "dashboard_title": "Oil Price Outlook",
+  "dashboard_url": "https://dela-hub.github.io/data-analysis/oil-prices/",
+  "chat_path": "/chat/",
+  "data_path": "dashboards/oil-prices/data.json",
+  "refresh_label": "EIA Short-Term Energy Outlook",
+  "description": "Use this dashboard to explain the latest Brent and WTI actuals, the next three forecast points, and the benchmark spread.",
+  "allowed_question_types": [
+    "summary",
+    "comparison",
+    "definition",
+    "what_changed",
+    "outlier"
+  ],
+  "suggested_questions": [
+    "What changed most this month?",
+    "What does the next three-month outlook say?",
+    "Compare Brent with WTI.",
+    "Why does the spread matter?"
+  ],
+  "source_panels": [
+    "Latest available actual",
+    "Forward pricing by month",
+    "Benchmark spread"
+  ],
+  "metric_definitions": {
+    "Brent": "Brent crude oil spot price in dollars per barrel.",
+    "WTI": "West Texas Intermediate crude oil price in dollars per barrel.",
+    "forecast_change_3m": "Difference between the latest actual and the final forecast point over the next three months."
+  }
+}

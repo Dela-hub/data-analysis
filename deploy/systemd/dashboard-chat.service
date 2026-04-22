@@ -1,0 +1,14 @@
+[Unit]
+Description=Dashboard chat backend
+After=network.target
+
+[Service]
+Type=simple
+User=hermes
+WorkingDirectory=/opt/data/home/workspace/data-analysis
+ExecStart=/opt/data/home/workspace/data-analysis/scripts/run_dashboard_chat.sh
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask this dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="./config.js"></script>
+  <style>
+    :root {
+      --bg:#0f1723;
+      --surface:#162232;
+      --surface-2:#1b2b3f;
+      --line:rgba(255,255,255,.10);
+      --text:#f3ecdf;
+      --muted:#b9b1a3;
+      --accent:#c86b39;
+      --accent-soft:rgba(200,107,57,.16);
+      --good:#78c7a4;
+      --shadow:0 24px 60px rgba(0,0,0,.28);
+      --display:'Instrument Serif', Georgia, serif;
+      --body:'IBM Plex Sans', 'Segoe UI', sans-serif;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      min-height:100vh;
+      font-family:var(--body);
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(200,107,57,.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(104,149,196,.12), transparent 24%),
+        linear-gradient(180deg, #0d1520 0%, #121d2b 100%);
+    }
+    .shell {
+      width:min(100%, 760px);
+      margin:0 auto;
+      padding:20px 16px 28px;
+    }
+    .panel {
+      background:linear-gradient(180deg, rgba(22,34,50,.98), rgba(16,24,36,.98));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius:24px;
+      padding:18px;
+    }
+    .hero { padding:22px 18px; }
+    .eyebrow {
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:#ddb99f;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:.72rem;
+      font-weight:600;
+    }
+    .eyebrow::before {
+      content:'';
+      width:28px;
+      height:1px;
+      background:#ddb99f;
+    }
+    h1,h2,h3,p { margin:0; }
+    h1 {
+      margin-top:14px;
+      font-family:var(--display);
+      font-weight:400;
+      font-size:clamp(2.3rem, 9vw, 3.4rem);
+      line-height:.95;
+      letter-spacing:-.04em;
+      max-width:10ch;
+    }
+    .hero-copy {
+      margin-top:14px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.98rem;
+    }
+    .meta-grid,
+    .settings-grid {
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+    .meta-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .meta-card {
+      padding:12px 14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      min-height:82px;
+    }
+    .meta-label {
+      color:var(--muted);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      display:block;
+      margin-bottom:6px;
+    }
+    .meta-value {
+      line-height:1.45;
+      font-size:.94rem;
+      font-weight:600;
+    }
+    .section { margin-top:16px; }
+    .section-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .section-head h2 {
+      font-size:1rem;
+      letter-spacing:.01em;
+      font-weight:600;
+    }
+    .tiny { color:var(--muted); font-size:.82rem; line-height:1.5; }
+    .chip-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .chip {
+      border:1px solid rgba(200,107,57,.22);
+      background:var(--accent-soft);
+      color:#f5ddcd;
+      border-radius:999px;
+      padding:10px 13px;
+      font-size:.88rem;
+      line-height:1.35;
+    }
+    button, input, textarea {
+      font:inherit;
+      color:inherit;
+    }
+    .ghost-input,
+    .composer textarea {
+      width:100%;
+      background:rgba(8,12,18,.42);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      padding:12px 14px;
+      color:var(--text);
+    }
+    .ghost-input::placeholder,
+    .composer textarea::placeholder { color:rgba(243,236,223,.42); }
+    .button-row { display:flex; gap:10px; flex-wrap:wrap; }
+    .button {
+      appearance:none;
+      border:0;
+      border-radius:16px;
+      padding:12px 14px;
+      font-weight:600;
+      cursor:pointer;
+      transition:.18s ease;
+      text-decoration:none;
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .button:hover { transform:translateY(-1px); }
+    .button.primary {
+      background:linear-gradient(180deg, #d27a49, #b85d2d);
+      color:#fff4ea;
+      flex:1;
+    }
+    .button.secondary {
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.08);
+      flex:1;
+    }
+    .message-list {
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+    .message {
+      padding:14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      line-height:1.65;
+      white-space:pre-wrap;
+    }
+    .message.user {
+      background:rgba(200,107,57,.12);
+      border-color:rgba(200,107,57,.22);
+    }
+    .message.assistant {
+      background:rgba(255,255,255,.04);
+    }
+    .message strong { color:#fff3e3; }
+    .message-meta {
+      color:var(--muted);
+      font-size:.78rem;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .status {
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.9rem;
+    }
+    .status.good { color:#daf1e7; border-color:rgba(120,199,164,.24); background:rgba(120,199,164,.10); }
+    .status.bad { color:#ffd4cc; border-color:rgba(200,72,52,.22); background:rgba(200,72,52,.10); }
+    .composer { display:grid; gap:10px; }
+    .composer textarea { min-height:116px; resize:vertical; }
+    .footer-note {
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.6;
+      margin-top:14px;
+    }
+    @media (max-width: 620px) {
+      .meta-grid { grid-template-columns:1fr; }
+      .button { width:100%; flex:auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="panel hero">
+      <div class="eyebrow">Scan to ask the data</div>
+      <h1>Ask this dashboard, not the whole warehouse.</h1>
+      <p class="hero-copy">This chat stays tied to the dashboard you opened. It uses the visible dashboard context, metric definitions, and summary data so stakeholders can ask sharp follow-up questions without drifting into ungrounded answers.</p>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <span class="meta-label">Tenant</span>
+          <div class="meta-value" id="tenantName">—</div>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Dashboard</span>
+          <div class="meta-value" id="dashboardTitle">—</div>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Current context</span>
+          <div class="meta-value" id="contextState">Waiting for dashboard session…</div>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Refresh source</span>
+          <div class="meta-value" id="refreshState">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <h2>Connection</h2>
+        <span class="tiny">Keep the API server on your VPS. The dashboard page stays static.</span>
+      </div>
+      <div class="settings-grid">
+        <input id="apiBaseInput" class="ghost-input" placeholder="https://your-backend-domain" />
+        <div class="button-row">
+          <button id="saveApiButton" class="button secondary" type="button">Save API base</button>
+          <a id="openDashboardLink" class="button secondary" href="#">Back to dashboard</a>
+        </div>
+      </div>
+      <div id="statusBox" class="status">Set the API base once, then this page can create a tenant-scoped chat session.</div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <h2>Suggested questions</h2>
+        <span class="tiny">Good prompts keep the room focused on the visible evidence.</span>
+      </div>
+      <div id="suggestedQuestions" class="chip-row"></div>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <h2>Conversation</h2>
+        <span class="tiny">Answers should reference the dashboard panels, not improvise.</span>
+      </div>
+      <div id="messages" class="message-list"></div>
+      <form id="composerForm" class="composer" novalidate>
+        <textarea id="questionInput" placeholder="Ask what changed, compare series, explain the spread, or define a metric."></textarea>
+        <div class="button-row">
+          <button class="button primary" type="submit">Ask this dashboard</button>
+          <button id="seedQuestionButton" class="button secondary" type="button">Use first suggested prompt</button>
+        </div>
+      </form>
+      <div class="footer-note">If the backend is in mock mode, the answer is still grounded to the dashboard payload. Once you add OPENAI_API_KEY on the server, the same UI can switch to model-backed answers without exposing the key here.</div>
+    </section>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const tenantId = params.get('tenant') || 'acme-sample';
+    const dashboardId = params.get('dashboard') || 'oil-prices';
+    const initialFilters = {
+      series: params.get('series') || 'Brent',
+      range: params.get('range') || '24',
+      mode: params.get('mode') || 'single',
+    };
+    const configuredApiBase = (window.DATA_CHAT_CONFIG && window.DATA_CHAT_CONFIG.apiBaseUrl) || '';
+    const storedApiBase = localStorage.getItem('dashboardChatApiBase') || '';
+    const queryApiBase = params.get('api') || '';
+    let apiBase = queryApiBase || storedApiBase || configuredApiBase;
+    let currentSessionId = null;
+    let suggestedQuestions = [];
+
+    const elements = {
+      apiBaseInput: document.getElementById('apiBaseInput'),
+      openDashboardLink: document.getElementById('openDashboardLink'),
+      tenantName: document.getElementById('tenantName'),
+      dashboardTitle: document.getElementById('dashboardTitle'),
+      contextState: document.getElementById('contextState'),
+      refreshState: document.getElementById('refreshState'),
+      suggestedQuestions: document.getElementById('suggestedQuestions'),
+      messages: document.getElementById('messages'),
+      statusBox: document.getElementById('statusBox'),
+      composerForm: document.getElementById('composerForm'),
+      questionInput: document.getElementById('questionInput'),
+      seedQuestionButton: document.getElementById('seedQuestionButton'),
+      saveApiButton: document.getElementById('saveApiButton'),
+    };
+
+    function setStatus(message, tone = '') {
+      elements.statusBox.textContent = message;
+      elements.statusBox.className = `status${tone ? ` ${tone}` : ''}`;
+    }
+
+    function renderMessage(role, title, body) {
+      const card = document.createElement('div');
+      card.className = `message ${role}`;
+      card.innerHTML = `<div class="message-meta">${title}</div><div>${body}</div>`;
+      elements.messages.appendChild(card);
+      card.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    }
+
+    function normalizeApiBase(value) {
+      return value.trim().replace(/\/$/, '');
+    }
+
+    function buildDashboardUrl() {
+      const fallback = params.get('source') || '../oil-prices/';
+      const url = new URL(fallback, window.location.href);
+      url.searchParams.set('chat', '1');
+      url.searchParams.set('tenant', tenantId);
+      url.searchParams.set('dashboard', dashboardId);
+      return url.toString();
+    }
+
+    async function postJson(path, payload) {
+      const response = await fetch(`${apiBase}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || `Request failed (${response.status})`);
+      }
+      return data;
+    }
+
+    function renderSuggestedQuestions() {
+      elements.suggestedQuestions.innerHTML = '';
+      suggestedQuestions.forEach(question => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'chip';
+        button.textContent = question;
+        button.addEventListener('click', () => {
+          elements.questionInput.value = question;
+          elements.questionInput.focus();
+        });
+        elements.suggestedQuestions.appendChild(button);
+      });
+    }
+
+    async function bootSession() {
+      if (!apiBase) {
+        setStatus('Set your HTTPS API base first. GitHub Pages cannot safely hold the model key, so the chat calls your VPS backend instead.', 'bad');
+        return;
+      }
+      setStatus('Connecting to the tenant-scoped backend…');
+      const context = await postJson('/api/context', {
+        tenant_id: tenantId,
+        dashboard_id: dashboardId,
+      });
+      const session = await postJson('/api/chat/session', {
+        tenant_id: tenantId,
+        dashboard_id: dashboardId,
+        filters: initialFilters,
+      });
+      currentSessionId = session.session_id;
+      suggestedQuestions = session.suggested_questions || context.suggested_questions || [];
+      elements.tenantName.textContent = session.tenant_name || tenantId;
+      elements.dashboardTitle.textContent = session.dashboard_title || dashboardId;
+      elements.contextState.textContent = `Series ${session.filters.series || '—'} · Range ${session.filters.range || '—'} · Mode ${session.filters.mode || '—'}`;
+      elements.refreshState.textContent = `${session.refresh_label || 'Dashboard payload'} · ${context.generated_at || 'date unavailable'}`;
+      renderSuggestedQuestions();
+      renderMessage('assistant', 'Session ready', `You are connected to ${session.dashboard_title}. Ask for a summary, a comparison, or a metric definition. The backend will keep this session scoped to ${session.tenant_name || tenantId}.`);
+      setStatus('Connected. This page is using a tenant-bound chat session.', 'good');
+    }
+
+    async function askQuestion(question) {
+      if (!currentSessionId) {
+        throw new Error('Session not ready yet.');
+      }
+      renderMessage('user', 'You asked', question);
+      setStatus('Getting a grounded answer from the backend…');
+      const answer = await postJson('/api/chat/ask', {
+        session_id: currentSessionId,
+        question,
+      });
+      const body = [
+        answer.answer,
+        '',
+        `Why it matters: ${answer.why_it_matters}`,
+        `Mode: ${answer.mode}`,
+        `Refresh: ${answer.dashboard_generated_at || 'unknown'}`,
+      ].join('\n');
+      renderMessage('assistant', 'Dashboard answer', body);
+      setStatus(`Answer received in ${answer.mode} mode.`, 'good');
+    }
+
+    elements.saveApiButton.addEventListener('click', async () => {
+      apiBase = normalizeApiBase(elements.apiBaseInput.value);
+      if (!apiBase) {
+        setStatus('Enter a backend base URL first.', 'bad');
+        return;
+      }
+      localStorage.setItem('dashboardChatApiBase', apiBase);
+      elements.messages.innerHTML = '';
+      currentSessionId = null;
+      try {
+        await bootSession();
+      } catch (error) {
+        setStatus(error.message, 'bad');
+      }
+    });
+
+    elements.composerForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const question = elements.questionInput.value.trim();
+      if (!question) {
+        setStatus('Ask a real question first.', 'bad');
+        return;
+      }
+      elements.questionInput.value = '';
+      try {
+        await askQuestion(question);
+      } catch (error) {
+        setStatus(error.message, 'bad');
+      }
+    });
+
+    elements.seedQuestionButton.addEventListener('click', () => {
+      if (suggestedQuestions.length) {
+        elements.questionInput.value = suggestedQuestions[0];
+        elements.questionInput.focus();
+      }
+    });
+
+    elements.apiBaseInput.value = apiBase;
+    elements.openDashboardLink.href = buildDashboardUrl();
+    elements.openDashboardLink.target = '_blank';
+    elements.openDashboardLink.rel = 'noopener noreferrer';
+
+    bootSession().catch(error => {
+      setStatus(error.message, 'bad');
+    });
+  </script>
+</body>
+</html>

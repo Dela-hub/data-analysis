@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
       --bg:#f4efe6;
@@ -774,6 +775,19 @@
           </div>
 
           <div class="rail-section">
+            <span class="rail-label">Scan to ask this dashboard</span>
+            <div class="qr-card">
+              <div class="qr-image-wrap">
+                <a id="dataChatLink" href="../chat/?tenant=acme-sample&dashboard=oil-prices" target="_blank" rel="noopener noreferrer" aria-label="Open the dashboard chat on mobile">
+                  <div id="dataChatQr" class="qr-image" aria-hidden="true"></div>
+                </a>
+              </div>
+              <div class="qr-copy">This opens a separate mobile chat page tied to the current dashboard. It is designed for presentation Q&amp;A without exposing raw model keys in the page.</div>
+              <a id="dataChatButton" class="button secondary" href="../chat/?tenant=acme-sample&dashboard=oil-prices" target="_blank" rel="noopener noreferrer">Open data chat</a>
+            </div>
+          </div>
+
+          <div class="rail-section">
             <span class="rail-label">Operator note</span>
             <p>This view is designed to answer one question fast: is the market still running hotter, or is the next quarter giving you room to negotiate?</p>
           </div>
@@ -883,6 +897,36 @@
     const PRICE_OR_DASH = n => isValidNumber(n) ? PRICE(n) : '—';
     const PRICE_SIGNED = n => isValidNumber(n) ? `${Number(n) < 0 ? '-' : '+'}${PRICE(n)}` : '—';
 
+    function updateChatEntry(filters) {
+      const chatUrl = new URL('../chat/', window.location.href);
+      chatUrl.searchParams.set('tenant', 'acme-sample');
+      chatUrl.searchParams.set('dashboard', 'oil-prices');
+      chatUrl.searchParams.set('source', './');
+      if (filters.series) chatUrl.searchParams.set('series', filters.series);
+      if (filters.range) chatUrl.searchParams.set('range', filters.range);
+      if (filters.mode) chatUrl.searchParams.set('mode', filters.mode);
+      const chatHref = chatUrl.toString();
+      const link = document.getElementById('dataChatLink');
+      const button = document.getElementById('dataChatButton');
+      if (link) link.href = chatHref;
+      if (button) button.href = chatHref;
+      const qrNode = document.getElementById('dataChatQr');
+      if (qrNode && typeof QRCode !== 'undefined') {
+        if (qrNode.dataset.chatHref !== chatHref) {
+          qrNode.dataset.chatHref = chatHref;
+          qrNode.innerHTML = '';
+          new QRCode(qrNode, {
+            text: chatHref,
+            width: 156,
+            height: 156,
+            colorDark: '#171311',
+            colorLight: '#f8f3eb',
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        }
+      }
+    }
+
     async function init() {
       const payload = await fetch('./data.json').then(r => r.json());
       const summary = payload.summary;
@@ -947,6 +991,7 @@
         const spreadLatest = spread[spread.length - 1];
         const spreadText = spreadLatest && isValidNumber(spreadLatest.spread) ? PRICE_SIGNED(spreadLatest.spread) : 'unavailable';
         document.getElementById('insightText').textContent = `${primaryName} is at ${PRICE_OR_DASH(primaryMeta.latest_actual_value)} for ${primaryMeta.latest_actual_period}. The next three official monthly points average ${PRICE_OR_DASH(primaryMeta.forecast_average_3m)}, implying a ${PRICE_SIGNED(primaryMeta.forecast_change_3m)} move across the near-term outlook. The current Brent-WTI spread is ${spreadText}.`;
+        updateChatEntry({series: primaryName, range: rangeValue, mode});
 
         const axisColor = mobileView ? 'rgba(23,19,17,.45)' : 'rgba(23,19,17,.55)';
         const gridColor = 'rgba(23,19,17,.09)';
