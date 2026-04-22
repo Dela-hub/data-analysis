@@ -1,479 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ask this dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <script src="./config.js"></script>
-  <style>
-    :root {
-      --bg:#0f1723;
-      --surface:#162232;
-      --surface-2:#1b2b3f;
-      --line:rgba(255,255,255,.10);
-      --text:#f3ecdf;
-      --muted:#b9b1a3;
-      --accent:#c86b39;
-      --accent-soft:rgba(200,107,57,.16);
-      --good:#78c7a4;
-      --shadow:0 24px 60px rgba(0,0,0,.28);
-      --display:'Instrument Serif', Georgia, serif;
-      --body:'IBM Plex Sans', 'Segoe UI', sans-serif;
-    }
-    * { box-sizing:border-box; }
-    body {
-      margin:0;
-      min-height:100vh;
-      font-family:var(--body);
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(200,107,57,.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(104,149,196,.12), transparent 24%),
-        linear-gradient(180deg, #0d1520 0%, #121d2b 100%);
-    }
-    .shell {
-      width:min(100%, 760px);
-      margin:0 auto;
-      padding:20px 16px 28px;
-    }
-    .panel {
-      background:linear-gradient(180deg, rgba(22,34,50,.98), rgba(16,24,36,.98));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      border-radius:24px;
-      padding:18px;
-    }
-    .hero { padding:22px 18px; }
-    .eyebrow {
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      color:#ddb99f;
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.72rem;
-      font-weight:600;
-    }
-    .eyebrow::before {
-      content:'';
-      width:28px;
-      height:1px;
-      background:#ddb99f;
-    }
-    h1,h2,h3,p { margin:0; }
-    h1 {
-      margin-top:14px;
-      font-family:var(--display);
-      font-weight:400;
-      font-size:clamp(2.3rem, 9vw, 3.4rem);
-      line-height:.95;
-      letter-spacing:-.04em;
-      max-width:10ch;
-    }
-    .hero-copy {
-      margin-top:14px;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:.98rem;
-    }
-    .meta-grid,
-    .settings-grid {
-      display:grid;
-      gap:12px;
-      margin-top:16px;
-    }
-    .meta-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
-    .meta-card {
-      padding:12px 14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.06);
-      min-height:82px;
-    }
-    .meta-label {
-      color:var(--muted);
-      font-size:.72rem;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      display:block;
-      margin-bottom:6px;
-    }
-    .meta-value {
-      line-height:1.45;
-      font-size:.94rem;
-      font-weight:600;
-    }
-    .section { margin-top:16px; }
-    .section-head {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .section-head h2 {
-      font-size:1rem;
-      letter-spacing:.01em;
-      font-weight:600;
-    }
-    .tiny { color:var(--muted); font-size:.82rem; line-height:1.5; }
-    .chip-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .chip {
-      border:1px solid rgba(200,107,57,.22);
-      background:var(--accent-soft);
-      color:#f5ddcd;
-      border-radius:999px;
-      padding:10px 13px;
-      font-size:.88rem;
-      line-height:1.35;
-    }
-    button, input, textarea {
-      font:inherit;
-      color:inherit;
-    }
-    .ghost-input,
-    .composer textarea {
-      width:100%;
-      background:rgba(8,12,18,.42);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:12px 14px;
-      color:var(--text);
-    }
-    .ghost-input::placeholder,
-    .composer textarea::placeholder { color:rgba(243,236,223,.42); }
-    .button-row { display:flex; gap:10px; flex-wrap:wrap; }
-    .button {
-      appearance:none;
-      border:0;
-      border-radius:16px;
-      padding:12px 14px;
-      font-weight:600;
-      cursor:pointer;
-      transition:.18s ease;
-      text-decoration:none;
-      display:inline-flex;
-      justify-content:center;
-      align-items:center;
-    }
-    .button:hover { transform:translateY(-1px); }
-    .button.primary {
-      background:linear-gradient(180deg, #d27a49, #b85d2d);
-      color:#fff4ea;
-      flex:1;
-    }
-    .button.secondary {
-      background:rgba(255,255,255,.05);
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.08);
-      flex:1;
-    }
-    .message-list {
-      display:grid;
-      gap:12px;
-      margin-top:14px;
-    }
-    .message {
-      padding:14px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.08);
-      line-height:1.65;
-      white-space:pre-wrap;
-    }
-    .message.user {
-      background:rgba(200,107,57,.12);
-      border-color:rgba(200,107,57,.22);
-    }
-    .message.assistant {
-      background:rgba(255,255,255,.04);
-    }
-    .message strong { color:#fff3e3; }
-    .message-meta {
-      color:var(--muted);
-      font-size:.78rem;
-      margin-bottom:8px;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-    }
-    .status {
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      line-height:1.5;
-      font-size:.9rem;
-    }
-    .status.good { color:#daf1e7; border-color:rgba(120,199,164,.24); background:rgba(120,199,164,.10); }
-    .status.bad { color:#ffd4cc; border-color:rgba(200,72,52,.22); background:rgba(200,72,52,.10); }
-    .composer { display:grid; gap:10px; }
-    .composer textarea { min-height:116px; resize:vertical; }
-    .footer-note {
-      color:var(--muted);
-      font-size:.82rem;
-      line-height:1.6;
-      margin-top:14px;
-    }
-    @media (max-width: 620px) {
-      .meta-grid { grid-template-columns:1fr; }
-      .button { width:100%; flex:auto; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask the Data — Oil Price Outlook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./config.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#07090f; --surface:#0e1420; --surface2:#141c2e; --surface3:#1a2438; --border:#1e2a40; --border2:#253550;
+    --amber:#f59e0b; --amber-dim:rgba(245,158,11,0.10); --blue:#60a5fa; --green:#34d399; --red:#f87171;
+    --text:#e8edf5; --muted:#7b8fae; --subtle:#3d4f6a; --radius:10px; --radius-lg:14px; --sidebar:280px;
+  }
+  html, body { height:100%; background:var(--bg); color:var(--text); font-family:'DM Sans', sans-serif; font-size:14px; line-height:1.5; overflow:hidden; }
+  .app { display:flex; height:100vh; }
+  .sidebar { width:var(--sidebar); flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+  .sidebar-header { padding:20px 20px 16px; border-bottom:1px solid var(--border); }
+  .logo { font-size:17px; font-weight:700; letter-spacing:-0.5px; } .logo span { color:var(--amber); }
+  .sidebar-badge { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; padding:2px 8px; border-radius:20px; margin-top:8px; background:var(--amber-dim); color:var(--amber); border:1px solid rgba(245,158,11,.25); }
+  .sidebar-body { flex:1; overflow-y:auto; padding:16px; }
+  .ctx-block, .qr-sidebar-card { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-bottom:14px; }
+  .ctx-label, .section-title { font-size:10px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:var(--muted); }
+  .ctx-label { margin-bottom:8px; } .section-title { font-size:11px; margin:18px 0 10px; padding-left:2px; }
+  .ctx-row { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .ctx-key { font-size:12px; color:var(--muted); } .ctx-val { font-size:12px; font-weight:600; color:var(--text); text-align:right; max-width:60%; }
+  .ctx-val.amber { color:var(--amber); } .ctx-val.up { color:var(--green); } .ctx-val.down { color:var(--red); }
+  .suggestion-btn { width:100%; text-align:left; padding:10px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); color:var(--text); font-family:inherit; font-size:12px; cursor:pointer; transition:all .15s; margin-bottom:6px; line-height:1.45; display:flex; align-items:flex-start; gap:8px; }
+  .suggestion-btn:hover { border-color:var(--amber); color:var(--amber); background:var(--amber-dim); }
+  .suggestion-btn[disabled] { opacity:.45; cursor:default; }
+  .suggestion-btn .sq-icon { flex-shrink:0; margin-top:1px; color:var(--muted); } .suggestion-btn:hover .sq-icon { color:var(--amber); }
+  .sidebar-footer { padding:14px 16px; border-top:1px solid var(--border); }
+  .back-link { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); text-decoration:none; transition:color .15s; }
+  .back-link:hover { color:var(--amber); }
+  .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+  .top-bar { height:56px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:1px solid var(--border); background:var(--surface); }
+  .top-bar-left { display:flex; align-items:center; gap:12px; } .top-bar-title { font-size:14px; font-weight:600; } .top-bar-sub { font-size:12px; color:var(--muted); }
+  .status-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; } @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .messages { flex:1; overflow-y:auto; padding:32px 24px; display:flex; flex-direction:column; gap:24px; }
+  .msg { display:flex; gap:14px; max-width:820px; } .msg.user { flex-direction:row-reverse; align-self:flex-end; } .msg.assistant { align-self:flex-start; }
+  .avatar { width:34px; height:34px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+  .avatar.user-av { background:var(--border2); color:var(--muted); } .avatar.ai-av { background:var(--amber-dim); border:1px solid rgba(245,158,11,.3); color:var(--amber); }
+  .bubble { padding:14px 17px; border-radius:var(--radius-lg); font-size:14px; line-height:1.65; max-width:100%; }
+  .msg.user .bubble { background:var(--surface3); border:1px solid var(--border2); border-top-right-radius:4px; } .msg.assistant .bubble { background:var(--surface); border:1px solid var(--border); border-top-left-radius:4px; }
+  .bubble p { margin-bottom:10px; } .bubble p:last-child { margin-bottom:0; } .bubble strong { color:var(--amber); font-weight:600; } .bubble .num { font-family:'DM Mono', monospace; color:var(--amber); }
+  .bubble ul { padding-left:18px; margin:8px 0; } .bubble ul li { margin-bottom:5px; }
+  .data-card { margin:12px 0; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+  .data-card-header { padding:8px 14px; border-bottom:1px solid var(--border); font-size:11px; font-weight:600; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; justify-content:space-between; }
+  .data-card-body { padding:12px 14px; } .data-row { display:flex; justify-content:space-between; align-items:baseline; padding:5px 0; border-bottom:1px solid var(--border); font-size:13px; }
+  .data-row:last-child { border-bottom:none; } .data-row .dk { color:var(--muted); } .data-row .dv { font-weight:600; font-family:'DM Mono', monospace; }
+  .data-row .dv.amber { color:var(--amber); } .data-row .dv.blue { color:var(--blue); } .data-row .dv.green { color:var(--green); } .data-row .dv.red { color:var(--red); }
+  .msg-time { font-size:11px; color:var(--subtle); margin-top:6px; padding:0 2px; } .msg.user .msg-time { text-align:right; }
+  .typing-bubble { padding:14px 17px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); border-top-left-radius:4px; display:flex; align-items:center; gap:5px; }
+  .dot { width:7px; height:7px; border-radius:50%; background:var(--muted); animation:bounce 1.2s infinite; } .dot:nth-child(2){animation-delay:.2s;} .dot:nth-child(3){animation-delay:.4s;} @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+  .input-area { flex-shrink:0; padding:16px 24px 20px; border-top:1px solid var(--border); background:var(--surface); }
+  .input-wrap { display:flex; align-items:flex-end; gap:10px; background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-lg); padding:10px 12px 10px 16px; transition:border-color .15s; }
+  .input-wrap:focus-within { border-color:var(--amber); }
+  textarea { flex:1; background:transparent; border:none; outline:none; resize:none; color:var(--text); font-family:'DM Sans', sans-serif; font-size:14px; line-height:1.5; max-height:120px; min-height:22px; }
+  textarea::placeholder { color:var(--muted); }
+  .send-btn { width:34px; height:34px; border-radius:8px; flex-shrink:0; background:var(--amber); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:#07090f; transition:opacity .15s; }
+  .send-btn:hover { opacity:.85; } .send-btn:disabled { opacity:.35; cursor:default; }
+  .input-hint { font-size:11px; color:var(--subtle); margin-top:8px; text-align:center; }
+  ::-webkit-scrollbar { width:5px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+  .qr-sidebar-card .ctx-label { margin-bottom:10px; } .qr-canvases { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; }
+  .qr-item { display:flex; flex-direction:column; align-items:center; gap:5px; } .qr-item-label { font-size:10px; color:var(--muted); text-align:center; }
+  .qr-wrap { width:80px; height:80px; background:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .tweaks-panel { display:none; position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius-lg); padding:18px 20px; width:240px; z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.5); }
+  .tweaks-panel.visible { display:block; } .tweaks-title { font-size:12px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  .tweak-row { margin-bottom:6px; } .tweak-row label { font-size:12px; color:var(--muted); display:block; margin-bottom:8px; }
+  .domain-presets { display:flex; flex-direction:column; gap:6px; } .domain-preset-btn { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:12px; font-weight:500; cursor:pointer; transition:all .15s; }
+  .domain-preset-btn.active { border-color:currentColor; } .domain-swatch { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  @media (max-width: 700px) { html, body { overflow:auto; } .sidebar { display:none; } .app, .main { min-height:100vh; height:auto; } .messages { padding:20px 16px; } .input-area { padding:12px 16px 16px; } }
+</style>
 </head>
 <body>
-  <div class="shell">
-    <section class="panel hero">
-      <div class="eyebrow">Ask the dashboard</div>
-      <h1>Ask the numbers in front of you.</h1>
-      <p class="hero-copy">This chat stays anchored to the dashboard you opened, so follow-up questions stay clear, relevant, and grounded in the same view everyone is discussing.</p>
-      <div class="meta-grid">
-        <div class="meta-card">
-          <span class="meta-label">Company</span>
-          <div class="meta-value" id="tenantName">—</div>
-        </div>
-        <div class="meta-card">
-          <span class="meta-label">Dashboard</span>
-          <div class="meta-value" id="dashboardTitle">—</div>
-        </div>
-        <div class="meta-card">
-          <span class="meta-label">Current view</span>
-          <div class="meta-value" id="contextState">Preparing this dashboard view…</div>
-        </div>
-        <div class="meta-card">
-          <span class="meta-label">Latest update</span>
-          <div class="meta-value" id="refreshState">—</div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">dela<span>.</span></div>
+      <div class="sidebar-badge">Oil Price Outlook</div>
+    </div>
+    <div class="sidebar-body">
+      <div class="ctx-block">
+        <div class="ctx-label">Live data context</div>
+        <div class="ctx-row"><span class="ctx-key">Dashboard</span><span class="ctx-val amber" id="ctxDashboardName">Oil Price Outlook</span></div>
+        <div class="ctx-row"><span class="ctx-key">Source</span><span class="ctx-val">EIA STEO</span></div>
+        <div class="ctx-row"><span class="ctx-key">Updated</span><span class="ctx-val" id="ctxUpdated">—</span></div>
+        <div class="ctx-row"><span class="ctx-key">Brent latest</span><span class="ctx-val up" id="ctxBrent">—</span></div>
+        <div class="ctx-row"><span class="ctx-key">WTI latest</span><span class="ctx-val up" id="ctxWti">—</span></div>
+        <div class="ctx-row"><span class="ctx-key">3m avg forecast</span><span class="ctx-val down" id="ctxForecast">—</span></div>
+        <div class="ctx-row"><span class="ctx-key">Projected trend</span><span class="ctx-val down" id="ctxTrend">—</span></div>
+      </div>
+      <div class="section-title">Suggested questions</div>
+      <button class="suggestion-btn"><svg class="sq-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M7 4.5v3l2 1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span class="sq-text">What's driving the spike in March–April 2026?</span></button>
+      <button class="suggestion-btn"><svg class="sq-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 11L5 7.5l3 2.5 4-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sq-text">How does the 3-month forecast compare to last year's average?</span></button>
+      <button class="suggestion-btn"><svg class="sq-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M3 6l4-4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sq-text">Is the Brent–WTI spread widening or narrowing?</span></button>
+      <button class="suggestion-btn"><svg class="sq-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="2" y="3" width="10" height="8" rx="1.2" stroke="currentColor" stroke-width="1.4"/><path d="M4 6.5h6M4 8.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span class="sq-text">What budget assumption should we use for Q3 2026?</span></button>
+      <button class="suggestion-btn"><svg class="sq-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 4H8M6 4H3M11 7H7M5 7H3M11 10H9M7 10H3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span class="sq-text">Summarise the outlook in 3 bullet points for an executive briefing.</span></button>
+      <div class="section-title">Scan to share</div>
+      <div class="qr-sidebar-card">
+        <div class="ctx-label">Mobile access</div>
+        <div class="qr-canvases">
+          <div class="qr-item"><div class="qr-wrap"><img id="qr-dash-small" alt="Dashboard QR" width="80" height="80"></div><div class="qr-item-label">Dashboard</div></div>
+          <div class="qr-item"><div class="qr-wrap"><img id="qr-chat-small" alt="Chat QR" width="80" height="80"></div><div class="qr-item-label">This chat</div></div>
         </div>
       </div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <h2>Overview</h2>
-        <span class="tiny">Use this page for quick follow-up questions during a walkthrough or review.</span>
+    </div>
+    <div class="sidebar-footer"><a id="backLink" href="#" class="back-link"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 3L4.5 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Back to dashboard</a></div>
+  </aside>
+  <div class="main">
+    <div class="top-bar">
+      <div class="top-bar-left"><div class="status-dot"></div><div><div class="top-bar-title">Ask the data</div><div class="top-bar-sub" id="topBarSub">Oil Price Outlook · EIA STEO · —</div></div></div>
+      <div style="font-size:11px;color:var(--subtle)">Grounded in live dashboard data</div>
+    </div>
+    <div class="messages" id="messages"></div>
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="chat-input" placeholder="Ask about oil prices, trends, or procurement…" rows="1"></textarea>
+        <button class="send-btn" id="send-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 2.5L7 9M13.5 2.5L9 14l-2-5-5-2 11.5-4.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </div>
-      <div class="button-row">
-        <a id="openDashboardLink" class="button secondary" href="#">Back to dashboard</a>
-      </div>
-      <div id="statusBox" class="status">Getting this dashboard ready for questions…</div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <h2>Suggested questions</h2>
-        <span class="tiny">Start with a prompt that matches the story already on screen.</span>
-      </div>
-      <div id="suggestedQuestions" class="chip-row"></div>
-    </section>
-
-    <section class="panel section">
-      <div class="section-head">
-        <h2>Conversation</h2>
-        <span class="tiny">Answers stay grounded in this dashboard and point back to the visible evidence.</span>
-      </div>
-      <div id="messages" class="message-list"></div>
-      <form id="composerForm" class="composer" novalidate>
-        <textarea id="questionInput" placeholder="Ask what changed, compare the series, explain the spread, or ask what matters most."></textarea>
-        <div class="button-row">
-          <button class="button primary" type="submit">Ask this dashboard</button>
-          <button id="seedQuestionButton" class="button secondary" type="button">Try the first suggested question</button>
-        </div>
-      </form>
-      <div class="footer-note">Answers stay tied to this dashboard view and cite the relevant source panels where possible.</div>
-    </section>
+      <div class="input-hint">Answers are grounded in the live dashboard context · Always verify before financial decisions</div>
+    </div>
   </div>
-
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const tenantId = params.get('tenant') || 'acme-sample';
-    const dashboardId = params.get('dashboard') || 'oil-prices';
-    const initialFilters = {
-      series: params.get('series') || 'Brent',
-      range: params.get('range') || '24',
-      mode: params.get('mode') || 'single',
-    };
-    const configuredApiBase = (window.DATA_CHAT_CONFIG && window.DATA_CHAT_CONFIG.apiBaseUrl) || '';
-    const storedApiBase = localStorage.getItem('dashboardChatApiBase') || '';
-    const queryApiBase = params.get('api') || '';
-    let apiBase = queryApiBase || storedApiBase || configuredApiBase;
-    let currentSessionId = null;
-    let suggestedQuestions = [];
-    let resolvedDashboardUrl = null;
-
-    const elements = {
-      openDashboardLink: document.getElementById('openDashboardLink'),
-      tenantName: document.getElementById('tenantName'),
-      dashboardTitle: document.getElementById('dashboardTitle'),
-      contextState: document.getElementById('contextState'),
-      refreshState: document.getElementById('refreshState'),
-      suggestedQuestions: document.getElementById('suggestedQuestions'),
-      messages: document.getElementById('messages'),
-      statusBox: document.getElementById('statusBox'),
-      composerForm: document.getElementById('composerForm'),
-      questionInput: document.getElementById('questionInput'),
-      seedQuestionButton: document.getElementById('seedQuestionButton'),
-    };
-
-    function setStatus(message, tone = '') {
-      elements.statusBox.textContent = message;
-      elements.statusBox.className = `status${tone ? ` ${tone}` : ''}`;
+</div>
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-title">Tweaks</div>
+  <div class="tweak-row"><label>Data domain</label><div class="domain-presets">
+    <button class="domain-preset-btn active" data-color="#f59e0b" style="color:#f59e0b" onclick="setDomain(this)"><span class="domain-swatch" style="background:#f59e0b"></span>Oil &amp; Gas</button>
+    <button class="domain-preset-btn" data-color="#60a5fa" style="color:#60a5fa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#60a5fa"></span>Financial Markets</button>
+    <button class="domain-preset-btn" data-color="#34d399" style="color:#34d399" onclick="setDomain(this)"><span class="domain-swatch" style="background:#34d399"></span>Climate &amp; Energy</button>
+    <button class="domain-preset-btn" data-color="#a78bfa" style="color:#a78bfa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#a78bfa"></span>Healthcare</button>
+    <button class="domain-preset-btn" data-color="#fb923c" style="color:#fb923c" onclick="setDomain(this)"><span class="domain-swatch" style="background:#fb923c"></span>Logistics</button>
+  </div></div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const tenantId = params.get('tenant') || 'acme-sample';
+const dashboardId = params.get('dashboard') || 'oil-prices';
+const initialFilters = { series: params.get('series') || 'Brent', range: params.get('range') || '24', mode: params.get('mode') || 'single' };
+const configuredApiBase = (window.DATA_CHAT_CONFIG && window.DATA_CHAT_CONFIG.apiBaseUrl) || '';
+const storedApiBase = localStorage.getItem('dashboardChatApiBase') || '';
+const queryApiBase = params.get('api') || '';
+const apiBase = (queryApiBase || storedApiBase || configuredApiBase).trim().replace(/\/$/, '');
+let currentSessionId = null;
+let suggestedQuestions = [];
+let resolvedDashboardUrl = null;
+let busy = false;
+const els = {
+  messages: document.getElementById('messages'), input: document.getElementById('chat-input'), send: document.getElementById('send-btn'), back: document.getElementById('backLink'),
+  sidebarBadge: document.querySelector('.sidebar-badge'), topBarSub: document.getElementById('topBarSub'), suggestionButtons: Array.from(document.querySelectorAll('.suggestion-btn')),
+  ctxDashboardName: document.getElementById('ctxDashboardName'), ctxUpdated: document.getElementById('ctxUpdated'), ctxBrent: document.getElementById('ctxBrent'), ctxWti: document.getElementById('ctxWti'), ctxForecast: document.getElementById('ctxForecast'), ctxTrend: document.getElementById('ctxTrend')
+};
+function setDomain(btn) { const color = btn.dataset.color; document.querySelectorAll('.domain-preset-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.documentElement.style.setProperty('--amber', color); document.documentElement.style.setProperty('--amber-dim', color + '1a'); window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { accentColor: color, domain: btn.textContent.trim() } }, '*'); }
+window.addEventListener('message', e => { if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('visible'); if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible'); });
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+function escapeHtml(text) { return String(text).replace(/[&<>"']/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch])); }
+function now() { return new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' }); }
+function nl2html(text) { return String(text).split(/\n\n+/).map(p => p.trim().startsWith('- ') ? `<ul>${p.split('\n').filter(Boolean).map(i => `<li>${escapeHtml(i.replace(/^[-•]\s*/, ''))}</li>`).join('')}</ul>` : `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`).join(''); }
+function appendMsg(role, html, timeStr) { const isUser = role === 'user'; const div = document.createElement('div'); div.className = `msg ${role}`; div.innerHTML = `<div class="avatar ${isUser ? 'user-av' : 'ai-av'}">${isUser ? 'U' : 'd'}</div><div><div class="bubble">${html}</div><div class="msg-time">${timeStr || now()}</div></div>`; els.messages.appendChild(div); els.messages.scrollTop = els.messages.scrollHeight; return div; }
+function showTyping() { const div = document.createElement('div'); div.className = 'msg assistant'; div.id = 'typing-indicator'; div.innerHTML = `<div class="avatar ai-av">d</div><div><div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`; els.messages.appendChild(div); els.messages.scrollTop = els.messages.scrollHeight; }
+function removeTyping() { const el = document.getElementById('typing-indicator'); if (el) el.remove(); }
+function setBusy(next) { busy = next; els.send.disabled = next; els.suggestionButtons.forEach(btn => btn.disabled = next); }
+function titleCase(value) { return String(value || '').split(/[-_\s]+/).filter(Boolean).map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' '); }
+function describeFilters(filters) { const bits = []; if (filters.series) bits.push(filters.series); if (filters.range) bits.push(`${filters.range}-month view`); if (filters.mode) bits.push(titleCase(filters.mode)); return bits.join(' · ') || 'Current dashboard view'; }
+function buildDashboardUrl() { const source = params.get('source'); const fallback = source && source !== '.' && source !== './' ? source : (resolvedDashboardUrl || '../oil-prices/'); const url = new URL(fallback, window.location.href); url.searchParams.set('chat', '1'); url.searchParams.set('tenant', tenantId); url.searchParams.set('dashboard', dashboardId); return url.toString(); }
+function generateQR(imgId, url) { const encoded = encodeURIComponent(url); const el = document.getElementById(imgId); if (el) el.src = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encoded}&bgcolor=0e1420&color=f59e0b&margin=4&format=png`; }
+async function postJson(path, payload) { const response = await fetch(`${apiBase}${path}`, { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify(payload) }); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`); return data; }
+function updateChrome(session, context) {
+  const refresh = context.generated_at || 'Latest available date';
+  els.sidebarBadge.textContent = session.dashboard_title || 'Oil Price Outlook';
+  els.topBarSub.textContent = `${session.dashboard_title || 'Oil Price Outlook'} · EIA STEO · ${refresh}`;
+  els.ctxDashboardName.textContent = session.dashboard_title || 'Oil Price Outlook';
+  els.ctxUpdated.textContent = refresh;
+  els.back.href = buildDashboardUrl(); els.back.target = '_blank'; els.back.rel = 'noopener noreferrer';
+  generateQR('qr-dash-small', buildDashboardUrl()); generateQR('qr-chat-small', window.location.href);
+  if (context.summary && context.summary.Brent && context.summary.WTI) {
+    const brent = context.summary.Brent, wti = context.summary.WTI;
+    els.ctxBrent.textContent = `$${Number(brent.latest_actual_value).toFixed(2)}`;
+    els.ctxWti.textContent = `$${Number(wti.latest_actual_value).toFixed(2)}`;
+    els.ctxForecast.textContent = `$${Number(brent.forecast_average_3m).toFixed(2)}`;
+    els.ctxTrend.textContent = Number(brent.forecast_change_3m) < 0 ? '↓ Cooling' : '↑ Rising';
+    els.ctxTrend.className = `ctx-val ${Number(brent.forecast_change_3m) < 0 ? 'down' : 'up'}`;
+    const snapshot = els.messages.querySelector('.data-card');
+    if (snapshot) {
+      snapshot.querySelector('.data-card-header span:last-child').textContent = `${brent.latest_actual_period} actual`;
+      const values = snapshot.querySelectorAll('.data-row .dv');
+      if (values[0]) values[0].textContent = `$${Number(brent.latest_actual_value).toFixed(2)} / bbl`;
+      if (values[1]) values[1].textContent = `$${Number(wti.latest_actual_value).toFixed(2)} / bbl`;
+      if (values[2]) values[2].textContent = `$${(Number(brent.latest_actual_value) - Number(wti.latest_actual_value)).toFixed(2)}`;
+      if (values[3]) values[3].textContent = `$${Number(brent.forecast_average_3m).toFixed(2)} (Brent)`;
     }
-
-    function renderMessage(role, title, body) {
-      const card = document.createElement('div');
-      card.className = `message ${role}`;
-      card.innerHTML = `<div class="message-meta">${title}</div><div>${body}</div>`;
-      elements.messages.appendChild(card);
-      card.scrollIntoView({ block: 'end', behavior: 'smooth' });
-    }
-
-    function normalizeApiBase(value) {
-      return value.trim().replace(/\/$/, '');
-    }
-
-    function titleCase(value) {
-      return String(value || '')
-        .split(/[-_\s]+/)
-        .filter(Boolean)
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(' ');
-    }
-
-    function describeFilters(filters) {
-      const bits = [];
-      if (filters.series) bits.push(filters.series);
-      if (filters.range) bits.push(`${filters.range}-month view`);
-      if (filters.mode) bits.push(titleCase(filters.mode));
-      return bits.join(' · ') || 'Current dashboard view';
-    }
-
-    function buildDashboardUrl() {
-      const source = params.get('source');
-      const fallback = source && source !== '.' && source !== './'
-        ? source
-        : (resolvedDashboardUrl || '../oil-prices/');
-      const url = new URL(fallback, window.location.href);
-      url.searchParams.set('chat', '1');
-      url.searchParams.set('tenant', tenantId);
-      url.searchParams.set('dashboard', dashboardId);
-      return url.toString();
-    }
-
-    async function postJson(path, payload) {
-      const response = await fetch(`${apiBase}${path}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(data.error || `Request failed (${response.status})`);
-      }
-      return data;
-    }
-
-    function renderSuggestedQuestions() {
-      elements.suggestedQuestions.innerHTML = '';
-      suggestedQuestions.forEach(question => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'chip';
-        button.textContent = question;
-        button.addEventListener('click', () => {
-          elements.questionInput.value = question;
-          elements.questionInput.focus();
-        });
-        elements.suggestedQuestions.appendChild(button);
-      });
-    }
-
-    async function bootSession() {
-      if (!apiBase) {
-        setStatus('This chat is not connected yet. Please open it from the live dashboard link or QR code.', 'bad');
-        return;
-      }
-      setStatus('Loading the latest dashboard context…');
-      const context = await postJson('/api/context', {
-        tenant_id: tenantId,
-        dashboard_id: dashboardId,
-      });
-      const session = await postJson('/api/chat/session', {
-        tenant_id: tenantId,
-        dashboard_id: dashboardId,
-        filters: initialFilters,
-      });
-      currentSessionId = session.session_id;
-      suggestedQuestions = session.suggested_questions || context.suggested_questions || [];
-      resolvedDashboardUrl = session.dashboard_url || context.dashboard_url || resolvedDashboardUrl;
-      elements.tenantName.textContent = session.tenant_name || tenantId;
-      elements.dashboardTitle.textContent = session.dashboard_title || dashboardId;
-      elements.contextState.textContent = describeFilters(session.filters || {});
-      elements.refreshState.textContent = `${session.refresh_label || 'Dashboard update'} · ${context.generated_at || 'Latest available date'}`;
-      elements.openDashboardLink.href = buildDashboardUrl();
-      renderSuggestedQuestions();
-      renderMessage('assistant', 'Ready', `You are viewing ${session.dashboard_title}. Ask for a quick summary, compare the series, or ask what matters most in this view.`);
-      setStatus('Ready. Ask a question about this dashboard view.', 'good');
-    }
-
-    async function askQuestion(question) {
-      if (!currentSessionId) {
-        throw new Error('This page is still getting ready. Please try again in a moment.');
-      }
-      renderMessage('user', 'Question', question);
-      setStatus('Looking through this dashboard view…');
-      const answer = await postJson('/api/chat/ask', {
-        session_id: currentSessionId,
-        question,
-      });
-      const answerText = String(answer.answer || '');
-      const alreadyCitesPanels = /source panels:/i.test(answerText);
-      const citations = !alreadyCitesPanels && Array.isArray(answer.citations) && answer.citations.length
-        ? `Source panels: ${answer.citations.join(', ')}.`
-        : '';
-      const body = [
-        answerText,
-        citations,
-      ].filter(Boolean).join('\n\n');
-      renderMessage('assistant', 'Answer', body);
-      setStatus('Answer ready.', 'good');
-    }
-
-    elements.composerForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      const question = elements.questionInput.value.trim();
-      if (!question) {
-        setStatus('Ask a question first.', 'bad');
-        return;
-      }
-      elements.questionInput.value = '';
-      try {
-        await askQuestion(question);
-      } catch (error) {
-        setStatus(error.message, 'bad');
-      }
-    });
-
-    elements.seedQuestionButton.addEventListener('click', () => {
-      if (suggestedQuestions.length) {
-        elements.questionInput.value = suggestedQuestions[0];
-        elements.questionInput.focus();
-      }
-    });
-
-    elements.openDashboardLink.href = buildDashboardUrl();
-    elements.openDashboardLink.target = '_blank';
-    elements.openDashboardLink.rel = 'noopener noreferrer';
-
-    bootSession().catch(error => {
-      setStatus(error.message, 'bad');
-    });
-  </script>
+  }
+}
+function renderSuggestedQuestions() {
+  const defaults = [
+    "What's driving the spike in March–April 2026?",
+    "How does the 3-month forecast compare to last year's average?",
+    "Is the Brent–WTI spread widening or narrowing?",
+    "What budget assumption should we use for Q3 2026?",
+    "Summarise the outlook in 3 bullet points for an executive briefing."
+  ];
+  const questions = suggestedQuestions.length ? suggestedQuestions : defaults;
+  els.suggestionButtons.forEach((btn, index) => {
+    const textNode = btn.querySelector('.sq-text');
+    const value = questions[index] || defaults[index] || '';
+    if (textNode) textNode.textContent = value;
+    btn.onclick = () => sendSuggestion(value);
+  });
+}
+async function bootSession() {
+  if (!apiBase) throw new Error('This chat is not connected yet. Open it from the live dashboard link or QR code.');
+  const context = await postJson('/api/context', { tenant_id: tenantId, dashboard_id: dashboardId });
+  const session = await postJson('/api/chat/session', { tenant_id: tenantId, dashboard_id: dashboardId, filters: initialFilters });
+  currentSessionId = session.session_id;
+  suggestedQuestions = session.suggested_questions || context.suggested_questions || [];
+  resolvedDashboardUrl = session.dashboard_url || context.dashboard_url || null;
+  updateChrome(session, context);
+  renderSuggestedQuestions();
+}
+async function sendMessage(text) {
+  if (busy) return;
+  const msg = String(text || els.input.value || '').trim();
+  if (!msg) return;
+  els.input.value = ''; autoResize(els.input); setBusy(true); appendMsg('user', `<p>${escapeHtml(msg)}</p>`); showTyping();
+  try {
+    if (!currentSessionId) throw new Error('This page is still getting ready. Please try again in a moment.');
+    const answer = await postJson('/api/chat/ask', { session_id: currentSessionId, question: msg });
+    removeTyping();
+    const answerText = String(answer.answer || '');
+    const alreadyCitesPanels = /source panels:/i.test(answerText);
+    const citations = !alreadyCitesPanels && Array.isArray(answer.citations) && answer.citations.length ? `Source panels: ${answer.citations.join(', ')}.` : '';
+    appendMsg('assistant', nl2html([answerText, citations].filter(Boolean).join('\n\n')));
+  } catch (err) {
+    removeTyping();
+    appendMsg('assistant', `<p>${escapeHtml(err.message || 'Sorry, I could not reach the AI service right now.')}</p>`);
+  } finally {
+    setBusy(false);
+  }
+}
+function sendSuggestion(text) { if (!text) return; els.input.value = text; autoResize(els.input); sendMessage(text); }
+els.input.addEventListener('input', () => autoResize(els.input));
+els.input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+els.send.addEventListener('click', () => sendMessage());
+els.messages.innerHTML = '';
+appendMsg('assistant', `<p>Hello. I’m your data assistant for the <strong>Oil Price Outlook</strong> dashboard.</p><p>I stay anchored to the dashboard view you opened, so questions remain grounded in the same visible evidence, forecast path, and benchmark context.</p><div class="data-card"><div class="data-card-header"><span>Current snapshot</span><span style="color:var(--amber);font-size:10px">Loading latest data</span></div><div class="data-card-body"><div class="data-row"><span class="dk">Brent crude</span><span class="dv amber">—</span></div><div class="data-row"><span class="dk">WTI crude</span><span class="dv blue">—</span></div><div class="data-row"><span class="dk">Brent–WTI spread</span><span class="dv">—</span></div><div class="data-row"><span class="dk">3-month avg forecast</span><span class="dv red">—</span></div></div></div><p>Ask about price levels, spreads, trends, timing, or what matters most right now.</p>`);
+bootSession().catch(error => appendMsg('assistant', `<p>${escapeHtml(error.message)}</p>`));
+</script>
 </body>
 </html>

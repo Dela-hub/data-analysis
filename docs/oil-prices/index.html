@@ -1,301 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Oil Price Outlook</title>
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-  <style>
-    :root { --bg:#071321; --panel:#0f1c31; --panel2:#132540; --line:#25466d; --text:#f4f7ff; --muted:#9fb0ca; --accent:#59a5ff; --accent2:#ffb84d; --good:#34d399; --bad:#f87171; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family: Inter, Arial, sans-serif; background: radial-gradient(circle at top, #14325c, #071321 58%); color:var(--text); }
-    .wrap { max-width:1280px; margin:0 auto; padding:24px; }
-    .hero, .controls, .cards, .grid, .story-grid { display:grid; gap:16px; }
-    .hero { grid-template-columns: 1.6fr 1fr; align-items:stretch; }
-    .controls { grid-template-columns: repeat(4, minmax(0,1fr)); margin:18px 0; }
-    .cards { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); margin-bottom:18px; }
-    .grid { grid-template-columns: 1.7fr 1fr; }
-    .story-grid { grid-template-columns: 1fr 1fr; margin-top:16px; }
-    .panel { background:rgba(15,28,49,.93); border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:18px; box-shadow:0 22px 50px rgba(0,0,0,.28); }
-    .panel.highlight { background:linear-gradient(180deg, rgba(19,37,64,.96), rgba(10,22,38,.96)); }
-    h1,h2,h3 { margin:0; }
-    p { color:var(--muted); line-height:1.5; }
-    label { color:var(--muted); font-size:.84rem; display:block; margin-bottom:8px; }
-    select, .button { width:100%; padding:12px 14px; border-radius:14px; background:#081425; color:var(--text); border:1px solid rgba(255,255,255,.14); }
-    .button { cursor:pointer; text-align:center; text-decoration:none; display:inline-block; font-weight:600; transition:.2s ease; }
-    .button:hover { transform:translateY(-1px); border-color:rgba(255,255,255,.24); }
-    .button.primary { background:linear-gradient(180deg,#1b4f87,#143e69); }
-    .button.secondary { background:#0a1627; }
-    .metric { color:var(--muted); font-size:.83rem; margin-bottom:8px; }
-    .value { font-weight:800; font-size:2rem; letter-spacing:-.02em; }
-    .sub { color:var(--muted); margin-top:6px; font-size:.92rem; }
-    .pill-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:12px; }
-    .pill { display:inline-block; padding:7px 12px; border-radius:999px; background:rgba(89,165,255,.14); color:#d6e7ff; font-size:.84rem; border:1px solid rgba(89,165,255,.2); }
-    .delta.up { color:var(--good); }
-    .delta.down { color:var(--bad); }
-    table { width:100%; border-collapse:collapse; }
-    th, td { padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
-    th { color:var(--muted); font-size:.84rem; }
-    #trendChart, #forecastChart, #spreadChart { min-height:380px; }
-    .headline { font-size:1.08rem; color:var(--text); margin:8px 0 4px; }
-    .story { color:var(--muted); min-height:60px; }
-    .foot { color:var(--muted); font-size:.82rem; margin-top:10px; }
-    @media (max-width: 1024px) { .controls, .hero, .grid, .story-grid { grid-template-columns:1fr; } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oil Price Outlook — EIA STEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#07090f; --surface:#0e1420; --surface2:#141c2e; --surface3:#182338; --border:#1e2a40; --border2:#253550;
+    --amber:#f59e0b; --amber-dim:rgba(245,158,11,0.12); --blue:#60a5fa; --green:#34d399; --red:#f87171;
+    --text:#e8edf5; --muted:#7b8fae; --subtle:#3d4f6a; --radius:10px; --radius-lg:16px;
+  }
+  html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.5; min-height: 100vh; }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:0 28px; height:56px; border-bottom:1px solid var(--border); background:var(--surface); position:sticky; top:0; z-index:100; }
+  .nav-left { display:flex; align-items:center; gap:20px; } .nav-right { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
+  .logo { font-size:18px; font-weight:700; letter-spacing:-0.5px; } .logo span { color:var(--amber); }
+  .nav-title { font-size:13px; font-weight:500; color:var(--muted); padding-left:20px; border-left:1px solid var(--border2); }
+  .badge { font-size:11px; font-weight:600; letter-spacing:.5px; padding:3px 9px; border-radius:20px; border:1px solid var(--border2); color:var(--muted); text-transform:uppercase; }
+  .badge-amber { border-color:var(--amber); color:var(--amber); background:var(--amber-dim); }
+  .updated { font-size:12px; color:var(--muted); }
+  .chat-btn { display:flex; align-items:center; gap:7px; background:var(--amber); color:#07090f; font-size:13px; font-weight:600; padding:7px 15px; border-radius:var(--radius); text-decoration:none; transition:opacity .15s; }
+  .chat-btn:hover { opacity:.85; }
+  .page { max-width:1400px; margin:0 auto; padding:28px 28px 60px; }
+  .filter-bar { display:flex; align-items:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+  .filter-label { font-size:12px; color:var(--muted); font-weight:500; margin-right:4px; }
+  .filter-group { display:flex; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+  .filter-btn { padding:6px 14px; font-size:13px; font-weight:500; color:var(--muted); background:transparent; border:none; cursor:pointer; transition:all .15s; font-family:inherit; }
+  .filter-btn:not(:last-child) { border-right:1px solid var(--border); } .filter-btn.active { color:var(--amber); background:var(--amber-dim); } .filter-btn:hover:not(.active) { color:var(--text); }
+  .filter-sep { width:1px; height:28px; background:var(--border); margin:0 6px; align-self:center; }
+  .headline-row { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:24px; gap:12px; flex-wrap:wrap; }
+  .headline h1 { font-size:28px; font-weight:700; letter-spacing:-0.8px; color:var(--text); line-height:1.2; }
+  .headline p { font-size:13px; color:var(--muted); margin-top:6px; max-width:560px; }
+  .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  @media (max-width: 900px) { .kpi-strip { grid-template-columns:repeat(2,1fr); } }
+  .kpi-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px 22px; position:relative; overflow:hidden; }
+  .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--amber); opacity:.5; }
+  .kpi-card.highlight::before { opacity:1; }
+  .kpi-label { font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .kpi-value { font-size:32px; font-weight:700; letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums; }
+  .kpi-value span { font-size:16px; font-weight:400; color:var(--muted); margin-left:2px; }
+  .kpi-delta { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; margin-top:8px; padding:3px 8px; border-radius:20px; }
+  .kpi-delta.up { color:var(--green); background:rgba(52,211,153,.1); } .kpi-delta.down { color:var(--red); background:rgba(248,113,113,.1); }
+  .kpi-sub { font-size:11px; color:var(--muted); margin-top:6px; }
+  .chart-card, .brief-card, .qr-card, .table-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
+  .chart-card { padding:24px 24px 20px; margin-bottom:20px; }
+  .chart-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; gap:12px; flex-wrap:wrap; }
+  .chart-header h2 { font-size:15px; font-weight:600; color:var(--text); } .chart-header p { font-size:12px; color:var(--muted); margin-top:3px; }
+  .chart-legend { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--muted); }
+  .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; } .legend-dash { width:20px; height:2px; border-top:2px dashed currentColor; flex-shrink:0; }
+  .chart-wrap { position:relative; }
+  .chart-row, .brief-grid, .qr-section { display:grid; gap:20px; margin-bottom:20px; }
+  .chart-row { grid-template-columns:1fr 1fr; } .brief-grid { grid-template-columns:1fr 1fr 1fr; gap:12px; } .qr-section { grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width: 800px) { .chart-row, .brief-grid { grid-template-columns:1fr; } }
+  @media (max-width: 700px) { .qr-section { grid-template-columns:1fr; } nav { padding:0 16px; height:auto; min-height:56px; } .page { padding:20px 16px 40px; } }
+  .table-card { overflow:hidden; margin-bottom:20px; }
+  .table-card-header { padding:18px 24px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .table-card-header h2 { font-size:15px; font-weight:600; } .table-card-header p { font-size:12px; color:var(--muted); margin-top:2px; }
+  table { width:100%; border-collapse:collapse; }
+  th { font-size:11px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); padding:12px 24px; text-align:left; border-bottom:1px solid var(--border); background:var(--surface2); }
+  th:not(:first-child), td:not(:first-child) { text-align:right; }
+  td { padding:11px 24px; font-size:13px; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  tr:last-child td { border-bottom:none; } tr:hover td { background:var(--surface2); }
+  .td-period { color:var(--muted); font-weight:500; } .td-amber { color:var(--amber); font-weight:600; } .td-blue { color:var(--blue); font-weight:600; } .td-spread { font-size:12px; color:var(--muted); }
+  .td-tag { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.4px; padding:2px 7px; border-radius:10px; text-transform:uppercase; background:rgba(245,158,11,.1); color:var(--amber); border:1px solid rgba(245,158,11,.2); }
+  .brief-card { padding:20px 22px; }
+  .brief-icon { width:32px; height:32px; border-radius:8px; background:var(--amber-dim); border:1px solid var(--border2); display:flex; align-items:center; justify-content:center; margin-bottom:12px; color:var(--amber); }
+  .brief-card h3 { font-size:13px; font-weight:600; margin-bottom:6px; } .brief-card p { font-size:12px; color:var(--muted); line-height:1.6; }
+  .qr-card { padding:20px 22px; display:flex; align-items:center; gap:20px; }
+  .qr-canvas-wrap { flex-shrink:0; width:100px; height:100px; background:#fff; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .qr-info h3 { font-size:13px; font-weight:600; margin-bottom:5px; } .qr-info p { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:8px; }
+  .qr-link { font-size:12px; color:var(--amber); text-decoration:none; } .qr-link:hover { opacity:.8; }
+  .footer { margin-top:40px; padding-top:20px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .footer p { font-size:12px; color:var(--subtle); } .footer a { color:var(--muted); text-decoration:none; } .footer a:hover { color:var(--amber); }
+  .tweaks-panel { display:none; position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius-lg); padding:18px 20px; width:240px; z-index:999; box-shadow:0 8px 32px rgba(0,0,0,.5); }
+  .tweaks-panel.visible { display:block; } .tweaks-title { font-size:12px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+  .tweak-row { margin-bottom:14px; } .tweak-row label { font-size:12px; color:var(--muted); display:block; margin-bottom:8px; }
+  .domain-presets { display:flex; flex-direction:column; gap:6px; } .domain-preset-btn { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-family:inherit; font-size:12px; font-weight:500; cursor:pointer; transition:all .15s; text-align:left; }
+  .domain-preset-btn.active { border-color:currentColor; } .domain-preset-btn:hover { background:var(--surface3); } .domain-swatch { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  ::-webkit-scrollbar { width:6px; height:6px; } ::-webkit-scrollbar-track { background:var(--bg); } ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div class="panel highlight">
-        <div class="pill">Oil market intelligence</div>
-        <h1 style="margin-top:12px;">Oil prices are projected to cool over the next 3 months</h1>
-        <p>This dashboard is built for real planning use. Track Brent and WTI, change the time horizon, compare benchmarks, inspect the forward curve, and export the underlying dataset. The outlook shown here comes directly from the official EIA Short-Term Energy Outlook.</p>
-        <div class="pill-row">
-          <span class="pill" id="heroRange">Range: all data</span>
-          <span class="pill" id="heroMode">Mode: single benchmark</span>
-          <span class="pill" id="heroUpdated"></span>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="headline">What this means for your planning</div>
-        <div class="story" id="insightText"></div>
-        <div class="foot">Use this view to support procurement timing, pricing discussions, budget assumptions, or hedging conversations. A tailored version can be extended with your own cost, inventory, or regional exposure data.</div>
-      </div>
-    </section>
-
-    <section class="controls">
-      <div class="panel">
-        <label for="seriesSelect">Primary benchmark</label>
-        <select id="seriesSelect"></select>
-      </div>
-      <div class="panel">
-        <label for="rangeSelect">Visible history</label>
-        <select id="rangeSelect">
-          <option value="12">Last 12 months</option>
-          <option value="24" selected>Last 24 months</option>
-          <option value="all">All available months</option>
-        </select>
-      </div>
-      <div class="panel">
-        <label for="modeSelect">View mode</label>
-        <select id="modeSelect">
-          <option value="single" selected>Single benchmark focus</option>
-          <option value="compare">Compare Brent vs WTI</option>
-        </select>
-      </div>
-      <div class="panel">
-        <label>Data access</label>
-        <div style="display:flex; gap:10px;">
-          <a class="button primary" href="./data.json" download>Model JSON</a>
-          <a class="button secondary" href="../../data/derived/oil_prices_steo.csv" download>Source CSV</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="cards">
-      <div class="panel"><div class="metric">Latest available actual</div><div class="value" id="latestActual">—</div><div class="sub" id="latestActualPeriod"></div></div>
-      <div class="panel"><div class="metric">1-month change in actuals</div><div class="value" id="momActual">—</div><div class="sub">Current month versus previous published month</div></div>
-      <div class="panel"><div class="metric">3-month average projection</div><div class="value" id="avgForecast">—</div><div class="sub">Average of the next 3 monthly forecasts</div></div>
-      <div class="panel"><div class="metric">Projected change over 3 months</div><div class="value" id="forecastChange">—</div><div class="sub" id="forecastRange"></div></div>
-    </section>
-
-    <section class="grid">
-      <div class="panel">
-        <h3>Recent spike gives way to a softer summer outlook</h3>
-        <div id="trendChart"></div>
-      </div>
-      <div class="panel">
-        <h3>Forward pricing by month</h3>
-        <div id="forecastChart"></div>
-      </div>
-    </section>
-
-    <section class="story-grid">
-      <div class="panel">
-        <h3>Brent keeps a premium over WTI, but the gap narrows</h3>
-        <div id="spreadChart"></div>
-      </div>
-      <div class="panel">
-        <h3>Forward pricing summary</h3>
-        <table>
-          <thead><tr><th>Month</th><th>Projected price</th><th>Spread vs other</th></tr></thead>
-          <tbody id="forecastTable"></tbody>
-        </table>
-      </div>
-    </section>
+<nav>
+  <div class="nav-left">
+    <div class="logo">dela<span>.</span></div>
+    <div class="nav-title">Oil Price Outlook</div>
   </div>
-  <script>
-    const isValidNumber = value => value !== null && value !== '' && Number.isFinite(Number(value));
-    const PRICE = n => `$${Math.abs(Number(n)).toFixed(2)}`;
-    const PRICE_OR_DASH = n => isValidNumber(n) ? PRICE(n) : '—';
-    const PRICE_SIGNED = n => isValidNumber(n) ? `${Number(n) < 0 ? '-' : '+'}${PRICE(n)}` : '—';
-
-    async function init() {
-      const payload = await fetch('./data.json').then(r => r.json());
-      const summary = payload.summary;
-      const rows = payload.chart_rows;
-      const names = Object.keys(summary);
-      const seriesSelect = document.getElementById('seriesSelect');
-      const rangeSelect = document.getElementById('rangeSelect');
-      const modeSelect = document.getElementById('modeSelect');
-      seriesSelect.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
-      document.getElementById('heroUpdated').textContent = `Updated: ${payload.generated_at}`;
-
-      const bySeries = Object.fromEntries(names.map(name => [name, rows.filter(r => r.series_name === name)]));
-
-      function getVisibleSeries(seriesRows, rangeValue) {
-        if (rangeValue === 'all') return seriesRows;
-        const count = Number(rangeValue);
-        return seriesRows.slice(-count);
+  <div class="nav-right">
+    <span class="badge badge-amber">EIA STEO</span>
+    <span class="updated">Updated —</span>
+    <a id="chatButton" href="../chat/?tenant=acme-sample&dashboard=oil-prices" class="chat-btn">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M14 1H2C1.45 1 1 1.45 1 2v9c0 .55.45 1 1 1h2v3l3-3h7c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M4.5 7h7M4.5 4.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Ask the data
+    </a>
+  </div>
+</nav>
+<div class="page">
+  <div class="filter-bar">
+    <span class="filter-label">Benchmark</span>
+    <div class="filter-group" id="fg-benchmark">
+      <button class="filter-btn active" data-group="benchmark" data-val="brent" onclick="setFilter(this)">Brent</button>
+      <button class="filter-btn" data-group="benchmark" data-val="wti" onclick="setFilter(this)">WTI</button>
+      <button class="filter-btn" data-group="benchmark" data-val="both" onclick="setFilter(this)">Both</button>
+    </div>
+    <div class="filter-sep"></div>
+    <span class="filter-label">History</span>
+    <div class="filter-group" id="fg-range">
+      <button class="filter-btn" data-group="range" data-val="12" onclick="setFilter(this)">12 mo</button>
+      <button class="filter-btn active" data-group="range" data-val="24" onclick="setFilter(this)">24 mo</button>
+      <button class="filter-btn" data-group="range" data-val="all" onclick="setFilter(this)">All</button>
+    </div>
+  </div>
+  <div class="headline-row">
+    <div class="headline">
+      <h1>Prices peaked in April — the $20/bbl pullback window opens now.</h1>
+      <p>Brent hit $124/bbl in April, up 79% in 8 weeks. The EIA's next three months forecast a steady decline to $104. That descent is your procurement window — act before the reference price recedes.</p>
+    </div>
+  </div>
+  <div class="kpi-strip" id="kpi-strip"></div>
+  <div class="chart-card">
+    <div class="chart-header">
+      <div>
+        <h2>Brent surged 79% in 8 weeks — EIA forecasts steady decline through July</h2>
+        <p>Solid = published actuals · Dashed = EIA STEO outlook · Shaded = forecast zone</p>
+      </div>
+      <div class="chart-legend" id="main-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Brent (actual)</div>
+        <div class="legend-item" style="color:#f59e0b"><div class="legend-dash"></div>Brent (forecast)</div>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas id="mainChart" height="300"></canvas></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header"><div><h2>Every coming month is cheaper — act before the lever disappears</h2><p>Official EIA outlook: May, Jun, Jul 2026</p></div></div>
+      <canvas id="forecastChart" height="220"></canvas>
+    </div>
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header"><div><h2>$15/bbl spread — your benchmark choice carries real cost exposure</h2><p>Brent premium over WTI, monthly actuals</p></div></div>
+      <canvas id="spreadChart" height="220"></canvas>
+    </div>
+  </div>
+  <div style="margin-bottom:20px"></div>
+  <div class="table-card">
+    <div class="table-card-header"><div><h2>Near-term price reference — use this to anchor supplier conversations</h2><p>EIA STEO official 3-month outlook</p></div><span class="badge badge-amber">Forecast</span></div>
+    <table id="fwd-table"><thead><tr><th>Period</th><th>Brent $/bbl</th><th>WTI $/bbl</th><th>Spread</th></tr></thead><tbody id="fwd-tbody"></tbody></table>
+  </div>
+  <div class="brief-grid">
+    <div class="brief-card"><div class="brief-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12.5L6 8.5l3 3 5-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Setup: a historic 8-week spike</h3><p>Brent rose from $62.54 in Dec 2025 to $124.00 by Apr 2026 — a 98% surge in four months. This is the highest level in the current dataset and far above the prior annual average, with the acceleration concentrated in March and April.</p></div>
+    <div class="brief-card"><div class="brief-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div><h3>Conflict: the pullback starts immediately</h3><p>The official outlook puts Brent at $104 by July — a $20 decline in just 3 months. Every month you wait, the reference price you negotiate against falls. The Brent–WTI spread remains material cost exposure if your contracts reference both benchmarks.</p></div>
+    <div class="brief-card"><div class="brief-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div><h3>Resolution: budget around the average, move while leverage holds</h3><p>Use the 3-month forecast average as the planning anchor, then decide whether your procurement posture should exploit the expected decline or protect against a slower-than-expected pullback. This is the window to pressure-test contract timing.</p></div>
+  </div>
+  <div class="qr-section">
+    <div class="qr-card">
+      <div class="qr-canvas-wrap"><img id="qr-dashboard" alt="Dashboard QR" width="100" height="100"></div>
+      <div class="qr-info"><h3>Open on mobile</h3><p>Scan to open the live oil price dashboard on any device. Use for client walkthroughs or quick access.</p><a class="qr-link" id="qr-dashboard-dl" href="./" target="_blank">Open live dashboard →</a></div>
+    </div>
+    <div class="qr-card">
+      <div class="qr-canvas-wrap"><img id="qr-chat" alt="Chat QR" width="100" height="100"></div>
+      <div class="qr-info"><h3>Scan to ask this dashboard</h3><p>Opens the AI chat interface tied to this dataset. Designed for presentation Q&A without raw data exposure.</p><a class="qr-link" id="qr-chat-link" href="../chat/?tenant=acme-sample&dashboard=oil-prices">Open data chat →</a></div>
+    </div>
+  </div>
+  <div class="footer">
+    <p id="footerSourceNote">Source: <a href="https://www.eia.gov/outlooks/steo/" target="_blank">EIA Short-Term Energy Outlook</a> · Surfaced by dela. · Updated —</p>
+    <p><a href="./data.json">Model JSON</a> · <a href="../../data/derived/oil_prices_steo.csv">Source CSV</a></p>
+  </div>
+</div>
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="tweaks-title">Tweaks</div>
+  <div class="tweak-row"><label>Data domain</label><div class="domain-presets" id="domain-presets">
+    <button class="domain-preset-btn active" data-color="#f59e0b" style="color:#f59e0b" onclick="setDomain(this)"><span class="domain-swatch" style="background:#f59e0b"></span>Oil &amp; Gas</button>
+    <button class="domain-preset-btn" data-color="#60a5fa" style="color:#60a5fa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#60a5fa"></span>Financial Markets</button>
+    <button class="domain-preset-btn" data-color="#34d399" style="color:#34d399" onclick="setDomain(this)"><span class="domain-swatch" style="background:#34d399"></span>Climate &amp; Energy</button>
+    <button class="domain-preset-btn" data-color="#a78bfa" style="color:#a78bfa" onclick="setDomain(this)"><span class="domain-swatch" style="background:#a78bfa"></span>Healthcare</button>
+    <button class="domain-preset-btn" data-color="#fb923c" style="color:#fb923c" onclick="setDomain(this)"><span class="domain-swatch" style="background:#fb923c"></span>Logistics</button>
+  </div></div>
+</div>
+<script>
+const TWEAK_DEFAULTS = {"accentColor":"#f59e0b","domain":"Oil & Gas"};
+let tweakState = Object.assign({}, TWEAK_DEFAULTS);
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('visible');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+function setDomain(btn) {
+  const color = btn.dataset.color;
+  document.querySelectorAll('.domain-preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tweakState.accentColor = color;
+  tweakState.domain = btn.textContent.trim();
+  document.documentElement.style.setProperty('--amber', color);
+  document.documentElement.style.setProperty('--amber-dim', color + '1a');
+  renderAll();
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: tweakState }, '*');
+}
+const DATA = { summary: { Brent: { latest: 124.0, mom: 20.87, fcast_avg: 108.0, fcast_chg: -20.0, fcast_months: [{p:'2026-05',v:112},{p:'2026-06',v:108},{p:'2026-07',v:104}] }, WTI: { latest: 109.0, mom: 17.62, fcast_avg: 96.67, fcast_chg: -15.0, fcast_months: [{p:'2026-05',v:99},{p:'2026-06',v:97},{p:'2026-07',v:94}] } }, rows: [] };
+let state = { benchmark: 'brent', range: '24' };
+let mainChartInst, forecastChartInst, spreadChartInst;
+function setFilter(btn) { const g = btn.dataset.group, v = btn.dataset.val; document.querySelectorAll(`[data-group="${g}"]`).forEach(b => b.classList.remove('active')); btn.classList.add('active'); state[g] = v; renderAll(); }
+function fmtPeriod(p) { const [y,m] = p.split('-'); return new Date(+y, +m - 1).toLocaleDateString('en-GB', {month:'short', year:'numeric'}); }
+function getFilteredRows() {
+  let rows = [...DATA.rows];
+  if (state.range === 'all') return rows;
+  const count = Number(state.range);
+  return rows.slice(-count);
+}
+function renderKPIs() {
+  const b = DATA.summary.Brent, w = DATA.summary.WTI;
+  const primary = state.benchmark === 'wti' ? w : b;
+  const secondary = state.benchmark === 'wti' ? b : w;
+  const pName = state.benchmark === 'wti' ? 'WTI' : 'Brent';
+  const sName = state.benchmark === 'wti' ? 'Brent' : 'WTI';
+  const spread = Number(b.latest) - Number(w.latest);
+  const kpis = [
+    { label: `${pName} latest actual`, value: `$${Number(primary.latest).toFixed(0)}`, unit: '/bbl', delta: `+${Number(primary.mom).toFixed(2)}`, dir: 'up', sub: 'vs. previous month' },
+    { label: '3-month avg forecast', value: `$${Number(primary.fcast_avg).toFixed(0)}`, unit: '/bbl', delta: `${Number(primary.fcast_chg).toFixed(0)}`, dir: Number(primary.fcast_chg) < 0 ? 'down' : 'up', sub: 'projected change over 3 months' },
+    { label: `${sName} latest actual`, value: `$${Number(secondary.latest).toFixed(0)}`, unit: '/bbl', delta: `+${Number(secondary.mom).toFixed(2)}`, dir: 'up', sub: 'vs. previous month' },
+    { label: 'Brent–WTI spread', value: `$${spread.toFixed(2)}`, unit: '', delta: spread >= 0 ? 'active' : 'reversed', dir: spread >= 0 ? 'down' : 'up', sub: 'differential per barrel' },
+  ];
+  document.getElementById('kpi-strip').innerHTML = kpis.map((k, i) => `<div class="kpi-card ${i===0?'highlight':''}"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}<span>${k.unit}</span></div><div class="kpi-delta ${k.dir}">${k.dir === 'up' ? '↑' : '↓'} ${k.delta}</div><div class="kpi-sub">${k.sub}</div></div>`).join('');
+}
+function baseChartOptions() {
+  return {
+    responsive:true,
+    maintainAspectRatio:true,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#0e1420', borderColor:'#253550', borderWidth:1, titleColor:'#7b8fae', bodyColor:'#e8edf5', padding:12, titleFont:{ family:'DM Sans', size:11, weight:'600' }, bodyFont:{ family:'DM Sans', size:13 }, callbacks:{ label(ctx){ return ` ${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}/bbl`; } } } },
+    scales:{ x:{ grid:{ color:'#1e2a40', drawTicks:false }, ticks:{ color:'#7b8fae', font:{ family:'DM Sans', size:11 }, maxRotation:0, maxTicksLimit:10 }, border:{ color:'#1e2a40' } }, y:{ grid:{ color:'#1e2a40', drawTicks:false }, ticks:{ color:'#7b8fae', font:{ family:'DM Sans', size:11 }, callback(v){ return '$' + v; } }, border:{ color:'#1e2a40' } } }
+  };
+}
+function renderMainChart() {
+  const rows = getFilteredRows();
+  const labels = rows.map(r => fmtPeriod(r.p));
+  const showBrent = state.benchmark !== 'wti';
+  const showWTI = state.benchmark !== 'brent';
+  const fcastStartIdx = rows.findIndex(r => r.forecast);
+  const datasets = [];
+  if (showBrent) {
+    datasets.push({ label:'Brent', data:rows.map(r => r.forecast ? null : r.Brent), borderColor:'#f59e0b', backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.3, spanGaps:false });
+    datasets.push({ label:'Brent forecast', data:rows.map((r,i,a) => r.forecast ? r.Brent : (a[i+1]?.forecast ? r.Brent : null)), borderColor:'#f59e0b', backgroundColor:'transparent', borderWidth:2, borderDash:[5,4], pointRadius:0, tension:0.3, spanGaps:false });
+  }
+  if (showWTI) {
+    datasets.push({ label:'WTI', data:rows.map(r => r.forecast ? null : r.WTI), borderColor:'#60a5fa', backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.3, spanGaps:false });
+    datasets.push({ label:'WTI forecast', data:rows.map((r,i,a) => r.forecast ? r.WTI : (a[i+1]?.forecast ? r.WTI : null)), borderColor:'#60a5fa', backgroundColor:'transparent', borderWidth:2, borderDash:[5,4], pointRadius:0, tension:0.3, spanGaps:false });
+  }
+  const annotationPlugin = {
+    id:'annotations', afterDraw(chart) {
+      const { ctx, chartArea:{ left, right, top, bottom }, scales:{ x, y } } = chart;
+      if (fcastStartIdx < 0) return;
+      const fcastX = x.getPixelForValue(fcastStartIdx);
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.025)'; ctx.fillRect(fcastX, top, right - fcastX, bottom - top);
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(fcastX, top); ctx.lineTo(fcastX, bottom); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '600 10px DM Sans, sans-serif'; ctx.fillText('FORECAST', fcastX + 7, top + 14);
+      const spikeIdx = fcastStartIdx - 1;
+      if (spikeIdx >= 0 && showBrent) {
+        const spikeX = x.getPixelForValue(spikeIdx), spikeY = y.getPixelForValue(rows[spikeIdx].Brent);
+        ctx.fillStyle = 'rgba(245,158,11,0.85)'; ctx.font = '600 11px DM Sans, sans-serif'; ctx.fillText(`$${rows[spikeIdx].Brent.toFixed(2)} peak`, spikeX - 58, spikeY - 10);
+        ctx.beginPath(); ctx.arc(spikeX, spikeY, 4, 0, Math.PI * 2); ctx.fillStyle = '#f59e0b'; ctx.fill();
       }
-
-      function spreadRows(rangeValue) {
-        const left = getVisibleSeries(bySeries['Brent'], rangeValue);
-        const right = getVisibleSeries(bySeries['WTI'], rangeValue);
-        const map = new Map(right.map(r => [r.period, r]));
-        return left.filter(r => map.has(r.period)).map(r => ({
-          period: r.period,
-          spread: +(r.value - map.get(r.period).value).toFixed(2),
-          is_forecast: r.is_forecast || map.get(r.period).is_forecast,
-        }));
-      }
-
-      function renderTable(primaryName, otherName) {
-        const forecast = summary[primaryName].forecast_months;
-        const otherMap = new Map(summary[otherName].forecast_months.map(r => [r.period, r.value]));
-        document.getElementById('forecastTable').innerHTML = forecast.map(r => {
-          const otherValue = otherMap.get(r.period);
-          const diff = isValidNumber(r.value) && isValidNumber(otherValue) ? +(Number(r.value) - Number(otherValue)).toFixed(2) : null;
-          const diffClass = diff === null ? '' : (diff >= 0 ? 'delta up' : 'delta down');
-          return `<tr><td>${r.period}</td><td>${PRICE_OR_DASH(r.value)}</td><td class="${diffClass}">${PRICE_SIGNED(diff)}</td></tr>`;
-        }).join('');
-      }
-
-      function render(primaryName) {
-        const mode = modeSelect.value;
-        const rangeValue = rangeSelect.value;
-        const primaryMeta = summary[primaryName];
-        const otherName = names.find(n => n !== primaryName);
-        const primaryRows = getVisibleSeries(bySeries[primaryName], rangeValue);
-        const otherRows = getVisibleSeries(bySeries[otherName], rangeValue);
-        const primaryHistory = primaryRows.filter(r => !r.is_forecast);
-        const primaryForecast = primaryMeta.forecast_months;
-        const spread = spreadRows(rangeValue);
-
-        document.getElementById('latestActual').textContent = PRICE_OR_DASH(primaryMeta.latest_actual_value);
-        document.getElementById('latestActualPeriod').textContent = `${primaryMeta.series_description} · ${primaryMeta.latest_actual_period}`;
-        document.getElementById('momActual').textContent = PRICE_SIGNED(primaryMeta.month_over_month_actual);
-        document.getElementById('avgForecast').textContent = PRICE_OR_DASH(primaryMeta.forecast_average_3m);
-        document.getElementById('forecastChange').textContent = PRICE_SIGNED(primaryMeta.forecast_change_3m);
-        document.getElementById('forecastRange').textContent = `${primaryMeta.forecast_start_period} to ${primaryMeta.forecast_end_period}`;
-        document.getElementById('heroRange').textContent = `Range: ${rangeValue === 'all' ? 'all data' : `last ${rangeValue} months`}`;
-        document.getElementById('heroMode').textContent = `Mode: ${mode === 'compare' ? 'Brent vs WTI compare' : 'single benchmark'}`;
-
-        const spreadLatest = spread[spread.length - 1];
-        const spreadText = spreadLatest && isValidNumber(spreadLatest.spread) ? PRICE_SIGNED(spreadLatest.spread) : 'unavailable';
-        const story = `${primaryName} is at ${PRICE_OR_DASH(primaryMeta.latest_actual_value)} for ${primaryMeta.latest_actual_period}, with the next 3 EIA monthly points averaging ${PRICE_OR_DASH(primaryMeta.forecast_average_3m)}. Across the outlook window, ${primaryName} is projected to move ${PRICE_SIGNED(primaryMeta.forecast_change_3m)}. The current Brent-WTI spread is ${spreadText}.`;
-        document.getElementById('insightText').textContent = story;
-
-        const trendTraces = [];
-        trendTraces.push({
-          x: primaryRows.filter(r => !r.is_forecast).map(r => r.period),
-          y: primaryRows.filter(r => !r.is_forecast).map(r => r.value),
-          mode: 'lines+markers',
-          type: 'scatter',
-          name: `${primaryName} actual / published`,
-          line: {color: '#59a5ff', width: 3},
-          marker: {size: 6},
-          hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
-        });
-        trendTraces.push({
-          x: primaryForecast.map(r => r.period),
-          y: primaryForecast.map(r => r.value),
-          mode: 'lines+markers',
-          type: 'scatter',
-          name: `${primaryName} next 3 months`,
-          line: {color: '#ffb84d', width: 3, dash: 'dot'},
-          marker: {size: 8},
-          hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
-        });
-        if (mode === 'compare') {
-          trendTraces.push({
-            x: otherRows.map(r => r.period),
-            y: otherRows.map(r => r.value),
-            mode: 'lines',
-            type: 'scatter',
-            name: `${otherName} context`,
-            line: {color: '#8b9cb8', width: 2},
-            hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
-          });
-        }
-        Plotly.newPlot('trendChart', trendTraces, {
-          paper_bgcolor: 'transparent',
-          plot_bgcolor: 'transparent',
-          margin: {l: 48, r: 12, t: 8, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'},
-          legend: {orientation: 'h'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
-
-        const forecastCompare = new Map(summary[otherName].forecast_months.map(r => [r.period, r.value]));
-        const forecastBars = [{
-          x: primaryForecast.map(r => r.period),
-          y: primaryForecast.map(r => r.value),
-          type: 'bar',
-          name: primaryName,
-          marker: {color: ['#6aa8ff', '#7dcfff', '#ffb84d']},
-          text: primaryForecast.map(r => PRICE(r.value)),
-          textposition: 'outside',
-          hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
-        }];
-        if (mode === 'compare') {
-          forecastBars.push({
-            x: summary[otherName].forecast_months.map(r => r.period),
-            y: summary[otherName].forecast_months.map(r => r.value),
-            type: 'bar',
-            name: otherName,
-            marker: {color: '#324d70'},
-            hovertemplate: '%{x}<br>$%{y:.2f}/bbl<extra></extra>'
-          });
-        }
-        Plotly.newPlot('forecastChart', forecastBars, {
-          barmode: mode === 'compare' ? 'group' : 'relative',
-          paper_bgcolor: 'transparent',
-          plot_bgcolor: 'transparent',
-          margin: {l: 44, r: 12, t: 10, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'USD per barrel', gridcolor: 'rgba(255,255,255,.08)'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
-
-        Plotly.newPlot('spreadChart', [{
-          x: spread.map(r => r.period),
-          y: spread.map(r => r.spread),
-          mode: 'lines+markers',
-          type: 'scatter',
-          fill: 'tozeroy',
-          line: {color: '#b28cff', width: 3},
-          marker: {size: 6},
-          hovertemplate: '%{x}<br>Spread %{y:+.2f}<extra></extra>'
-        }], {
-          paper_bgcolor: 'transparent',
-          plot_bgcolor: 'transparent',
-          margin: {l: 48, r: 12, t: 8, b: 42},
-          font: {color: '#f4f7ff'},
-          xaxis: {gridcolor: 'rgba(255,255,255,.08)'},
-          yaxis: {title: 'Brent - WTI', zeroline: true, zerolinecolor: 'rgba(255,255,255,.25)', gridcolor: 'rgba(255,255,255,.08)'}
-        }, {responsive:true, displayModeBar:true, modeBarButtonsToRemove:['lasso2d','select2d']});
-
-        renderTable(primaryName, otherName);
-      }
-
-      seriesSelect.addEventListener('change', e => render(e.target.value));
-      rangeSelect.addEventListener('change', () => render(seriesSelect.value));
-      modeSelect.addEventListener('change', () => render(seriesSelect.value));
-      render(names[0]);
+      const lastIdx = rows.length - 1, lastX = x.getPixelForValue(lastIdx) + 6;
+      if (showBrent && rows[lastIdx].Brent != null) { ctx.fillStyle = '#f59e0b'; ctx.font = '600 11px DM Sans, sans-serif'; ctx.fillText('Brent', lastX, y.getPixelForValue(rows[lastIdx].Brent) + 4); }
+      if (showWTI && rows[lastIdx].WTI != null) { ctx.fillStyle = '#60a5fa'; ctx.font = '600 11px DM Sans, sans-serif'; ctx.fillText('WTI', lastX, y.getPixelForValue(rows[lastIdx].WTI) + 4); }
+      ctx.restore();
     }
-    init();
-  </script>
+  };
+  if (mainChartInst) mainChartInst.destroy();
+  mainChartInst = new Chart(document.getElementById('mainChart'), { type:'line', data:{ labels, datasets }, options:baseChartOptions(), plugins:[annotationPlugin] });
+  document.getElementById('main-legend').innerHTML = showWTI ? '<div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Brent (actual)</div><div class="legend-item" style="color:#f59e0b"><div class="legend-dash"></div>Brent (forecast)</div><div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>WTI (actual)</div><div class="legend-item" style="color:#60a5fa"><div class="legend-dash"></div>WTI (forecast)</div>' : '<div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Brent (actual)</div><div class="legend-item" style="color:#f59e0b"><div class="legend-dash"></div>Brent (forecast)</div>';
+}
+function renderForecastChart() {
+  const months = ['May 2026', 'Jun 2026', 'Jul 2026'];
+  const datasets = [];
+  if (state.benchmark !== 'wti') datasets.push({ label:'Brent', data:DATA.summary.Brent.fcast_months.map(f => f.v), backgroundColor:'rgba(245,158,11,0.75)', borderRadius:6, borderSkipped:false });
+  if (state.benchmark !== 'brent') datasets.push({ label:'WTI', data:DATA.summary.WTI.fcast_months.map(f => f.v), backgroundColor:'rgba(96,165,250,0.75)', borderRadius:6, borderSkipped:false });
+  if (forecastChartInst) forecastChartInst.destroy();
+  forecastChartInst = new Chart(document.getElementById('forecastChart'), { type:'bar', data:{ labels:months, datasets }, options:{ ...baseChartOptions(), scales:{ ...baseChartOptions().scales, y:{ ...baseChartOptions().scales.y, min:85 } } } });
+}
+function renderSpreadChart() {
+  const rows = getFilteredRows().filter(r => !r.forecast);
+  const labels = rows.map(r => fmtPeriod(r.p));
+  const spreads = rows.map(r => +(r.Brent - r.WTI).toFixed(2));
+  const options = baseChartOptions();
+  options.scales.y.min = 0;
+  options.plugins.tooltip.callbacks.label = ctx => ` Spread: $${ctx.parsed.y.toFixed(2)}/bbl`;
+  if (spreadChartInst) spreadChartInst.destroy();
+  spreadChartInst = new Chart(document.getElementById('spreadChart'), { type:'line', data:{ labels, datasets:[{ label:'Brent–WTI', data:spreads, borderColor:'#34d399', backgroundColor:'rgba(52,211,153,0.07)', borderWidth:2, fill:true, pointRadius:0, tension:0.3 }] }, options });
+}
+function renderTable() {
+  const forecastRows = DATA.rows.filter(r => r.forecast);
+  document.getElementById('fwd-tbody').innerHTML = forecastRows.map(r => `<tr><td class="td-period">${fmtPeriod(r.p)} <span class="td-tag">Forecast</span></td><td class="td-amber">$${r.Brent.toFixed(2)}</td><td class="td-blue">$${r.WTI.toFixed(2)}</td><td class="td-spread">$${(r.Brent - r.WTI).toFixed(2)}</td></tr>`).join('');
+}
+function buildChatUrl() {
+  const url = new URL('../chat/', window.location.href);
+  const series = state.benchmark === 'wti' ? 'WTI' : 'Brent';
+  const mode = state.benchmark === 'both' ? 'compare' : 'single';
+  const source = new URL(window.location.href);
+  source.searchParams.delete('chat');
+  url.searchParams.set('tenant', 'acme-sample');
+  url.searchParams.set('dashboard', 'oil-prices');
+  url.searchParams.set('series', series);
+  url.searchParams.set('range', state.range);
+  url.searchParams.set('mode', mode);
+  url.searchParams.set('source', source.toString());
+  return url.toString();
+}
+function generateQR(imgId, url) {
+  const encoded = encodeURIComponent(url);
+  const el = document.getElementById(imgId);
+  if (el) el.src = `https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encoded}&bgcolor=0e1420&color=f59e0b&margin=6&format=png`;
+}
+function updateEntryLinks() {
+  const dashboardUrl = new URL('./', window.location.href).toString();
+  const chatUrl = buildChatUrl();
+  document.getElementById('chatButton').href = chatUrl;
+  document.getElementById('qr-chat-link').href = chatUrl;
+  document.getElementById('qr-dashboard-dl').href = dashboardUrl;
+  generateQR('qr-dashboard', dashboardUrl);
+  generateQR('qr-chat', chatUrl);
+}
+function renderAll() { renderKPIs(); renderMainChart(); renderForecastChart(); renderSpreadChart(); renderTable(); updateEntryLinks(); }
+async function loadLiveData() {
+  try {
+    const res = await fetch('./data.json');
+    if (!res.ok) throw new Error('fetch failed');
+    const json = await res.json();
+    const periods = [...new Set(json.chart_rows.map(r => r.period))].sort();
+    DATA.rows = periods.map(p => {
+      const bRow = json.chart_rows.find(r => r.period === p && r.series_name === 'Brent');
+      const wRow = json.chart_rows.find(r => r.period === p && r.series_name === 'WTI');
+      return { p, forecast: Boolean(bRow?.is_forecast || wRow?.is_forecast), Brent: bRow?.value ?? null, WTI: wRow?.value ?? null };
+    }).filter(r => r.Brent !== null && r.WTI !== null);
+    const bs = json.summary.Brent, ws = json.summary.WTI;
+    DATA.summary.Brent = { latest: bs.latest_actual_value, mom: bs.month_over_month_actual, fcast_avg: bs.forecast_average_3m, fcast_chg: bs.forecast_change_3m, fcast_months: bs.forecast_months.map(f => ({ p:f.period, v:f.value })) };
+    DATA.summary.WTI = { latest: ws.latest_actual_value, mom: ws.month_over_month_actual, fcast_avg: ws.forecast_average_3m, fcast_chg: ws.forecast_change_3m, fcast_months: ws.forecast_months.map(f => ({ p:f.period, v:f.value })) };
+    document.querySelector('.updated').textContent = 'Updated ' + json.generated_at;
+    document.getElementById('footerSourceNote').innerHTML = `Source: <a href="https://www.eia.gov/outlooks/steo/" target="_blank">EIA Short-Term Energy Outlook</a> · Surfaced by dela. · Updated ${json.generated_at}`;
+  } catch (e) {
+    console.warn('Using embedded data (live fetch failed):', e.message);
+  }
+  renderAll();
+}
+Chart.defaults.font.family = 'DM Sans';
+loadLiveData();
+</script>
 </body>
 </html>
