@@ -231,12 +231,12 @@
 <body>
   <div class="shell">
     <section class="panel hero">
-      <div class="eyebrow">Scan to ask the data</div>
-      <h1>Ask this dashboard, not the whole warehouse.</h1>
-      <p class="hero-copy">This chat stays tied to the dashboard you opened. It uses the visible dashboard context, metric definitions, and summary data so stakeholders can ask sharp follow-up questions without drifting into ungrounded answers.</p>
+      <div class="eyebrow">Ask the dashboard</div>
+      <h1>Ask the numbers in front of you.</h1>
+      <p class="hero-copy">This chat stays anchored to the dashboard you opened, so follow-up questions stay clear, relevant, and grounded in the same view everyone is discussing.</p>
       <div class="meta-grid">
         <div class="meta-card">
-          <span class="meta-label">Tenant</span>
+          <span class="meta-label">Company</span>
           <div class="meta-value" id="tenantName">—</div>
         </div>
         <div class="meta-card">
@@ -244,11 +244,11 @@
           <div class="meta-value" id="dashboardTitle">—</div>
         </div>
         <div class="meta-card">
-          <span class="meta-label">Current context</span>
-          <div class="meta-value" id="contextState">Waiting for dashboard session…</div>
+          <span class="meta-label">Current view</span>
+          <div class="meta-value" id="contextState">Preparing this dashboard view…</div>
         </div>
         <div class="meta-card">
-          <span class="meta-label">Refresh source</span>
+          <span class="meta-label">Latest update</span>
           <div class="meta-value" id="refreshState">—</div>
         </div>
       </div>
@@ -256,23 +256,19 @@
 
     <section class="panel section">
       <div class="section-head">
-        <h2>Connection</h2>
-        <span class="tiny">Keep the API server on your VPS. The dashboard page stays static.</span>
+        <h2>Overview</h2>
+        <span class="tiny">Use this page for quick follow-up questions during a walkthrough or review.</span>
       </div>
-      <div class="settings-grid">
-        <input id="apiBaseInput" class="ghost-input" placeholder="https://your-backend-domain" />
-        <div class="button-row">
-          <button id="saveApiButton" class="button secondary" type="button">Save API base</button>
-          <a id="openDashboardLink" class="button secondary" href="#">Back to dashboard</a>
-        </div>
+      <div class="button-row">
+        <a id="openDashboardLink" class="button secondary" href="#">Back to dashboard</a>
       </div>
-      <div id="statusBox" class="status">Set the API base once, then this page can create a tenant-scoped chat session.</div>
+      <div id="statusBox" class="status">Getting this dashboard ready for questions…</div>
     </section>
 
     <section class="panel section">
       <div class="section-head">
         <h2>Suggested questions</h2>
-        <span class="tiny">Good prompts keep the room focused on the visible evidence.</span>
+        <span class="tiny">Start with a prompt that matches the story already on screen.</span>
       </div>
       <div id="suggestedQuestions" class="chip-row"></div>
     </section>
@@ -280,17 +276,17 @@
     <section class="panel section">
       <div class="section-head">
         <h2>Conversation</h2>
-        <span class="tiny">Answers should reference the dashboard panels, not improvise.</span>
+        <span class="tiny">Answers stay grounded in this dashboard and point back to the visible evidence.</span>
       </div>
       <div id="messages" class="message-list"></div>
       <form id="composerForm" class="composer" novalidate>
-        <textarea id="questionInput" placeholder="Ask what changed, compare series, explain the spread, or define a metric."></textarea>
+        <textarea id="questionInput" placeholder="Ask what changed, compare the series, explain the spread, or ask what matters most."></textarea>
         <div class="button-row">
           <button class="button primary" type="submit">Ask this dashboard</button>
-          <button id="seedQuestionButton" class="button secondary" type="button">Use first suggested prompt</button>
+          <button id="seedQuestionButton" class="button secondary" type="button">Try the first suggested question</button>
         </div>
       </form>
-      <div class="footer-note">If the backend is in mock mode, the answer is still grounded to the dashboard payload. Once you add OPENAI_API_KEY on the server, the same UI can switch to model-backed answers without exposing the key here.</div>
+      <div class="footer-note">Answers stay tied to this dashboard view and cite the relevant source panels where possible.</div>
     </section>
   </div>
 
@@ -311,7 +307,6 @@
     let suggestedQuestions = [];
 
     const elements = {
-      apiBaseInput: document.getElementById('apiBaseInput'),
       openDashboardLink: document.getElementById('openDashboardLink'),
       tenantName: document.getElementById('tenantName'),
       dashboardTitle: document.getElementById('dashboardTitle'),
@@ -323,7 +318,6 @@
       composerForm: document.getElementById('composerForm'),
       questionInput: document.getElementById('questionInput'),
       seedQuestionButton: document.getElementById('seedQuestionButton'),
-      saveApiButton: document.getElementById('saveApiButton'),
     };
 
     function setStatus(message, tone = '') {
@@ -341,6 +335,22 @@
 
     function normalizeApiBase(value) {
       return value.trim().replace(/\/$/, '');
+    }
+
+    function titleCase(value) {
+      return String(value || '')
+        .split(/[-_\s]+/)
+        .filter(Boolean)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+    }
+
+    function describeFilters(filters) {
+      const bits = [];
+      if (filters.series) bits.push(filters.series);
+      if (filters.range) bits.push(`${filters.range}-month view`);
+      if (filters.mode) bits.push(titleCase(filters.mode));
+      return bits.join(' · ') || 'Current dashboard view';
     }
 
     function buildDashboardUrl() {
@@ -382,10 +392,10 @@
 
     async function bootSession() {
       if (!apiBase) {
-        setStatus('Set your HTTPS API base first. GitHub Pages cannot safely hold the model key, so the chat calls your VPS backend instead.', 'bad');
+        setStatus('This chat is not connected yet. Please open it from the live dashboard link or QR code.', 'bad');
         return;
       }
-      setStatus('Connecting to the tenant-scoped backend…');
+      setStatus('Loading the latest dashboard context…');
       const context = await postJson('/api/context', {
         tenant_id: tenantId,
         dashboard_id: dashboardId,
@@ -399,55 +409,41 @@
       suggestedQuestions = session.suggested_questions || context.suggested_questions || [];
       elements.tenantName.textContent = session.tenant_name || tenantId;
       elements.dashboardTitle.textContent = session.dashboard_title || dashboardId;
-      elements.contextState.textContent = `Series ${session.filters.series || '—'} · Range ${session.filters.range || '—'} · Mode ${session.filters.mode || '—'}`;
-      elements.refreshState.textContent = `${session.refresh_label || 'Dashboard payload'} · ${context.generated_at || 'date unavailable'}`;
+      elements.contextState.textContent = describeFilters(session.filters || {});
+      elements.refreshState.textContent = `${session.refresh_label || 'Dashboard update'} · ${context.generated_at || 'Latest available date'}`;
       renderSuggestedQuestions();
-      renderMessage('assistant', 'Session ready', `You are connected to ${session.dashboard_title}. Ask for a summary, a comparison, or a metric definition. The backend will keep this session scoped to ${session.tenant_name || tenantId}.`);
-      setStatus('Connected. This page is using a tenant-bound chat session.', 'good');
+      renderMessage('assistant', 'Ready', `You are viewing ${session.dashboard_title}. Ask for a quick summary, compare the series, or ask what matters most in this view.`);
+      setStatus('Ready. Ask a question about this dashboard view.', 'good');
     }
 
     async function askQuestion(question) {
       if (!currentSessionId) {
-        throw new Error('Session not ready yet.');
+        throw new Error('This page is still getting ready. Please try again in a moment.');
       }
-      renderMessage('user', 'You asked', question);
-      setStatus('Getting a grounded answer from the backend…');
+      renderMessage('user', 'Question', question);
+      setStatus('Looking through this dashboard view…');
       const answer = await postJson('/api/chat/ask', {
         session_id: currentSessionId,
         question,
       });
+      const answerText = String(answer.answer || '');
+      const alreadyCitesPanels = /source panels:/i.test(answerText);
+      const citations = !alreadyCitesPanels && Array.isArray(answer.citations) && answer.citations.length
+        ? `Source panels: ${answer.citations.join(', ')}.`
+        : '';
       const body = [
-        answer.answer,
-        '',
-        `Why it matters: ${answer.why_it_matters}`,
-        `Mode: ${answer.mode}`,
-        `Refresh: ${answer.dashboard_generated_at || 'unknown'}`,
-      ].join('\n');
-      renderMessage('assistant', 'Dashboard answer', body);
-      setStatus(`Answer received in ${answer.mode} mode.`, 'good');
+        answerText,
+        citations,
+      ].filter(Boolean).join('\n\n');
+      renderMessage('assistant', 'Answer', body);
+      setStatus('Answer ready.', 'good');
     }
-
-    elements.saveApiButton.addEventListener('click', async () => {
-      apiBase = normalizeApiBase(elements.apiBaseInput.value);
-      if (!apiBase) {
-        setStatus('Enter a backend base URL first.', 'bad');
-        return;
-      }
-      localStorage.setItem('dashboardChatApiBase', apiBase);
-      elements.messages.innerHTML = '';
-      currentSessionId = null;
-      try {
-        await bootSession();
-      } catch (error) {
-        setStatus(error.message, 'bad');
-      }
-    });
 
     elements.composerForm.addEventListener('submit', async event => {
       event.preventDefault();
       const question = elements.questionInput.value.trim();
       if (!question) {
-        setStatus('Ask a real question first.', 'bad');
+        setStatus('Ask a question first.', 'bad');
         return;
       }
       elements.questionInput.value = '';
@@ -465,7 +461,6 @@
       }
     });
 
-    elements.apiBaseInput.value = apiBase;
     elements.openDashboardLink.href = buildDashboardUrl();
     elements.openDashboardLink.target = '_blank';
     elements.openDashboardLink.rel = 'noopener noreferrer';
