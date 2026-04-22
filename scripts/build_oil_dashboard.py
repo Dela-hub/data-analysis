@@ -124,11 +124,19 @@ def sync_dashboard_publish_copy() -> None:
 
 def write_dashboard(df: pd.DataFrame, summary: dict) -> None:
     DASH_DIR.mkdir(parents=True, exist_ok=True)
+    allowed_forecast_periods = {
+        month["period"]
+        for item in summary.values()
+        for month in item.get("forecast_months", [])
+    }
     chart_rows = []
     for _, row in df.iterrows():
+        period = row["period"].strftime("%Y-%m")
+        if bool(row["is_forecast"]) and period not in allowed_forecast_periods:
+            continue
         chart_rows.append(
             {
-                "period": row["period"].strftime("%Y-%m"),
+                "period": period,
                 "series_name": row["series_name"],
                 "value": round(float(row["value"]), 2),
                 "is_forecast": bool(row["is_forecast"]),

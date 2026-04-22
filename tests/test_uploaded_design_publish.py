@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import importlib.util
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import pandas as pd
 
@@ -65,9 +67,14 @@ class UploadedDesignPublishTests(unittest.TestCase):
             },
         }
 
-        build_oil_dashboard.write_dashboard(df, summary)
-        html = (REPO / "dashboards" / "oil-prices" / "index.html").read_text()
-
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo = Path(tmpdir)
+            dash_dir = repo / "dashboards" / "oil-prices"
+            docs_dir = repo / "docs" / "oil-prices"
+            with patch.object(build_oil_dashboard, "REPO", repo), patch.object(build_oil_dashboard, "DASH_DIR", dash_dir), patch.object(build_oil_dashboard, "DOCS_DASH_DIR", docs_dir):
+                build_oil_dashboard.write_dashboard(df, summary)
+                html = (dash_dir / "index.html").read_text()
+ 
         self.assertIn("DM Sans", html)
         self.assertIn("Chart.js", html)
         self.assertIn("Prices peaked in April", html)
