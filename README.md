@@ -9,6 +9,9 @@ Core contents:
 - `dashboards/oil-prices/index.html` — interactive HTML dashboard
 - `dashboards/oil-prices/data.json` — dashboard payload
 - `dashboards/chat/index.html` — mobile-first chat frontend for “ask this dashboard” flows
+- `dashboards/ghana-england-match-lab/index.html` — interactive Ghana vs England football match-up dashboard
+- `data/derived/ghana_england_match_lab.json` — compact FotMob/Opta-style match analysis payload
+- `scripts/build_ghana_england_match_lab.py` — rebuilds the Ghana vs England static dashboard and GitHub Pages copy
 - `backend/dashboard_chat/` — tenant-aware backend API for dashboard chat sessions
 - `clients/` — per-client workspaces for separate company analyses and shareable HTML outputs
 - `notebooks/oil_prices_outlook.ipynb` — supporting notebook

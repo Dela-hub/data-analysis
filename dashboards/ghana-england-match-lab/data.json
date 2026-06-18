@@ -1,0 +1,2968 @@
+{
+  "generated": "2026-06-18",
+  "matches": {
+    "ghanaPanama": {
+      "source": {
+        "provider": "FotMob match pages",
+        "note": "Opta-style event data surfaced by FotMob; tactical model is inference, not a prediction guarantee."
+      },
+      "teams": [
+        {
+          "name": "Ghana",
+          "score": 1,
+          "rank": 73
+        },
+        {
+          "name": "Panama",
+          "score": 0,
+          "rank": 34
+        }
+      ],
+      "players": [
+        {
+          "name": "Jordan Ayew",
+          "team": "Ghana",
+          "rating": 6.86,
+          "minutes": 87,
+          "touches": 38,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 9,
+            "total": 18
+          },
+          "chances": 1,
+          "finalThird": 6,
+          "duelsWon": 12,
+          "defActions": 0,
+          "xA": 0.15,
+          "xGxA": 0.15
+        },
+        {
+          "name": "Alberto Quintero",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Luis Mejía",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Aníbal Godoy",
+          "team": "Panama",
+          "rating": null,
+          "minutes": 1,
+          "touches": 11,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 8,
+            "total": 8
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": 1,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Cecilio Waterman",
+          "team": "Panama",
+          "rating": 5.66,
+          "minutes": 63,
+          "touches": 13,
+          "boxTouches": 4,
+          "accuratePasses": {
+            "value": 5,
+            "total": 8
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": 0.01,
+          "xGxA": 0.06999999999999999
+        },
+        {
+          "name": "Abdul Rahman Baba",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Roderick Miller",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Éric Davis",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Yoel Bárcenas",
+          "team": "Panama",
+          "rating": 6.73,
+          "minutes": 90,
+          "touches": 68,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 52,
+            "total": 56
+          },
+          "chances": 0,
+          "finalThird": 6,
+          "duelsWon": 4,
+          "defActions": 3,
+          "xA": 0.07,
+          "xGxA": 0.15000000000000002
+        },
+        {
+          "name": "Orlando Mosquera",
+          "team": "Panama",
+          "rating": 6.53,
+          "minutes": 90,
+          "touches": 35,
+          "boxTouches": null,
+          "accuratePasses": {
+            "value": 25,
+            "total": 30
+          },
+          "chances": 1,
+          "finalThird": null,
+          "duelsWon": 1,
+          "defActions": 0,
+          "xA": 0.21,
+          "xGxA": 0.21
+        },
+        {
+          "name": "Derrick Luckassen",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Ismael Díaz",
+          "team": "Panama",
+          "rating": 6.7,
+          "minutes": 16,
+          "touches": 13,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 8,
+            "total": 10
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 1,
+          "defActions": 0,
+          "xA": 0.02,
+          "xGxA": 0.33
+        },
+        {
+          "name": "Iñaki Williams",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Lawrence Ati-Zigi",
+          "team": "Ghana",
+          "rating": 7.28,
+          "minutes": 45,
+          "touches": 20,
+          "boxTouches": null,
+          "accuratePasses": {
+            "value": 7,
+            "total": 10
+          },
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": 1,
+          "defActions": 2,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Amir Murillo",
+          "team": "Panama",
+          "rating": 7.57,
+          "minutes": 90,
+          "touches": 78,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 33,
+            "total": 41
+          },
+          "chances": 3,
+          "finalThird": 2,
+          "duelsWon": 14,
+          "defActions": 8,
+          "xA": 0.05,
+          "xGxA": 0.05
+        },
+        {
+          "name": "Fidel Escobar",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Adalberto Carrasquilla",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Jiovany Ramos",
+          "team": "Panama",
+          "rating": 7.52,
+          "minutes": 90,
+          "touches": 109,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 81,
+            "total": 90
+          },
+          "chances": 0,
+          "finalThird": 11,
+          "duelsWon": 10,
+          "defActions": 10,
+          "xA": 0.02,
+          "xGxA": 0.13
+        },
+        {
+          "name": "Andrés Andrade",
+          "team": "Panama",
+          "rating": 6.96,
+          "minutes": 90,
+          "touches": 117,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 80,
+            "total": 96
+          },
+          "chances": 0,
+          "finalThird": 24,
+          "duelsWon": 8,
+          "defActions": 11,
+          "xA": 0.36,
+          "xGxA": 0.36
+        },
+        {
+          "name": "Cristian Martínez",
+          "team": "Panama",
+          "rating": 6.29,
+          "minutes": 63,
+          "touches": 29,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 16,
+            "total": 18
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 5,
+          "defActions": 4,
+          "xA": 0.01,
+          "xGxA": 0.09999999999999999
+        },
+        {
+          "name": "Gideon Mensah",
+          "team": "Ghana",
+          "rating": 7.14,
+          "minutes": 90,
+          "touches": 72,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 45,
+            "total": 49
+          },
+          "chances": 0,
+          "finalThird": 13,
+          "duelsWon": 4,
+          "defActions": 6,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Brandon Thomas-Asante",
+          "team": "Ghana",
+          "rating": 6.53,
+          "minutes": 32,
+          "touches": 13,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 1,
+            "total": 5
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 2,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": 0.06
+        },
+        {
+          "name": "Abdul Mumin",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Jerome Opoku",
+          "team": "Ghana",
+          "rating": 7.4,
+          "minutes": 90,
+          "touches": 54,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 41,
+            "total": 45
+          },
+          "chances": 1,
+          "finalThird": 7,
+          "duelsWon": 2,
+          "defActions": 8,
+          "xA": 0.03,
+          "xGxA": 0.03
+        },
+        {
+          "name": "Elisha Owusu",
+          "team": "Ghana",
+          "rating": 6.66,
+          "minutes": 78,
+          "touches": 38,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 19,
+            "total": 24
+          },
+          "chances": 0,
+          "finalThird": 5,
+          "duelsWon": 3,
+          "defActions": 4,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "César Blackman",
+          "team": "Panama",
+          "rating": 6.74,
+          "minutes": 89,
+          "touches": 62,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 33,
+            "total": 37
+          },
+          "chances": 0,
+          "finalThird": 5,
+          "duelsWon": 5,
+          "defActions": 5,
+          "xA": 0.02,
+          "xGxA": 0.06
+        },
+        {
+          "name": "Jorge Gutiérrez",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Antoine Semenyo",
+          "team": "Ghana",
+          "rating": 6.65,
+          "minutes": 90,
+          "touches": 36,
+          "boxTouches": 4,
+          "accuratePasses": {
+            "value": 18,
+            "total": 21
+          },
+          "chances": 1,
+          "finalThird": 2,
+          "duelsWon": 4,
+          "defActions": 1,
+          "xA": 0.01,
+          "xGxA": 0.12
+        },
+        {
+          "name": "José Luis Rodriguez",
+          "team": "Panama",
+          "rating": 5.75,
+          "minutes": 74,
+          "touches": 38,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 15,
+            "total": 19
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": 1,
+          "defActions": 1,
+          "xA": 0.02,
+          "xGxA": 0.02
+        },
+        {
+          "name": "José Fajardo",
+          "team": "Panama",
+          "rating": 5.94,
+          "minutes": 27,
+          "touches": 4,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 0,
+            "total": 3
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Kwasi Sibo",
+          "team": "Ghana",
+          "rating": 6.2,
+          "minutes": 12,
+          "touches": 20,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 15,
+            "total": 16
+          },
+          "chances": 0,
+          "finalThird": 3,
+          "duelsWon": 1,
+          "defActions": 1,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Joseph Anang",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Carlos Harvey",
+          "team": "Panama",
+          "rating": 6.24,
+          "minutes": 90,
+          "touches": 71,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 45,
+            "total": 55
+          },
+          "chances": 2,
+          "finalThird": 5,
+          "duelsWon": 5,
+          "defActions": 6,
+          "xA": 0.03,
+          "xGxA": 0.08
+        },
+        {
+          "name": "Tomás Rodríguez",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Kamaldeen Sulemana",
+          "team": "Ghana",
+          "rating": 6.55,
+          "minutes": 58,
+          "touches": 24,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 9,
+            "total": 12
+          },
+          "chances": 1,
+          "finalThird": 3,
+          "duelsWon": 4,
+          "defActions": 3,
+          "xA": 0.13,
+          "xGxA": 0.13
+        },
+        {
+          "name": "César Yanis",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Alidu Seidu",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Marvin Senaya",
+          "team": "Ghana",
+          "rating": 7.44,
+          "minutes": 90,
+          "touches": 55,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 24,
+            "total": 32
+          },
+          "chances": 0,
+          "finalThird": 5,
+          "duelsWon": 5,
+          "defActions": 9,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Augustine Boakye",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Prince Adu",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": 3,
+          "touches": 8,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 2,
+            "total": 2
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "José Córdoba",
+          "team": "Panama",
+          "rating": 6.3,
+          "minutes": 90,
+          "touches": 109,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 91,
+            "total": 101
+          },
+          "chances": 0,
+          "finalThird": 4,
+          "duelsWon": 2,
+          "defActions": 3,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Abdul Fatawu",
+          "team": "Ghana",
+          "rating": 6.6,
+          "minutes": 32,
+          "touches": 24,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 8,
+            "total": 9
+          },
+          "chances": 1,
+          "finalThird": 2,
+          "duelsWon": 3,
+          "defActions": 0,
+          "xA": 0.09,
+          "xGxA": 0.11
+        },
+        {
+          "name": "César Samudio",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Ernest Nuamah",
+          "team": "Ghana",
+          "rating": 6.07,
+          "minutes": 58,
+          "touches": 25,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 10,
+            "total": 14
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 2,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Azarías Londoño",
+          "team": "Panama",
+          "rating": 6.38,
+          "minutes": 27,
+          "touches": 16,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 11,
+            "total": 11
+          },
+          "chances": 2,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": 2,
+          "xA": 0.02,
+          "xGxA": 0.02
+        },
+        {
+          "name": "Kojo Peprah Oppong",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Jonas Adjetey",
+          "team": "Ghana",
+          "rating": 7.9,
+          "minutes": 90,
+          "touches": 72,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 47,
+            "total": 52
+          },
+          "chances": 0,
+          "finalThird": 7,
+          "duelsWon": 6,
+          "defActions": 13,
+          "xA": 0.01,
+          "xGxA": 0.14
+        },
+        {
+          "name": "Christopher Bonsu Baah",
+          "team": "Ghana",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Edgardo Fariña",
+          "team": "Panama",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Caleb Yirenkyi",
+          "team": "Ghana",
+          "rating": 8.21,
+          "minutes": 90,
+          "touches": 45,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 31,
+            "total": 32
+          },
+          "chances": 0,
+          "finalThird": 4,
+          "duelsWon": 5,
+          "defActions": 5,
+          "xA": 0.01,
+          "xGxA": 1.01
+        },
+        {
+          "name": "Benjamin Asare",
+          "team": "Ghana",
+          "rating": 7.77,
+          "minutes": 45,
+          "touches": 18,
+          "boxTouches": null,
+          "accuratePasses": {
+            "value": 6,
+            "total": 10
+          },
+          "chances": null,
+          "finalThird": 2,
+          "duelsWon": 2,
+          "defActions": 2,
+          "xA": 0.01,
+          "xGxA": 0.01
+        }
+      ],
+      "stats": {
+        "Ball possession": [
+          38,
+          62
+        ],
+        "Expected goals (xG)": [
+          "1.31",
+          "0.73"
+        ],
+        "Total shots": [
+          8,
+          11
+        ],
+        "Shots on target": [
+          2,
+          4
+        ],
+        "Touches in opposition box": [
+          14,
+          19
+        ],
+        "Big chances": [
+          1,
+          2
+        ],
+        "Big chances missed": [
+          0,
+          2
+        ],
+        "Accurate passes": [
+          "292 (83%)",
+          "503 (86%)"
+        ],
+        "Yellow cards": [
+          1,
+          2
+        ],
+        "Corners": [
+          2,
+          2
+        ],
+        "Shots off target": [
+          4,
+          5
+        ],
+        "Blocked shots": [
+          2,
+          2
+        ],
+        "Hit woodwork": [
+          0,
+          0
+        ],
+        "Shots inside box": [
+          7,
+          6
+        ],
+        "Shots outside box": [
+          1,
+          5
+        ],
+        "xG open play": [
+          "1.13",
+          "0.49"
+        ],
+        "xG set play": [
+          "0.18",
+          "0.24"
+        ],
+        "xG non-penalty": [
+          "1.31",
+          "0.73"
+        ],
+        "xG on target (xGOT)": [
+          "1.04",
+          "1.36"
+        ],
+        "Passes": [
+          351,
+          583
+        ],
+        "Own half": [
+          151,
+          337
+        ],
+        "Opposition half": [
+          141,
+          166
+        ],
+        "Accurate long balls": [
+          "30 (58%)",
+          "35 (49%)"
+        ],
+        "Accurate crosses": [
+          "4 (25%)",
+          "4 (19%)"
+        ],
+        "Throws": [
+          21,
+          23
+        ],
+        "Offsides": [
+          4,
+          1
+        ],
+        "Tackles": [
+          16,
+          29
+        ],
+        "Interceptions": [
+          8,
+          5
+        ],
+        "Blocks": [
+          2,
+          2
+        ],
+        "Clearances": [
+          28,
+          17
+        ],
+        "Keeper saves": [
+          4,
+          2
+        ],
+        "Duels won": [
+          56,
+          57
+        ],
+        "Ground duels won": [
+          "35 (44%)",
+          "44 (56%)"
+        ],
+        "Aerial duels won": [
+          "21 (62%)",
+          "13 (38%)"
+        ],
+        "Successful dribbles": [
+          "9 (38%)",
+          "6 (43%)"
+        ],
+        "Red cards": [
+          0,
+          0
+        ],
+        "Fouls committed": [
+          9,
+          11
+        ]
+      },
+      "periods": {
+        "All": {
+          "Ball possession": [
+            38,
+            62
+          ],
+          "Expected goals (xG)": [
+            "1.31",
+            "0.73"
+          ],
+          "Total shots": [
+            8,
+            11
+          ],
+          "Shots on target": [
+            2,
+            4
+          ],
+          "Touches in opposition box": [
+            14,
+            19
+          ],
+          "Big chances": [
+            1,
+            2
+          ],
+          "Big chances missed": [
+            0,
+            2
+          ],
+          "Accurate passes": [
+            "292 (83%)",
+            "503 (86%)"
+          ],
+          "Yellow cards": [
+            1,
+            2
+          ],
+          "Corners": [
+            2,
+            2
+          ],
+          "Shots off target": [
+            4,
+            5
+          ],
+          "Blocked shots": [
+            2,
+            2
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            7,
+            6
+          ],
+          "Shots outside box": [
+            1,
+            5
+          ],
+          "xG open play": [
+            "1.13",
+            "0.49"
+          ],
+          "xG set play": [
+            "0.18",
+            "0.24"
+          ],
+          "xG non-penalty": [
+            "1.31",
+            "0.73"
+          ],
+          "xG on target (xGOT)": [
+            "1.04",
+            "1.36"
+          ],
+          "Passes": [
+            351,
+            583
+          ],
+          "Own half": [
+            151,
+            337
+          ],
+          "Opposition half": [
+            141,
+            166
+          ],
+          "Accurate long balls": [
+            "30 (58%)",
+            "35 (49%)"
+          ],
+          "Accurate crosses": [
+            "4 (25%)",
+            "4 (19%)"
+          ],
+          "Throws": [
+            21,
+            23
+          ],
+          "Offsides": [
+            4,
+            1
+          ],
+          "Tackles": [
+            16,
+            29
+          ],
+          "Interceptions": [
+            8,
+            5
+          ],
+          "Blocks": [
+            2,
+            2
+          ],
+          "Clearances": [
+            28,
+            17
+          ],
+          "Keeper saves": [
+            4,
+            2
+          ],
+          "Duels won": [
+            56,
+            57
+          ],
+          "Ground duels won": [
+            "35 (44%)",
+            "44 (56%)"
+          ],
+          "Aerial duels won": [
+            "21 (62%)",
+            "13 (38%)"
+          ],
+          "Successful dribbles": [
+            "9 (38%)",
+            "6 (43%)"
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            9,
+            11
+          ]
+        },
+        "FirstHalf": {
+          "Ball possession": [
+            36,
+            64
+          ],
+          "Expected goals (xG)": [
+            "0.00",
+            "0.11"
+          ],
+          "Total shots": [
+            0,
+            3
+          ],
+          "Shots on target": [
+            0,
+            1
+          ],
+          "Touches in opposition box": [
+            3,
+            5
+          ],
+          "Big chances": [
+            0,
+            0
+          ],
+          "Big chances missed": [
+            0,
+            0
+          ],
+          "Accurate passes": [
+            "143 (83%)",
+            "277 (88%)"
+          ],
+          "Yellow cards": [
+            1,
+            0
+          ],
+          "Corners": [
+            0,
+            0
+          ],
+          "Shots off target": [
+            0,
+            1
+          ],
+          "Blocked shots": [
+            0,
+            1
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            0,
+            3
+          ],
+          "Shots outside box": [
+            0,
+            0
+          ],
+          "xG open play": [
+            "0.00",
+            "0.11"
+          ],
+          "xG set play": [
+            "0.00",
+            "0.00"
+          ],
+          "xG non-penalty": [
+            "0.00",
+            "0.11"
+          ],
+          "xG on target (xGOT)": [
+            "0.00",
+            "0.66"
+          ],
+          "Passes": [
+            172,
+            316
+          ],
+          "Own half": [
+            85,
+            191
+          ],
+          "Opposition half": [
+            58,
+            86
+          ],
+          "Accurate long balls": [
+            "12 (46%)",
+            "19 (49%)"
+          ],
+          "Accurate crosses": [
+            "0 (0%)",
+            "2 (25%)"
+          ],
+          "Throws": [
+            9,
+            14
+          ],
+          "Offsides": [
+            3,
+            1
+          ],
+          "Tackles": [
+            7,
+            10
+          ],
+          "Interceptions": [
+            6,
+            2
+          ],
+          "Blocks": [
+            1,
+            0
+          ],
+          "Clearances": [
+            13,
+            10
+          ],
+          "Keeper saves": [
+            1,
+            0
+          ],
+          "Duels won": [
+            25,
+            22
+          ],
+          "Ground duels won": [
+            "15 (52%)",
+            "14 (48%)"
+          ],
+          "Aerial duels won": [
+            "10 (56%)",
+            "8 (44%)"
+          ],
+          "Successful dribbles": [
+            "3 (50%)",
+            "1 (33%)"
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            3,
+            6
+          ]
+        },
+        "SecondHalf": {
+          "Ball possession": [
+            40,
+            60
+          ],
+          "Expected goals (xG)": [
+            "1.31",
+            "0.62"
+          ],
+          "Total shots": [
+            8,
+            8
+          ],
+          "Shots on target": [
+            2,
+            3
+          ],
+          "Touches in opposition box": [
+            11,
+            14
+          ],
+          "Big chances": [
+            1,
+            2
+          ],
+          "Big chances missed": [
+            0,
+            2
+          ],
+          "Accurate passes": [
+            "149 (83%)",
+            "226 (85%)"
+          ],
+          "Yellow cards": [
+            0,
+            2
+          ],
+          "Corners": [
+            2,
+            2
+          ],
+          "Shots off target": [
+            4,
+            4
+          ],
+          "Blocked shots": [
+            2,
+            1
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            7,
+            3
+          ],
+          "Shots outside box": [
+            1,
+            5
+          ],
+          "xG open play": [
+            "1.13",
+            "0.38"
+          ],
+          "xG set play": [
+            "0.18",
+            "0.24"
+          ],
+          "xG non-penalty": [
+            "1.31",
+            "0.62"
+          ],
+          "xG on target (xGOT)": [
+            "1.04",
+            "0.70"
+          ],
+          "Passes": [
+            179,
+            267
+          ],
+          "Own half": [
+            66,
+            146
+          ],
+          "Opposition half": [
+            83,
+            80
+          ],
+          "Accurate long balls": [
+            "18 (69%)",
+            "16 (50%)"
+          ],
+          "Accurate crosses": [
+            "4 (33%)",
+            "2 (15%)"
+          ],
+          "Throws": [
+            12,
+            9
+          ],
+          "Offsides": [
+            1,
+            0
+          ],
+          "Tackles": [
+            9,
+            19
+          ],
+          "Interceptions": [
+            2,
+            3
+          ],
+          "Blocks": [
+            1,
+            2
+          ],
+          "Clearances": [
+            15,
+            7
+          ],
+          "Keeper saves": [
+            3,
+            2
+          ],
+          "Duels won": [
+            31,
+            35
+          ],
+          "Ground duels won": [
+            "20 (40%)",
+            "30 (60%)"
+          ],
+          "Aerial duels won": [
+            "11 (69%)",
+            "5 (31%)"
+          ],
+          "Successful dribbles": [
+            "6 (33%)",
+            "5 (45%)"
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            6,
+            5
+          ]
+        }
+      }
+    },
+    "englandCroatia": {
+      "source": {
+        "provider": "FotMob match pages",
+        "note": "Opta-style event data surfaced by FotMob; tactical model is inference, not a prediction guarantee."
+      },
+      "teams": [
+        {
+          "name": "England",
+          "score": 4,
+          "rank": 4
+        },
+        {
+          "name": "Croatia",
+          "score": 2,
+          "rank": 11
+        }
+      ],
+      "players": [
+        {
+          "name": "Luka Modric",
+          "team": "Croatia",
+          "rating": 5.92,
+          "minutes": 58,
+          "touches": 33,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 27,
+            "total": 27
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 1,
+          "defActions": 3,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Jordan Henderson",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Ivan Perisic",
+          "team": "Croatia",
+          "rating": 7.87,
+          "minutes": 90,
+          "touches": 47,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 25,
+            "total": 29
+          },
+          "chances": 4,
+          "finalThird": 5,
+          "duelsWon": 5,
+          "defActions": 5,
+          "xA": 0.17,
+          "xGxA": 0.17
+        },
+        {
+          "name": "Andrej Kramaric",
+          "team": "Croatia",
+          "rating": 6.13,
+          "minutes": 12,
+          "touches": 14,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 10,
+            "total": 10
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": 0.01,
+          "xGxA": 0.02
+        },
+        {
+          "name": "Daniel Burn",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Harry Kane",
+          "team": "England",
+          "rating": 9.01,
+          "minutes": 90,
+          "touches": 35,
+          "boxTouches": 9,
+          "accuratePasses": {
+            "value": 14,
+            "total": 21
+          },
+          "chances": 2,
+          "finalThird": 6,
+          "duelsWon": 4,
+          "defActions": 3,
+          "xA": 0.04,
+          "xGxA": 1.07
+        },
+        {
+          "name": "Mateo Kovacic",
+          "team": "Croatia",
+          "rating": 6.79,
+          "minutes": 32,
+          "touches": 37,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 30,
+            "total": 30
+          },
+          "chances": 0,
+          "finalThird": 4,
+          "duelsWon": 3,
+          "defActions": 2,
+          "xA": 0.02,
+          "xGxA": 0.06
+        },
+        {
+          "name": "Ante Budimir",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "John Stones",
+          "team": "England",
+          "rating": 6.47,
+          "minutes": 87,
+          "touches": 71,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 62,
+            "total": 65
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": 4,
+          "defActions": 2,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Jordan Pickford",
+          "team": "England",
+          "rating": 6.38,
+          "minutes": 90,
+          "touches": 72,
+          "boxTouches": null,
+          "accuratePasses": {
+            "value": 43,
+            "total": 55
+          },
+          "chances": null,
+          "finalThird": 10,
+          "duelsWon": 1,
+          "defActions": 3,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Dominik Livakovic",
+          "team": "Croatia",
+          "rating": 6.52,
+          "minutes": 90,
+          "touches": 49,
+          "boxTouches": null,
+          "accuratePasses": {
+            "value": 24,
+            "total": 35
+          },
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": 2,
+          "defActions": 2,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Ivan Toney",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Mario Pasalic",
+          "team": "Croatia",
+          "rating": 6.76,
+          "minutes": 78,
+          "touches": 28,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 21,
+            "total": 22
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": 1,
+          "defActions": 3,
+          "xA": 0.42,
+          "xGxA": 0.44
+        },
+        {
+          "name": "Ollie Watkins",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Nikola Vlasic",
+          "team": "Croatia",
+          "rating": 5.99,
+          "minutes": 12,
+          "touches": 6,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 2,
+            "total": 4
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": 1,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Duje Caleta-Car",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Martin Erlic",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Nikola Moro",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Kristijan Jakic",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Declan Rice",
+          "team": "England",
+          "rating": 7.63,
+          "minutes": 72,
+          "touches": 52,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 32,
+            "total": 37
+          },
+          "chances": 4,
+          "finalThird": 2,
+          "duelsWon": 2,
+          "defActions": 0,
+          "xA": 0.22,
+          "xGxA": 0.26
+        },
+        {
+          "name": "Marcus Rashford",
+          "team": "England",
+          "rating": 7.16,
+          "minutes": 18,
+          "touches": 12,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 3,
+            "total": 5
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": 1,
+          "xA": null,
+          "xGxA": 0.06
+        },
+        {
+          "name": "Petar Musa",
+          "team": "Croatia",
+          "rating": 7,
+          "minutes": 66,
+          "touches": 17,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 3,
+            "total": 8
+          },
+          "chances": 0,
+          "finalThird": 1,
+          "duelsWon": 5,
+          "defActions": 2,
+          "xA": null,
+          "xGxA": 0.14
+        },
+        {
+          "name": "Ezri Konsa",
+          "team": "England",
+          "rating": 6.07,
+          "minutes": 90,
+          "touches": 79,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 67,
+            "total": 71
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": 3,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": 0.63
+        },
+        {
+          "name": "Dean Henderson",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Reece James",
+          "team": "England",
+          "rating": 6.19,
+          "minutes": 90,
+          "touches": 57,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 36,
+            "total": 43
+          },
+          "chances": 0,
+          "finalThird": 5,
+          "duelsWon": 2,
+          "defActions": 5,
+          "xA": 0.01,
+          "xGxA": 0.05
+        },
+        {
+          "name": "Eberechi Eze",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Marin Pongracic",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Marc Guéhi",
+          "team": "England",
+          "rating": null,
+          "minutes": 3,
+          "touches": 7,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 7,
+            "total": 7
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Dominik Kotarski",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Morgan Rogers",
+          "team": "England",
+          "rating": 6.96,
+          "minutes": 18,
+          "touches": 11,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 5,
+            "total": 7
+          },
+          "chances": 2,
+          "finalThird": 1,
+          "duelsWon": 3,
+          "defActions": 2,
+          "xA": 0.3,
+          "xGxA": 0.3
+        },
+        {
+          "name": "Djed Spence",
+          "team": "England",
+          "rating": 6.33,
+          "minutes": 10,
+          "touches": 11,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 5,
+            "total": 6
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": 1,
+          "defActions": 1,
+          "xA": null,
+          "xGxA": 0.54
+        },
+        {
+          "name": "Anthony Gordon",
+          "team": "England",
+          "rating": 6.21,
+          "minutes": 72,
+          "touches": 17,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 9,
+            "total": 11
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": null,
+          "defActions": 0,
+          "xA": 0.01,
+          "xGxA": 0.28
+        },
+        {
+          "name": "Josip Stanisic",
+          "team": "Croatia",
+          "rating": 7.18,
+          "minutes": 90,
+          "touches": 54,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 30,
+            "total": 34
+          },
+          "chances": 1,
+          "finalThird": 1,
+          "duelsWon": 4,
+          "defActions": 5,
+          "xA": 0.03,
+          "xGxA": 0.03
+        },
+        {
+          "name": "Luka Sucic",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Bukayo Saka",
+          "team": "England",
+          "rating": 7.49,
+          "minutes": 18,
+          "touches": 12,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 5,
+            "total": 6
+          },
+          "chances": 1,
+          "finalThird": 1,
+          "duelsWon": 2,
+          "defActions": 2,
+          "xA": 0.01,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Josko Gvardiol",
+          "team": "Croatia",
+          "rating": 5.68,
+          "minutes": 90,
+          "touches": 58,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 43,
+            "total": 47
+          },
+          "chances": 0,
+          "finalThird": 4,
+          "duelsWon": 2,
+          "defActions": 2,
+          "xA": 0.01,
+          "xGxA": 0.21000000000000002
+        },
+        {
+          "name": "Ivor Pandur",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Jude Bellingham",
+          "team": "England",
+          "rating": 8.3,
+          "minutes": 80,
+          "touches": 41,
+          "boxTouches": 6,
+          "accuratePasses": {
+            "value": 18,
+            "total": 24
+          },
+          "chances": 1,
+          "finalThird": 3,
+          "duelsWon": 5,
+          "defActions": 5,
+          "xA": null,
+          "xGxA": 0.48
+        },
+        {
+          "name": "Noni Madueke",
+          "team": "England",
+          "rating": 7.49,
+          "minutes": 72,
+          "touches": 26,
+          "boxTouches": 5,
+          "accuratePasses": {
+            "value": 17,
+            "total": 18
+          },
+          "chances": 2,
+          "finalThird": 1,
+          "duelsWon": 2,
+          "defActions": 1,
+          "xA": 0.41,
+          "xGxA": 0.49
+        },
+        {
+          "name": "Elliot Anderson",
+          "team": "England",
+          "rating": 7.98,
+          "minutes": 90,
+          "touches": 70,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 47,
+            "total": 55
+          },
+          "chances": 1,
+          "finalThird": 4,
+          "duelsWon": 6,
+          "defActions": 8,
+          "xA": 0.02,
+          "xGxA": 0.06
+        },
+        {
+          "name": "Jarell Quansah",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Josip Sutalo",
+          "team": "Croatia",
+          "rating": 6.13,
+          "minutes": 90,
+          "touches": 82,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 63,
+            "total": 70
+          },
+          "chances": 0,
+          "finalThird": 3,
+          "duelsWon": 5,
+          "defActions": 6,
+          "xA": 0.01,
+          "xGxA": 0.18000000000000002
+        },
+        {
+          "name": "James Trafford",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Marco Pasalic",
+          "team": "Croatia",
+          "rating": 6.18,
+          "minutes": 24,
+          "touches": 17,
+          "boxTouches": 1,
+          "accuratePasses": {
+            "value": 6,
+            "total": 10
+          },
+          "chances": 0,
+          "finalThird": 2,
+          "duelsWon": 1,
+          "defActions": 2,
+          "xA": 0.01,
+          "xGxA": 0.06999999999999999
+        },
+        {
+          "name": "Igor Matanovic",
+          "team": "Croatia",
+          "rating": 5.95,
+          "minutes": 24,
+          "touches": 6,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 0,
+            "total": 1
+          },
+          "chances": 0,
+          "finalThird": null,
+          "duelsWon": 2,
+          "defActions": 0,
+          "xA": null,
+          "xGxA": 0.01
+        },
+        {
+          "name": "Martin Baturina",
+          "team": "Croatia",
+          "rating": 7.85,
+          "minutes": 78,
+          "touches": 41,
+          "boxTouches": 2,
+          "accuratePasses": {
+            "value": 25,
+            "total": 32
+          },
+          "chances": 1,
+          "finalThird": 2,
+          "duelsWon": 6,
+          "defActions": 1,
+          "xA": 0.09,
+          "xGxA": 0.13
+        },
+        {
+          "name": "Kobbie Mainoo",
+          "team": "England",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Toni Fruk",
+          "team": "Croatia",
+          "rating": null,
+          "minutes": null,
+          "touches": null,
+          "boxTouches": null,
+          "accuratePasses": null,
+          "chances": null,
+          "finalThird": null,
+          "duelsWon": null,
+          "defActions": null,
+          "xA": null,
+          "xGxA": null
+        },
+        {
+          "name": "Nico O'Reilly",
+          "team": "England",
+          "rating": 6.75,
+          "minutes": 90,
+          "touches": 64,
+          "boxTouches": 3,
+          "accuratePasses": {
+            "value": 36,
+            "total": 43
+          },
+          "chances": 2,
+          "finalThird": 3,
+          "duelsWon": 5,
+          "defActions": 1,
+          "xA": 0.06,
+          "xGxA": 0.24
+        },
+        {
+          "name": "Petar Sucic",
+          "team": "Croatia",
+          "rating": 7.47,
+          "minutes": 90,
+          "touches": 52,
+          "boxTouches": 6,
+          "accuratePasses": {
+            "value": 35,
+            "total": 42
+          },
+          "chances": 1,
+          "finalThird": 3,
+          "duelsWon": 3,
+          "defActions": 1,
+          "xA": 0.03,
+          "xGxA": 0.04
+        },
+        {
+          "name": "Luka Vuskovic",
+          "team": "Croatia",
+          "rating": 6.43,
+          "minutes": 66,
+          "touches": 53,
+          "boxTouches": 0,
+          "accuratePasses": {
+            "value": 37,
+            "total": 42
+          },
+          "chances": 0,
+          "finalThird": 4,
+          "duelsWon": 2,
+          "defActions": 7,
+          "xA": 0.01,
+          "xGxA": 0.01
+        }
+      ],
+      "stats": {
+        "Ball possession": [
+          52,
+          48
+        ],
+        "Expected goals (xG)": [
+          "3.20",
+          "0.70"
+        ],
+        "Total shots": [
+          22,
+          10
+        ],
+        "Shots on target": [
+          11,
+          5
+        ],
+        "Touches in opposition box": [
+          37,
+          16
+        ],
+        "Big chances": [
+          7,
+          2
+        ],
+        "Big chances missed": [
+          5,
+          1
+        ],
+        "Accurate passes": [
+          "406 (86%)",
+          "381 (86%)"
+        ],
+        "Corners": [
+          8,
+          2
+        ],
+        "Shots off target": [
+          6,
+          3
+        ],
+        "Blocked shots": [
+          5,
+          2
+        ],
+        "Hit woodwork": [
+          0,
+          0
+        ],
+        "Shots inside box": [
+          20,
+          4
+        ],
+        "Shots outside box": [
+          2,
+          6
+        ],
+        "xG open play": [
+          "1.38",
+          "0.32"
+        ],
+        "xG set play": [
+          "1.03",
+          "0.38"
+        ],
+        "xG non-penalty": [
+          "2.41",
+          "0.70"
+        ],
+        "xG on target (xGOT)": [
+          "3.33",
+          "0.51"
+        ],
+        "Passes": [
+          474,
+          443
+        ],
+        "Own half": [
+          287,
+          220
+        ],
+        "Opposition half": [
+          119,
+          161
+        ],
+        "Accurate long balls": [
+          "15 (37%)",
+          "18 (43%)"
+        ],
+        "Accurate crosses": [
+          "6 (46%)",
+          "2 (15%)"
+        ],
+        "Throws": [
+          15,
+          18
+        ],
+        "Offsides": [
+          0,
+          1
+        ],
+        "Tackles": [
+          9,
+          11
+        ],
+        "Interceptions": [
+          7,
+          9
+        ],
+        "Blocks": [
+          2,
+          5
+        ],
+        "Clearances": [
+          16,
+          17
+        ],
+        "Keeper saves": [
+          3,
+          7
+        ],
+        "Duels won": [
+          40,
+          42
+        ],
+        "Ground duels won": [
+          "28 (52%)",
+          "26 (48%)"
+        ],
+        "Aerial duels won": [
+          "12 (43%)",
+          "16 (57%)"
+        ],
+        "Successful dribbles": [
+          "7 (50%)",
+          "5 (50%)"
+        ],
+        "Yellow cards": [
+          0,
+          0
+        ],
+        "Red cards": [
+          0,
+          0
+        ],
+        "Fouls committed": [
+          10,
+          12
+        ]
+      },
+      "periods": {
+        "All": {
+          "Ball possession": [
+            52,
+            48
+          ],
+          "Expected goals (xG)": [
+            "3.20",
+            "0.70"
+          ],
+          "Total shots": [
+            22,
+            10
+          ],
+          "Shots on target": [
+            11,
+            5
+          ],
+          "Touches in opposition box": [
+            37,
+            16
+          ],
+          "Big chances": [
+            7,
+            2
+          ],
+          "Big chances missed": [
+            5,
+            1
+          ],
+          "Accurate passes": [
+            "406 (86%)",
+            "381 (86%)"
+          ],
+          "Corners": [
+            8,
+            2
+          ],
+          "Shots off target": [
+            6,
+            3
+          ],
+          "Blocked shots": [
+            5,
+            2
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            20,
+            4
+          ],
+          "Shots outside box": [
+            2,
+            6
+          ],
+          "xG open play": [
+            "1.38",
+            "0.32"
+          ],
+          "xG set play": [
+            "1.03",
+            "0.38"
+          ],
+          "xG non-penalty": [
+            "2.41",
+            "0.70"
+          ],
+          "xG on target (xGOT)": [
+            "3.33",
+            "0.51"
+          ],
+          "Passes": [
+            474,
+            443
+          ],
+          "Own half": [
+            287,
+            220
+          ],
+          "Opposition half": [
+            119,
+            161
+          ],
+          "Accurate long balls": [
+            "15 (37%)",
+            "18 (43%)"
+          ],
+          "Accurate crosses": [
+            "6 (46%)",
+            "2 (15%)"
+          ],
+          "Throws": [
+            15,
+            18
+          ],
+          "Offsides": [
+            0,
+            1
+          ],
+          "Tackles": [
+            9,
+            11
+          ],
+          "Interceptions": [
+            7,
+            9
+          ],
+          "Blocks": [
+            2,
+            5
+          ],
+          "Clearances": [
+            16,
+            17
+          ],
+          "Keeper saves": [
+            3,
+            7
+          ],
+          "Duels won": [
+            40,
+            42
+          ],
+          "Ground duels won": [
+            "28 (52%)",
+            "26 (48%)"
+          ],
+          "Aerial duels won": [
+            "12 (43%)",
+            "16 (57%)"
+          ],
+          "Successful dribbles": [
+            "7 (50%)",
+            "5 (50%)"
+          ],
+          "Yellow cards": [
+            0,
+            0
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            10,
+            12
+          ]
+        },
+        "FirstHalf": {
+          "Ball possession": [
+            48,
+            52
+          ],
+          "Expected goals (xG)": [
+            "1.38",
+            "0.37"
+          ],
+          "Total shots": [
+            9,
+            4
+          ],
+          "Shots on target": [
+            2,
+            2
+          ],
+          "Touches in opposition box": [
+            15,
+            8
+          ],
+          "Big chances": [
+            2,
+            1
+          ],
+          "Big chances missed": [
+            1,
+            0
+          ],
+          "Accurate passes": [
+            "180 (82%)",
+            "203 (87%)"
+          ],
+          "Corners": [
+            3,
+            1
+          ],
+          "Shots off target": [
+            3,
+            2
+          ],
+          "Blocked shots": [
+            4,
+            0
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            7,
+            2
+          ],
+          "Shots outside box": [
+            2,
+            2
+          ],
+          "xG open play": [
+            "0.44",
+            "0.20"
+          ],
+          "xG set play": [
+            "0.15",
+            "0.17"
+          ],
+          "xG non-penalty": [
+            "0.59",
+            "0.37"
+          ],
+          "xG on target (xGOT)": [
+            "0.87",
+            "0.16"
+          ],
+          "Passes": [
+            219,
+            234
+          ],
+          "Own half": [
+            136,
+            113
+          ],
+          "Opposition half": [
+            44,
+            90
+          ],
+          "Accurate long balls": [
+            "6 (27%)",
+            "11 (46%)"
+          ],
+          "Accurate crosses": [
+            "3 (60%)",
+            "2 (50%)"
+          ],
+          "Throws": [
+            8,
+            7
+          ],
+          "Offsides": [
+            0,
+            0
+          ],
+          "Tackles": [
+            2,
+            4
+          ],
+          "Interceptions": [
+            4,
+            3
+          ],
+          "Blocks": [
+            0,
+            4
+          ],
+          "Clearances": [
+            5,
+            8
+          ],
+          "Keeper saves": [
+            0,
+            0
+          ],
+          "Duels won": [
+            15,
+            21
+          ],
+          "Ground duels won": [
+            "10 (43%)",
+            "13 (57%)"
+          ],
+          "Aerial duels won": [
+            "5 (38%)",
+            "8 (62%)"
+          ],
+          "Successful dribbles": [
+            "3 (60%)",
+            "3 (60%)"
+          ],
+          "Yellow cards": [
+            0,
+            0
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            6,
+            5
+          ]
+        },
+        "SecondHalf": {
+          "Ball possession": [
+            55,
+            45
+          ],
+          "Expected goals (xG)": [
+            "1.83",
+            "0.33"
+          ],
+          "Total shots": [
+            13,
+            6
+          ],
+          "Shots on target": [
+            9,
+            3
+          ],
+          "Touches in opposition box": [
+            22,
+            8
+          ],
+          "Big chances": [
+            5,
+            1
+          ],
+          "Big chances missed": [
+            4,
+            1
+          ],
+          "Accurate passes": [
+            "226 (89%)",
+            "178 (85%)"
+          ],
+          "Corners": [
+            5,
+            1
+          ],
+          "Shots off target": [
+            3,
+            1
+          ],
+          "Blocked shots": [
+            1,
+            2
+          ],
+          "Hit woodwork": [
+            0,
+            0
+          ],
+          "Shots inside box": [
+            13,
+            2
+          ],
+          "Shots outside box": [
+            0,
+            4
+          ],
+          "xG open play": [
+            "0.95",
+            "0.11"
+          ],
+          "xG set play": [
+            "0.88",
+            "0.22"
+          ],
+          "xG non-penalty": [
+            "1.83",
+            "0.33"
+          ],
+          "xG on target (xGOT)": [
+            "2.46",
+            "0.35"
+          ],
+          "Passes": [
+            255,
+            209
+          ],
+          "Own half": [
+            151,
+            107
+          ],
+          "Opposition half": [
+            75,
+            71
+          ],
+          "Accurate long balls": [
+            "9 (47%)",
+            "7 (39%)"
+          ],
+          "Accurate crosses": [
+            "3 (38%)",
+            "0 (0%)"
+          ],
+          "Throws": [
+            7,
+            11
+          ],
+          "Offsides": [
+            0,
+            1
+          ],
+          "Tackles": [
+            7,
+            7
+          ],
+          "Interceptions": [
+            3,
+            6
+          ],
+          "Blocks": [
+            2,
+            1
+          ],
+          "Clearances": [
+            11,
+            9
+          ],
+          "Keeper saves": [
+            3,
+            7
+          ],
+          "Duels won": [
+            25,
+            21
+          ],
+          "Ground duels won": [
+            "18 (58%)",
+            "13 (42%)"
+          ],
+          "Aerial duels won": [
+            "7 (47%)",
+            "8 (53%)"
+          ],
+          "Successful dribbles": [
+            "4 (44%)",
+            "2 (40%)"
+          ],
+          "Yellow cards": [
+            0,
+            0
+          ],
+          "Red cards": [
+            0,
+            0
+          ],
+          "Fouls committed": [
+            4,
+            7
+          ]
+        }
+      }
+    }
+  }
+}
